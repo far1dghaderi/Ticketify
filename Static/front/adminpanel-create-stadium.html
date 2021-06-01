@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <title>Homepage | Ticketify</title>
+  </head>
+  <body class="panel-body">
+    <header>
+      <!-- navbar -->
+      <nav class="nav primary-color flex">
+        <div class="logo">
+          <a href="#"><h3 class="white">Ticketify</h3></a>
+        </div>
+        <ul class="nav-ul flex">
+          <li><a class="white navbar-items" href="#"> Home</a></li>
+          <li class="navbar-li-sports">
+            <a class="white navbar-items" href="#">
+              sports <span class="bi-chevron-compact-down"></span
+            ></a>
+            <ul>
+              <li>Football</li>
+              <li>Basketball</li>
+              <li>Volleyball</li>
+            </ul>
+          </li>
+          <li class="navbar-li-search">
+            <span class="white navbar-items"> Search</span>
+          </li>
+        </ul>
+        <div class="user-action flex">
+          <!-- <a href="#" class="signin-btn white">Signin</a>
+        <a href="#" class="signup-btn active-user-action-btn">Signup</a> -->
+          <span class="acoount-btn-nav active-user-action-btn"
+            >Account <span class="bi-chevron-compact-down"></span>
+            <ul class="none">
+              <li><a href="#">Panel</a></li>
+              <li><a href="#">Log out</a></li>
+            </ul>
+          </span>
+        </div>
+        <form
+          action=""
+          name="navbar-search"
+          id="navbar-search"
+          class="flex none"
+        >
+          <input type="text" placeholder="What are you looking for?" />
+          <input type="submit" value="Search" />
+        </form>
+      </nav>
+      <nav class="dashboad-nav">
+        <ul class="flex">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Users</a></li>
+          <li><a href="#">Matches</a></li>
+          <li><a href="#">Teams</a></li>
+          <li><a href="#">Stadiums</a></li>
+          <li><a href="#">Competitions</a></li>
+          <li><a href="#">Sports</a></li>
+          <li><a href="#">Coupons</a></li>
+          <li><a href="#">Tickets</a></li>
+          <li><a href="#" class="active">Messages</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="panel-container">
+      <section class="stadium-details-container">
+        <span>Stadium details</span>
+        <form action="" class="flex" id="stadium-form">
+          <input type="text" placeholder="Stadium name" name="name" />
+          <select name="sport">
+            <option value="" disabled selected>Sport</option>
+            <option value="Football">Football</option>
+            <option value="Basketball">Basketball</option>
+            <option value="Volleyball">Volleyball</option>
+          </select>
+          <div class="location">
+            <select name="country">
+              <option value="" disabled selected>Country</option>
+              <option value="Spain">Spain</option>
+              <option value="Iran">Iran</option>
+              <option value="USA">USA</option>
+              <option value="UK">UK</option>
+            </select>
+            <select name="Province">
+              <option value="" disabled selected>Province</option>
+              <option value="Catalunia">Catalunia</option>
+              <option value="Kurditsan">Kurditsan</option>
+              <option value="Masachust">Masachust</option>
+              <option value="Sheffield">Sheffield</option>
+            </select>
+            <select name="City">
+              <option value="" disabled selected>City</option>
+              <option value="Barcelona">Barcelona</option>
+              <option value="Sanandaj">Sanandaj</option>
+              <option value="Miami">Miami</option>
+              <option value="London">London</option>
+            </select>
+          </div>
+          <span>Stadium image</span>
+          <div class="flex">
+            <img src="https://via.placeholder.com/150" alt="stadium-image" />
+            <input type="file" name="image" />
+          </div>
+          <span>Stands details</span>
+          <div>
+            <input type="text" name="standId" placeholder="Stand ID" />
+            <select name="availabilty">
+              <option disabled selected>Availabilty</option>
+              <option>true</option>
+              <option>false</option>
+            </select>
+            <select name="location">
+              <option disabled selected>Location</option>
+              <option>West</option>
+              <option>East</option>
+              <option>North</option>
+              <option>South</option>
+            </select>
+            <select name="floor">
+              <option disabled selected>Floor</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>6</option>
+            </select>
+            <input type="number" placeholder="price" name="price" />
+            <input type="number" placeholder="capacity" name="capacity" />
+            <span id="add-stand-btn"
+              >Add stand <span class="bi-plus"></span
+            ></span>
+          </div>
+          <div class="stands-container">
+            <div class="stands-row stands-row-header flex">
+              <div class="columns flex">
+                <div class="column-id header-column column">ID</div>
+                <div class="column-floor header-column column">floor</div>
+                <div class="column-stand header-column column">stand</div>
+                <div class="column-price header-column column">Price</div>
+                <div class="column-availablity header-column column">
+                  Availablity
+                </div>
+                <div class="column-capacity header-column column">Capacity</div>
+              </div>
+            </div>
+            <div class="stands-row stands-row-data blue-row flex">
+              <div class="columns flex">
+                <div class="column-id column">
+                  <input type="text" value="C24" name="stand-1-id" readonly />
+                </div>
+                <div class="column-floor column">
+                  <input type="text" value="1" name="stand-1-floor" readonly />
+                </div>
+                <div class="column-stand column">
+                  <input
+                    type="text"
+                    value="West"
+                    name="stand-1-stand"
+                    readonly
+                  />
+                </div>
+                <div class="column-price column">
+                  <input
+                    type="text"
+                    value="78$"
+                    name="stand-1-price"
+                    readonly
+                  />
+                </div>
+                <div class="column-availablity column">
+                  <input
+                    type="text"
+                    value="True"
+                    name="stand-1-availablity"
+                    readonly
+                  />
+                </div>
+                <div class="column-capacity column">
+                  <input
+                    type="text"
+                    value="25000"
+                    name="stand-1-capacity"
+                    readonly
+                  />
+                </div>
+
+                <span
+                  class="stand-column-btn delete-stand-btn bi-trash-fill"
+                ></span>
+              </div>
+            </div>
+            <div class="stands-row stands-row-data purple-row flex">
+              <div class="columns flex">
+                <div class="column-id column">
+                  <input type="text" value="C24" name="stand-1-id" readonly />
+                </div>
+                <div class="column-floor column">
+                  <input type="text" value="1" name="stand-1-floor" readonly />
+                </div>
+                <div class="column-stand column">
+                  <input
+                    type="text"
+                    value="West"
+                    name="stand-1-stand"
+                    readonly
+                  />
+                </div>
+                <div class="column-price column">
+                  <input
+                    type="text"
+                    value="78$"
+                    name="stand-1-price"
+                    readonly
+                  />
+                </div>
+                <div class="column-availablity column">
+                  <input
+                    type="text"
+                    value="True"
+                    name="stand-1-availablity"
+                    readonly
+                  />
+                </div>
+                <div class="column-capacity column">
+                  <input
+                    type="text"
+                    value="25000"
+                    name="stand-1-capacity"
+                    readonly
+                  />
+                </div>
+
+                <span
+                  class="stand-column-btn delete-stand-btn bi-trash-fill"
+                ></span>
+              </div>
+            </div>
+          </div>
+          <input type="submit" value="Create stadium" />
+        </form>
+      </section>
+    </main>
+    <script src="./js/ui.js"></script>
+  </body>
+</html>

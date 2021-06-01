@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <title>Homepage | Ticketify</title>
+  </head>
+  <body class="panel-body">
+    <header>
+      <!-- navbar -->
+      <nav class="nav primary-color flex">
+        <div class="logo">
+          <a href="#"><h3 class="white">Ticketify</h3></a>
+        </div>
+        <ul class="nav-ul flex">
+          <li><a class="white navbar-items" href="#"> Home</a></li>
+          <li><a class="white navbar-items" href="#"> sports</a></li>
+          <li>
+            <a class="white navbar-items" href="#">
+              Search <span class="bi-chevron-compact-down"></span
+            ></a>
+          </li>
+        </ul>
+        <div class="user-action flex">
+          <a href="#" class="signin-btn white">Signin</a>
+          <a href="#" class="signup-btn active-user-action-btn">Signup</a>
+        </div>
+      </nav>
+      <nav class="dashboad-nav">
+        <ul class="flex">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#"> Account Details</a></li>
+          <li><a href="#">Tickets</a></li>
+          <li><a href="#"> Coupons</a></li>
+          <li><a href="#"> Settings</a></li>
+          <li><a href="#" class="active"> Contact us</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="panel-container">
+      <span class="title">Contact us</span>
+      <form action="#" name="contactus" class="flex" id="contactus">
+        <textarea
+          name="message"
+          id="message"
+          placeholder="Your message"
+        ></textarea>
+        <span class="faq"
+          >Please check our <span>F&Q</span> before sending your message</span
+        >
+        <span class="reply"
+          >We will reach you back via your email address ASAP</span
+        >
+        <input type="submit" value="Send message" />
+      </form>
+    </main>
+  </body>
+</html>

@@ -13,7 +13,6 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   user.phoneNumber = req.body.phoneNumber || user.phoneNumber;
   user.idNumber = req.body.idNumber || user.idNumber;
   user.passportNumber = req.body.passportNumber || user.passportNumber;
-  user.passportNumber = req.body.passportNumber || user.passportNumber;
   user.gender = req.body.gender || user.gender;
   user.birthdate = req.body.birthdate || user.birthdate;
   user.country = req.body.country || user.country;

@@ -2,7 +2,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const { promisify } = require("util");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
-const QueryFeatures = require("./../utilities/queryFeatures");
+// const QueryFeatures = require("./../utilities/queryFeatures");
 const matchModel = require("./../Models/matchModel");
 const teamModel = require("./../Models/teamModel");
 const stadiumModel = require("./../Models/stadiumModel");
@@ -168,7 +168,7 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
 //get matches
 exports.getMatches = catchAsync(async (req, res, next) => {
   //set the first query and populate stadium field
-  let matches = matchModel
+  let matches = await matchModel
     .find({
       $and: [
         { visibleDate: { $lt: new Date() } },
@@ -179,10 +179,6 @@ exports.getMatches = catchAsync(async (req, res, next) => {
       path: "stadium",
       select: "name country city stands capacity ",
     });
-  //quering results with with url query object
-  const queryFeatures = new QueryFeatures(matches, req.query);
-  queryFeatures.filter().paginate().sort();
-  let results = await queryFeatures.query;
   res.json({ res: results.length, results });
 });
 

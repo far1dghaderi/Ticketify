@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const Email = require("./utilities/email");
 const email = new Email();
-email.sendHello();
 //specify app`s config file
 dotenv.config({ path: "./config.env" });
 //Connecting to Data base

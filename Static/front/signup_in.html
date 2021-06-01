@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <title>Homepage | Ticketify</title>
+  </head>
+  <body>
+    <header>
+      <!-- navbar -->
+      <nav class="nav primary-color flex">
+        <div class="logo">
+          <a href="#"><h3 class="white">Ticketify</h3></a>
+        </div>
+        <ul class="nav-ul flex">
+          <li><a class="white navbar-items" href="#"> Home</a></li>
+          <li><a class="white navbar-items" href="#"> sports</a></li>
+          <li>
+            <a class="white navbar-items" href="#">
+              Search <span class="bi-chevron-compact-down"></span
+            ></a>
+          </li>
+        </ul>
+        <div class="user-action flex">
+          <a href="#" class="signin-btn white">Signin</a>
+          <a href="#" class="signup-btn active-user-action-btn">Signup</a>
+        </div>
+      </nav>
+    </header>
+    <main class="login-up-container flex">
+      <div class="container login flex">
+        <form action="#" class="flex">
+          <span class="label">Email</span>
+          <input type="email" name="email" placeholder="Enter your email" />
+          <span class="label">Password</span>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+          />
+          <span class="alternate"
+            >Forgot your password? <a href="#" id="reset">reset it</a></span
+          >
+          <input type="submit" value="Sign in" />
+          <span class="alternate"
+            >Don`t have an account? <a href="#" id="create">Create one</a></span
+          >
+        </form>
+      </div>
+      <div class="container flex none" id="signup">
+        <form action="#" class="flex">
+          <div class="name-container flex">
+            <div class="flex">
+              <span class="label">First name</span>
+              <span class="label">Last name</span>
+            </div>
+            <div class="flex">
+              <input
+                type="text"
+                name="name"
+                id="name"
+                placeholder="First name"
+              />
+              <input
+                type="text"
+                name="family"
+                id="family"
+                placeholder="Last name"
+              />
+            </div>
+          </div>
+          <span class="label">Email</span>
+          <input type="email" name="email" placeholder="Enter your email" />
+          <span class="label">Password</span>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+          />
+          <span class="label">Confirm password</span>
+          <input
+            type="password"
+            name="confirmpassword"
+            placeholder="re-Enter your password"
+          />
+          <span class="alternate"
+            >By signing up you are agree with our
+            <a href="#" id="reset">Terms</a> and
+            <a href="#" id="reset">Privacy and Policy</a></span
+          >
+          <input type="submit" value="Create Account" />
+          <span class="alternate"
+            >Already have an account? <a href="#" id="create">Sign in</a></span
+          >
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <title>Homepage | Ticketify</title>
+  </head>
+  <body class="panel-body">
+    <header>
+      <!-- navbar -->
+      <nav class="nav primary-color flex">
+        <div class="logo">
+          <a href="#"><h3 class="white">Ticketify</h3></a>
+        </div>
+        <ul class="nav-ul flex">
+          <li><a class="white navbar-items" href="#"> Home</a></li>
+          <li><a class="white navbar-items" href="#"> sports</a></li>
+          <li>
+            <a class="white navbar-items" href="#">
+              Search <span class="bi-chevron-compact-down"></span
+            ></a>
+          </li>
+        </ul>
+        <div class="user-action flex">
+          <a href="#" class="signin-btn white">Signin</a>
+          <a href="#" class="signup-btn active-user-action-btn">Signup</a>
+        </div>
+      </nav>
+      <nav class="dashboad-nav">
+        <ul class="flex">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#"> Account Details</a></li>
+          <li><a href="#">Tickets</a></li>
+          <li><a href="#" class="active"> Coupons</a></li>
+          <li><a href="#"> Settings</a></li>
+          <li><a href="#"> Contact us</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="panel-container">
+      <span class="title">Coupons</span>
+      <section class="coupons">
+        <div class="coupon-box header flex">
+          <div class="flex">
+            <span>Code</span>
+            <span>Discount %</span>
+            <span>Expires At</span>
+            <span>Usage Limit</span>
+            <span>&nbsp;</span>
+          </div>
+        </div>
+        <div class="coupon-box coupon">
+          <div class="flex">
+            <span class="code">Derby98</span>
+            <span class="Discount">17%</span>
+            <span class="Expiry">2021-10-10 23:15</span>
+            <span class="Usage">2 Times</span>
+            <span class="Details-btn"
+              >Details <span class="bi-chevron-down"></span
+            ></span>
+          </div>
+          <div class="details">
+            <span class="title">This coupon can be used on matches: </span>
+            <ul>
+              <li>that theire lowest price is higher than <span>70$</span></li>
+              <li>
+                that theire match date is lower than <span>2021-10-10</span>
+                <span>70$</span>
+              </li>
+            </ul>
+            <a href="#"
+              >Explore for matches with this conditions
+              <span class="bi-arrow-right"></span
+            ></a>
+          </div>
+        </div>
+        <div class="coupon-box coupon">
+          <div class="flex">
+            <span class="code">Derby98</span>
+            <span class="Discount">17%</span>
+            <span class="Expiry">2021-10-10 23:15</span>
+            <span class="Usage">2 Times</span>
+            <span class="Details-btn"
+              >Details <span class="bi-chevron-down"></span
+            ></span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
