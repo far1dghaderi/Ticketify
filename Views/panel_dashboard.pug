@@ -1,0 +1,67 @@
+extends base_panel
+block content 
+    section.container.flex
+        main.flex
+            div.detail-box.flex
+                span.title Account status
+                if verified
+                    span.value.verified Verified
+                else if verified==false
+                    span.value.not-verified Not verified
+                    a(href="/user/panel/account").view-more Verify
+                        | 
+                        span.bi-arrow-right   
+            div.detail-box.flex 
+                span.title Money Spent
+                span.value #{spent} $
+                span.view-more  
+            div.detail-box.flex
+                span.title Tickets Bought
+                span.value #{count}
+                a(href="/user/panel/tickets").view-more View all
+                    span.bi-arrow-right
+        //- If there was an upcoming match for the user
+        if match
+            aside
+                div.dashboard-match-box-details   
+                    span.title  Upcoming match
+                    div.match-info.flex
+                        //- Home team logo
+                        img(src=`/images/teams/${match.homeTeam.logo}`, alt=`${match.homeTeam.name} logo image`) 
+                        div.flex.names
+                            span   #{match.homeTeam.name} - #{match.awayTeam.name}
+                            span   #{match.fixture}
+                        //- away team logo
+                        img(src=`/images/teams/${match.awayTeam.logo}`, alt=`${match.awayTeam.name} logo image`) 
+                    div.match-details
+                        div.flex
+                            - let matchdate = match.matchDate.getFullYear() + ' - '+ match.matchDate.getMonth() + ' - ' + match.matchDate.getDate() 
+                            span.bi-calendar-fill.flex   #{matchdate}
+                            - let matchTime = match.matchDate.toLocaleTimeString(["it-IT"], { hour: "2-digit",  minute: "2-digit", })
+                            span.bi-clock-fill.flex   #{matchTime}
+                        div.flex
+                            span.bi-house-door-fill.flex #{match.stadium.name}
+                            span.bi-geo-alt-fill.flex #{match.stadium.country} #{match.stadium.city}
+                    div.count-down.dashboard-countdown(data-date=`${match.matchDate}`)
+                        span#days 
+                        | 
+                        | Days : 
+                        span#hours 
+                        |   
+                        | Hours : 
+                        span#minutes 
+                        |  
+                        | Minutes : 
+                        span#seconds
+                        |  Seconds 
+                    //-match cover
+                    img.match-cover(src=`/images/matches/${match.cover}`, alt=`${match.homeTeam.name} VS ${match.awayTeam.name} match cover image`)
+                    a(href="/user/panel/tickets").view-all-btn View all matches
+                        | 
+                        span.bi-arrow-right 
+        //- If it wasn't any upcoming match for the user
+        else
+            aside.flex
+                span.title You dont have any upcoming match. you will see your upcoming match in this section.
+                a(href="#").explore Explore matches 
+                    span.bi-arrow-right

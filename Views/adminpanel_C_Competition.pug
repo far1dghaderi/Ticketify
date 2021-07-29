@@ -1,0 +1,12 @@
+extends base_panel
+block content
+    main.panel-container
+        section.details-container
+            span Competition detils
+            form(action="/competitions",method="POST",enctype="multipart/form-data").flex
+                input(type="text", name="name" placeholder="Competition name")
+                span Competition logo
+                div.flex    
+                    img(src="https://via.placeholder.com/150", alt="").img-logo
+                    input(type="file" name="file").logo-file-input
+                input(type="submit", value="Create competition")

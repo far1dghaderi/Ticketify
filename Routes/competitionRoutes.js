@@ -6,18 +6,24 @@ const basicCrud = require("./../Controllers/basicCrudController");
 const authController = require("./../Controllers/authController");
 
 router.use(authController.protect, authController.restrictAccess);
+//create a competition
 router.post(
   "/",
   compController.uploadCompetitionLogo,
   compController.resizeAndSaveCompImages,
   compController.createCompetition
 );
+
+//update a competiton
 router
-  .route("/:id")
-  .patch(
+  .route("/update/:id")
+  .post(
     compController.uploadCompetitionLogo,
     compController.resizeAndSaveCompImages,
-    basicCrud.updateOne(compModel)
+    compController.updateComp
   );
+
+//update a competiton
+router.get("/delete/:id", compController.deleteComp);
 
 module.exports = router;

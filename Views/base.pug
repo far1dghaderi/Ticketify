@@ -1,0 +1,26 @@
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="/front/styles/Styles.css")
+        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css")
+        title Ticketify | #{title}
+        
+    body 
+        //- Including header
+        include _header
+
+        //-including main content
+        block content 
+        //- Including footer
+        include _footer
+
+        //-including message boxes
+        include _messages
+        
+        //- importing Scripts
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js")
+        script(src="/front/js/uiTools.js")
+        script(src="/front/js/ui.js")
+        script(src="/front/js/inputValidators.js")

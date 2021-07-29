@@ -1,0 +1,60 @@
+{
+  "res": 1,
+  "matches": [
+    {
+      "homeTeam": {
+        "id": "60698e26b193c5497c5fe256",
+        "name": "FC Barcelona",
+        "logo": "1617530406811-logo-FC-Barcelona.png"
+      },
+      "awayTeam": {
+        "id": "606aeb34f4b82224ccd096a5",
+        "name": "Real Valadolid CF",
+        "logo": "1617619764548-logo-Real-Valadolid CF.png"
+      },
+      "limitation": { "age": 18, "gender": "male" },
+      "_id": "6086aeddd1b1053a082c4bc3",
+      "stadium": {
+        "_id": "60644a6b11acd43e787f498a",
+        "name": "camp nou",
+        "country": "Spain",
+        "city": "Barcelona",
+        "stands": [
+          {
+            "entrances": ["Luis edwardo KO214", "kIsion K8912"],
+            "availablity": true,
+            "_id": "60785e6f65d37921e08dd295",
+            "standId": "CK19",
+            "standLocation": "west",
+            "floor": "1",
+            "capacity": 6000,
+            "price": 145
+          },
+          {
+            "entrances": ["kIsion K8912"],
+            "availablity": true,
+            "_id": "60785e6f65d37921e08dd296",
+            "standId": "CK18",
+            "standLocation": "west",
+            "floor": "1",
+            "capacity": 11000,
+            "price": 145
+          }
+        ],
+        "capacity": 17000,
+        "id": "60644a6b11acd43e787f498a"
+      },
+      "competition": "606adbf6f93108434074a246",
+      "matchType": "football",
+      "price": 175,
+      "matchDate": "2021-05-17T15:30:00.000Z",
+      "visibleDate": "2021-03-15T00:30:00.000Z",
+      "startBuyDate": "2021-05-15T16:30:00.000Z",
+      "endBuyDate": "2021-09-16T15:30:00.000Z",
+      "matchCover": "1619439325116-match-cover-60698e-606aeb.jpeg",
+      "tickets": [],
+      "slug": "FC-Barcelona-Real-Valadolid-CF-La-Liga-Santander-Mon-May-17-2021",
+      "__v": 0
+    }
+  ]
+}

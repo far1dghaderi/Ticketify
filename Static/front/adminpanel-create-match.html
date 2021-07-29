@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <title>Homepage | Ticketify</title>
+  </head>
+  <body class="panel-body">
+    <header>
+      <!-- navbar -->
+      <nav class="nav primary-color flex">
+        <div class="logo">
+          <a href="#"><h3 class="white">Ticketify</h3></a>
+        </div>
+        <ul class="nav-ul flex">
+          <li><a class="white navbar-items" href="#"> Home</a></li>
+          <li class="navbar-li-sports">
+            <a class="white navbar-items" href="#">
+              sports <span class="bi-chevron-compact-down"></span
+            ></a>
+            <ul>
+              <li>Football</li>
+              <li>Basketball</li>
+              <li>Volleyball</li>
+            </ul>
+          </li>
+          <li class="navbar-li-search">
+            <span class="white navbar-items"> Search</span>
+          </li>
+        </ul>
+        <div class="user-action flex">
+          <!-- <a href="#" class="signin-btn white">Signin</a>
+        <a href="#" class="signup-btn active-user-action-btn">Signup</a> -->
+          <span class="acoount-btn-nav active-user-action-btn"
+            >Account <span class="bi-chevron-compact-down"></span>
+            <ul class="none">
+              <li><a href="#">Panel</a></li>
+              <li><a href="#">Log out</a></li>
+            </ul>
+          </span>
+        </div>
+        <form
+          action=""
+          name="navbar-search"
+          id="navbar-search"
+          class="flex none"
+        >
+          <input type="text" placeholder="What are you looking for?" />
+          <input type="submit" value="Search" />
+        </form>
+      </nav>
+      <nav class="dashboad-nav">
+        <ul class="flex">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Users</a></li>
+          <li><a href="#">Matches</a></li>
+          <li><a href="#">Teams</a></li>
+          <li><a href="#">Stadiums</a></li>
+          <li><a href="#">Competitions</a></li>
+          <li><a href="#">Sports</a></li>
+          <li><a href="#">Coupons</a></li>
+          <li><a href="#">Tickets</a></li>
+          <li><a href="#" class="active">Messages</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="panel-container">
+      <section class="details-container">
+        <span>Match details</span>
+        <form action="" class="flex">
+          <div>
+            <input type="text" name="hometeam" placeholder="Home team ID" />
+            <input type="text" name="awayteam" placeholder="Away team ID" />
+            <a href="#" class="search-for-btn"
+              >Search for teams <span class="bi-arrow-right"></span
+            ></a>
+          </div>
+          <div>
+            <input
+              type="text"
+              name="stadium"
+              onfocus="(this.type='date')"
+              placeholder="Stadium ID"
+            />
+            <a href="#" class="search-for-btn"
+              >Search for stadiums <span class="bi-arrow-right"></span
+            ></a>
+          </div>
+          <div>
+            <input
+              type="text"
+              name="visibledate"
+              onfocus="(this.type='date')"
+              placeholder="Visible date"
+            />
+            <input
+              type="text"
+              name="startBuyDate"
+              onfocus="(this.type='date')"
+              placeholder="Start buy date"
+            />
+            <input type="text" name="endbuydate" placeholder="End buy date" />
+            <input
+              type="text"
+              name="matchDate"
+              onfocus="(this.type='date')"
+              placeholder="End buy date"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              name="competition"
+              placeholder="Competition ID"
+            />
+            <a href="#" class="search-for-btn"
+              >Search for competitions <span class="bi-arrow-right"></span
+            ></a>
+          </div>
+          <input
+            type="text"
+            name="fixture"
+            placeholder="Fixture - EX: Week 34"
+            id=""
+          />
+          <input type="submit" value="Save changes" />
+        </form>
+      </section>
+    </main>
+    <script src="./js/ui.js"></script>
+  </body>
+</html>

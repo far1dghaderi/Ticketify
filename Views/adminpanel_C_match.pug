@@ -1,0 +1,32 @@
+extends base_panel
+block content 
+    main.panel-container
+        section.details-container
+            span Match details 
+            form(action="/match",method="POST",enctype="multipart/form-data").flex
+                div 
+                    input(type="text", name="homeTeam" placeholder="Home team ID")
+                    input(type="text", name="awayTeam" placeholder="Away team ID")
+                    a(href="/user/adminpanel/teams" target="_blank").search-for-btn Search for teams 
+                        span.bi-arrow-right 
+                div 
+                    input(type="text", name="stadium" placeholder="Stadium ID")
+                    a(href="/user/adminpanel/stadiums" target="_blank").search-for-btn Search for stadiums 
+                        span.bi-arrow-right 
+
+                div
+                    input(type="text", name="visibleDate" placeholder="Visible date" onfocus="(this.type='datetime-local')") 
+                    input(type="text", name="startBuyDate" placeholder="Start buy date" onfocus="(this.type='datetime-local')") 
+                    input(type="text", name="endBuyDate" placeholder="End buy date" onfocus="(this.type='datetime-local')") 
+                    input(type="text", name="matchDate" placeholder="Match date" onfocus="(this.type='datetime-local')") 
+                div 
+                    input(type="text", name="competition" placeholder="Competition ID")
+                    a(href="/user/adminpanel/competitions" target="_blank").search-for-btn Search for competitions 
+                        span.bi-arrow-right 
+                input(type="text", name="fixture" placeholder="Fixture - EX: week 34") 
+                span Match cover
+                div.flex
+                    img(src="https://via.placeholder.com/400x250?text=Match+cover+image", alt="").img-bg
+                    input(type="file", src="", alt="",name="cover").bg-file-input      
+                input(type="submit", value="Save changes")
+

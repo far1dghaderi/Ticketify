@@ -3,35 +3,35 @@ const { promisify } = require("util");
 const crypto = require("crypto");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 const userModel = require("./../Models/userModel");
+const EmailSender = require("./../utilities/email");
+const { getJwtPayload } = require("../utilities/appTools");
 
 //this function will sign a jwt token
-const signJWT = (userID) => {
-  return jwt.sign({ id: userID }, process.env.JWT_SECRET_CODE, {
+const signJWT = (userID, userRole) => {
+  return jwt.sign({ id: userID, role: userRole }, process.env.JWT_SECRET_CODE, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 //create a jwt token and save it into the cookie
-const createAndSaveJwtToken = (user, resMessage, statusCode, req, res) => {
+const createAndSaveJwtToken = (user, statuscode, responseMsg, req, res) => {
   //generating JWT token
-  const token = signJWT(user._id);
+  const token = signJWT(user._id, user.role);
   //setting up cookie
   res.cookie("jwt", token, {
     expires: new Date().setMonth(
-      new Date().getMonth() + process.env.COOKIE_EXPIRES_IN
+      new Date().getDate() + process.env.COOKIE_EXPIRES_IN
     ),
     httpOnly: true,
     secure: req.secure,
   });
-
-  //sending jwt back to the client
-  res.status(statusCode).send(resMessage);
+  return res.status(statuscode).redirect(`/?success=${responseMsg}`);
 };
 //handling user signup request
 //sign up a user
 exports.signup = catchAsync(async (req, res, next) => {
   //check if the user signed in before
   if (req.cookies.jwt)
-    return next(new AppError("you have been already signed in!", 401));
+    return res.redirect("/?error=You have been already logged in");
   //createing user
   let user = new userModel({
     firstname: req.body.firstname,
@@ -39,116 +39,100 @@ exports.signup = catchAsync(async (req, res, next) => {
     role: "user",
     email: req.body.email,
     passwordChangedAt: Date.now(),
+    joindate: new Date(),
   });
+  if (user.password != user.confirmPassword)
+    return res.redirect("/user/signup?error=You have been already logged in");
+
   user.password = await user.hashPassword(req.body.password);
   user = await userModel.create(user);
   //generate JWT token and save it into the cookies and send response to the client
   const responseMsg =
     "your account has been created successfully! you are now logged in";
-  createAndSaveJwtToken(user._id, responseMsg, 201, req, res);
-  res.status(201).send("succeed!");
+  createAndSaveJwtToken(user, 201, responseMsg, req, res);
 });
 //handling user login request
 exports.login = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt)
-    return next(new AppError("you have been already signed in!", 401));
+    return res.redirect("/?error=You have been already logged in!");
+  //check if the user passes the email with the body
+  if (!req.body.email) {
+    return res.render("signin", {
+      error: "You need to enter your email for logging in to your account",
+    });
+  }
   //check if user passes the password with the body
   if (!req.body.password) {
-    return next(
-      new AppError(
-        "you need to enter your password in order to login to your account",
-        400
-      )
-    );
+    return res.render("signin", {
+      error: "You need to enter your password for logging in to your account",
+    });
   }
 
   //searching for user with email
-  if (req.body.email) {
-    const user = await userModel
-      .findOne({ email: req.body.email })
-      .select("+password");
-    if (user == null)
-      return next(new AppError("there is no user with this email", 400));
-    if (await user.comparePassowrd(req.body.password, user.password)) {
-      //generate JWT token and save it into the cookies and send response to the client
-      const responseMsg = "your have been logged in successffully!";
-      createAndSaveJwtToken(user._id, responseMsg, 201, req, res);
-    } else {
-      return next(new AppError("incorrect credentials, please try again", 400));
-    }
+  const user = await userModel
+    .findOne({ email: req.body.email })
+    .select("+password");
+  if (user == null) {
+    return res.render("signin", {
+      error: "There is no user with this email",
+    });
   }
-  //searching for user with phoneNumber
-  else if (req.body.phoneNumber) {
-    const user = await userModel
-      .findOne({ phoneNumber: req.body.phoneNumber })
-      .select("+password");
-    if (user == null)
-      return next(new AppError("there is no user with this phoneNumber", 400));
-
-    if (user.comparePassowrd(req.body.password, user.password)) {
-      //generate JWT token and save it into the cookies and send response to the client
-      const responseMsg = "your have been logged in successffully!";
-      createAndSaveJwtToken(user._id, responseMsg, 201, req, res);
-    } else {
-      return next(new AppError("incorrect credentials, please try again", 400));
-    }
-  }
-  //throw an error if user didnt pass neither of email and phoneNumber
-  else {
-    return next(
-      new AppError(
-        "you need to specify your email or phone number in order to login",
-        400
-      )
-    );
+  if (await user.comparePassowrd(req.body.password, user.password)) {
+    //generate JWT token and save it into the cookies and send response to the client
+    const responseMsg = "your have been logged in successffully!";
+    createAndSaveJwtToken(user, 201, responseMsg, req, res);
+  } else {
+    return res.render("signin", {
+      error: "Inccorect credentials, please try again",
+    });
   }
 });
 
 //logging out the user
 exports.signout = catchAsync(async (req, res, next) => {
-  if (!req.cookies.jwt)
-    return next(new AppError("you need to sign in in order to sign out!"));
+  if (!req.cookies.jwt) {
+    return res
+      .status(401)
+      .redirect(`/?error=You need to login in order to logout`);
+  }
+
   res.cookie("jwt", "loggedout", { maxAge: 0 });
-  res.status(200).send("you have been logged out successfully!");
+  res.status(200).redirect("/?success=You have been logged out successfully");
 });
 //update password
 exports.changePassword = catchAsync(async (req, res, next) => {
+  const user = await userModel.findById(req.user._id).select("password");
   //checking if the user pass all required values
   if (!req.body.oldPassword) {
-    return next(
-      new AppError(
-        "your have to pass your old password in order to update your password",
-        401
-      )
+    return res.redirect(
+      "/panel/account/?error=your have to pass your old password in order to update your password"
     );
   }
   if (!req.body.newPassword) {
-    return next(
-      new AppError(
-        "your have to pass your new password in order to update your password",
-        401
-      )
+    return res.redirect(
+      "/panel/account/?error=your have to pass your new password in order to update your password"
     );
   }
+  //comparing password and confirm password
+  if (req.body.newPassword != req.body.confirmNewPassword) {
+    return res.redirect("/panel/account/?error=passwords are not same!");
+  }
+
   //comparing the old password with users password to make user acutal user wants to change it
   const pwdCompare = await req.user.comparePassowrd(
     req.body.oldPassword,
-    req.user.password
+    user.password
   );
-  if (!pwdCompare)
-    return next(new AppError("your old password is incorrect!", 401));
-
-  //comparing password and confirm password
-  if (req.body.newPassword != req.body.confirmPassword)
-    return next(new AppError("passwords are not same!", 401));
+  if (!pwdCompare) {
+    return res.redirect(
+      "/panel/account/?error=your old password is incorrect!!"
+    );
+  }
 
   //comparing new password and old password | they cant be same
-  if (await req.user.comparePassowrd(req.body.newPassword, req.user.password)) {
-    return next(
-      new AppError(
-        "your new password could not be the same with your old one",
-        401
-      )
+  if (await req.user.comparePassowrd(req.body.newPassword, user.password)) {
+    return res.redirect(
+      "/panel/account/?error=your new password could not be the same with your old one!"
     );
   }
   //hashing password
@@ -159,31 +143,30 @@ exports.changePassword = catchAsync(async (req, res, next) => {
   });
   //change the user cookie and send response to the client
   const responseMsg = "your password has been changed successfully!";
-  createAndSaveJwtToken(req.user._id, responseMsg, 200, req, res);
+  createAndSaveJwtToken(req.user, 200, responseMsg, req, res);
 });
 //forgot password - sending request to reset password
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-  if (req.cookies.jwt)
-    return next(new AppError("you have been already signed in!", 401));
+  if (req.cookies.jwt) {
+    return res.status(401).render("reset_password", {
+      error: "you have been already signed in!",
+      title: "Reset Password",
+    });
+  }
   if (!req.body.email) {
-    return next(
-      new AppError(
-        "you have to pass your email in order to reset your password!",
-        404
-      )
-    );
+    return res.status(404).render("reset_password", {
+      error: "you have to pass your email in order to reset your password!",
+      title: "Reset Password",
+    });
   }
   //get the user with the email in body
   const user = await userModel.findOne({ email: req.body.email });
-  if (!user)
-    return next(new AppError("there is no user with this email!", 404));
-  if (user.passwordResetToken)
-    return next(
-      new AppError(
-        "a password reset token has been already sent to your email",
-        401
-      )
-    );
+  if (!user) {
+    return res.status(404).render("reset_password", {
+      error: "there is no user with this email!",
+      title: "Reset Password",
+    });
+  }
   //generate reset token and save it into the DB
   const resetToken = await user.creatPasswordResetToken();
   await user.save({ validateBeforeSave: false });
@@ -194,17 +177,28 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   } \n got to this address to reset your password: ${req.protocol}://${req.get(
     "host"
   )}/user/resetPassword/${resetToken}`;
+  //send back the reset token to the user
+
+  const email = new EmailSender();
+  await email.sendResetToken(resetURL);
   //sending url back to the client
-  res.send(resetURL);
+  res.status(201).render("reset_password", {
+    success: "Reset link has been sent to your email successfully!",
+    title: "Reset Password",
+  });
 });
 
 //reset user password
 exports.resetPassword = catchAsync(async (req, res, next) => {
-  if (req.cookies.jwt)
-    return next(new AppError("you have been already signed in!", 401));
+  if (req.cookies.jwt) {
+    return res.status(401).render("reset_password", {
+      error: "you have been already signed in!",
+      title: "Reset Password",
+    });
+  }
   const hashedToken = await crypto
     .createHash("sha256")
-    .update(req.params.token)
+    .update(req.params.resetToken)
     .digest("hex");
   //search for the user with this token
   const user = await userModel.findOne({
@@ -212,27 +206,31 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     passwordResetExpires: { $gt: Date.now() },
   });
   //check if the user was exist
-  if (!user)
-    return next(new AppError("your password reset token is invalid!", 401));
+  if (!user) {
+    return res.status(401).render("reset_password", {
+      error: "your password reset token is invalid!!",
+      title: "Reset Password",
+    });
+  }
   //check for the passwords in the body
   if (!req.body.password || !req.body.confirmPassword) {
-    return next(
-      new AppError(
-        "please enter your new password in order to reset your password!",
-        401
-      )
-    );
+    return res.status(401).render("reset_password", {
+      error: "please enter your new password in order to reset your password!",
+      title: "Reset Password",
+    });
   }
-  if (req.body.password != req.body.confirmPassword)
-    return next(new AppError("passwords are not same!", 401));
+  if (req.body.password != req.body.confirmPassword) {
+    return res.status(401).render("reset_password", {
+      error: "passwords are not same!",
+      title: "Reset Password",
+    });
+  }
   //checking password length
   if (req.body.password.length < 8 || req.body.password.length > 128) {
-    return next(
-      new AppError(
-        "password length must be lower than 128 and bigger than 7",
-        401
-      )
-    );
+    return res.status(401).render("reset_password", {
+      error: "password length must be lower than 128 and bigger than 7",
+      title: "Reset Password",
+    });
   }
   //changing user field values and save new password
   user.password = await user.hashPassword(req.body.password);
@@ -240,16 +238,48 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save({});
-  res.send(
-    "your password has been reset successfully! you can now login with your new password"
-  );
+  return res.redirect(201, "/user/signin", {
+    success:
+      "your password has been reset successfully! you can now login with your new password",
+    title: "Reset Password",
+  });
+});
+//change the users email
+exports.changeEmail = catchAsync(async (req, res, next) => {
+  //if the input email was equal to user's current email, we will send this message
+  if (req.body.email == req.user.email) {
+    res
+      .status(400)
+      .redirect("/user/panel/account?error=You are using this email right now");
+  }
+  const user = await userModel.findById(req.user._id);
+  if (req.body.email) {
+    user.email = req.body.email.toLowerCase();
+    user.verifiedEmail = false;
+  } else {
+    return res
+      .status(400)
+      .redirect(
+        "/user/panel/account?error=please pass your new email in order to change it."
+      );
+  }
+  await user.save();
+
+  res
+    .status(200)
+    .redirect(
+      "/user/panel/account?success=Your email has been changed successfully. please verify it ASAP."
+    );
 });
 //protect urls from users that are not logged in
 exports.protect = catchAsync(async (req, res, next) => {
   //getting the token from cookies and check if it was there
   let token = req.cookies.jwt;
-  if (!token)
-    return next(new AppError("you need to login to perform this action", 401));
+  if (!token) {
+    return res
+      .status(401)
+      .redirect("/user/signin?error=You need to login to perform this action");
+  }
 
   //verifying JWT token
   const decodedToken = await promisify(jwt.verify)(
@@ -257,25 +287,29 @@ exports.protect = catchAsync(async (req, res, next) => {
     process.env.JWT_SECRET_CODE
   );
   //getting user with the id in jwt payload
-  const user = await userModel.findById(decodedToken.id).select("+password");
+  const user = await userModel.findById(decodedToken.id).select("-password");
 
-  if (!user)
-    return next(new AppError("you need to login to perform this action", 401));
+  if (!user) {
+    return res
+      .status(401)
+      .redirect("/user/signin?error=You need to login to perform this action");
+  }
 
   //check if the user changed its password after generating token or not
-  if (user.changedPasswordAfter(decodedToken.iat))
-    return next(new AppError("you need to login to perform this action", 401));
-
+  if (user.changedPasswordAfter(decodedToken.iat)) {
+    return res
+      .status(401)
+      .redirect("/user/signin?error=You need to login to perform this action");
+  }
   req.user = user;
   next();
 });
 
 //restrict access to routes that are for admins
-exports.restrictAccess = (req, res, next) => {
-  if (req.user.role != "admin") {
-    return next(
-      new AppError("you dont have permission to reach this page", 403)
-    );
+exports.restrictAccess = catchAsync(async (req, res, next) => {
+  const user = await getJwtPayload(req.cookies.jwt);
+  if (user.role != "admin") {
+    return res.redirect("/");
   }
   next();
-};
+});

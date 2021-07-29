@@ -1,0 +1,21 @@
+extends base_panel
+block content
+    main.panel-container
+        section.details-container
+            span Team details
+            form(action="/teams",method="POST", enctype="multipart/form-data").flex
+                input(type="text", name="name" placeholder="Team name")
+                select(name="sport") 
+                    option(value="" disabled selected) Team type
+                    option(value="football") Football   
+                    option(value="volleyball") Volleyball
+                    option(value="basketball") Basketball
+                span Team logo
+                div.flex
+                    img(src="https://via.placeholder.com/150?text=Team+logo", alt="").img-logo
+                    input(type="file", src="", alt="",name="logo").logo-file-input
+                span Team background image
+                div.flex
+                    img(src="https://via.placeholder.com/400x250?text=Team+backgorund+image", alt="").img-bg
+                    input(type="file", src="", alt="",name="bgImage").bg-file-input
+                input(type="submit", value="Save changes")

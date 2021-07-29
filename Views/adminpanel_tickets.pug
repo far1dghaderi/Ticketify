@@ -1,0 +1,35 @@
+extends base_panel 
+block content
+    main.panel-container
+        div.table-container.flex
+            div.header.flex
+                span Tickets | 
+                    span 1,712 results
+            div.table
+                div.row.header-row.flex
+                    div.column.name-column ticket ID
+                    div.column.name-column Match ID
+                    div.column.name-column User ID
+                    div.column.date-column  pruchase Date
+                    div.column.status-column Status
+                    div.column.buttons-column
+                //- we also have purple rows
+                div.row.data-row.blue-row.flex
+                
+                    div.column.name-column #{ticketid}
+                    div.column.name-column #{MatchID}
+                    div.column.name-column #{UserID}
+                    div.column.date-column  #{pruchaseDate}
+                    //- we also have verified
+                    div.column.status-column.not-verified Not verified
+                    div.column.buttons-column.flex
+                        a(href="#").view-btn View 
+            div.matches-pagination.panel-pagination.flex
+                a(href="#").next-prev.next.flex
+                    i.bi-arrow-right
+                div.page.active 
+                    a(href="#") 1
+                    div.page ...
+                a(href="#").next-prev.next.right
+                    i.bi-arrow-left  
+

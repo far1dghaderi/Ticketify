@@ -1,0 +1,12 @@
+if(error)
+    section.message-box-container.error-message-box-container.flex
+        i.icon.bi-x-circle-fill.flex
+        span.message #{error}
+if(alert)
+    section.message-box-container.alert-message-box-container.flex
+        i.icon-bi-exclamation-triangle-fill-flex
+        span.message #{alert}
+if(success)
+    section.message-box-container.success-message-box-container.flex
+        i.icon-bi-check-circle-fill-flex
+        span.message #{success}

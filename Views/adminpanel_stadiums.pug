@@ -1,0 +1,38 @@
+extends base_panel 
+block content
+    main.panel-container
+        div.table-container.flex
+            div.header.flex
+                span Stadiums | 
+                    span #{stadiums.length} results
+                div.hints.flex
+                    //-
+                        span Hint:
+                            span click on rows to select single or multiple users
+                        span Hint: 
+                            span all of the users all selected by default
+            div.table
+                div.row.header-row.flex
+                    div.column.select-column
+                        //- i.bi-check-square-fill
+                    div.column.name-column Name
+                    div.column.date-column Sport
+                    div.column.price-column Capacity
+                    div.column.status-column Location
+                    div.column.buttons-column
+                //- we also have purple rowss
+                each stadium,index in stadiums
+                    div(class=`row data-row ${index%2==0?"blue":"purple"}-row flex`)
+                        div.column.select-column
+                            i.bi-check-sqaure-fill
+                        div.column.name-column #{stadium.name}
+                        div.column.date-column #{stadium.sport}
+                        div.column.price-column #{stadium.capacity}
+                        div.column.status-column #{stadium.country} - #{stadium.city}
+                        div.column.buttons-column.flex
+                            a(href=`/user/adminpanel/update/stadiums/${stadium._id}`).view-btn View 
+                            a(href=`/user/adminpanel/update/stadiums/${stadium._id}`).edit-btn Edit  
+                            a(href=`/stadium/delete/${stadium._id}`).delete-btn.delete-item-btn Delete
+                            a(href="#",data-id=`${stadium._id}`).copy-id-btn ID 
+    a(href="/user/adminPanel/stadiumForm").float-add-btn +
+

@@ -1,0 +1,31 @@
+extends base_panel
+block content
+    main.panel-container
+        section.details-container
+            span Team details
+            form(action=`/teams/update/${team._id}`,method="POST", enctype="multipart/form-data").flex
+                input(type="text", name="name" placeholder="Team name" value=`${team.name}`)
+                select(name="sport") 
+                    if team.sport == "football"
+                        option(value="football" selected) Football   
+                        option(value="volleyball") Volleyball
+                        option(value="basketball") Basketball
+                    else if team.sport == "volleyball"
+                        option(value="football" ) Football   
+                        option(value="volleyball" selected) Volleyball
+                        option(value="basketball") Basketball
+                    else 
+                        option(value="football" ) Football   
+                        option(value="volleyball") Volleyball
+                        option(value="basketball" selected) Basketball
+
+                span Team logo
+                div.flex
+                    img(src=`/images/teams/${team.logo}`, alt=`${team.name} logo image`).img-logo
+                    input(type="file", src="", alt="",name="logo").logo-file-input
+                span Team background image
+                div.flex
+                    img(src=`/images/teams/${team.bgImage}`, alt=`${team.name} background image`).img-bg
+                    input(type="file", src="", alt="",name="bgImage").bg-file-input
+                input(type="submit", value="Save changes")
+    a(href=`/teams/delete/${team._id}`).fixed-delete-btn Delete team 

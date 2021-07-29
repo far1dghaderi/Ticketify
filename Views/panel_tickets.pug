@@ -1,0 +1,33 @@
+extends base_panel 
+block content 
+    main.user-tickets-container
+        span.title Tickets 
+        section.tickets.flex
+            each ticket in tickets
+                div.ticket-box
+                    div.match-info.flex
+                        //- Home team logo
+                        img(src=`/images/teams/${ticket.match.homeTeam.logo}`, alt=`${ticket.match.homeTeam.name} logo image`)
+                        div.flex.names
+                            span #{ticket.match.homeTeam.name} - #{ticket.match.awayTeam.name}
+                            span #{ticket.match.fixture}
+                        //-Away team logo
+                        img(src=`/images/teams/${ticket.match.awayTeam.logo}`, alt=`${ticket.match.awayTeam.name} logo image`)
+                    div.match-details
+                        div.flex
+                            - let matchdate = ticket.match.matchDate.getFullYear() + ' - '+ ticket.match.matchDate.getMonth() + ' - ' + ticket.match.matchDate.getDate() 
+                            span.bi-calendar-fill.flex #{matchdate}
+                            - let matchTime = ticket.match.matchDate.toLocaleTimeString(["it-IT"], { hour: "2-digit",  minute: "2-digit", })
+                            span.bi-clock-fill.flex #{matchTime}
+                        div.flex
+                            span.bi-house-door-fill.flex  #{ticket.match.stadium.name}
+                            span.bi-geo-alt-fill.flex #{ticket.match.stadium.country} - #{ticket.match.stadium.city}
+
+                    //- if match has been finished
+                 
+                    if new Date(ticket.match.matchDate) < new Date()
+                        span.finished This match has been finished
+                    //- if match hasn't been finished
+                    else if new Date(ticket.match.matchDate) > new Date()
+                        a(href="#").view-details View details
+                            span.bi-arrow-right 

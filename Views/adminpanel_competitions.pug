@@ -1,0 +1,15 @@
+extends base_panel 
+block content
+    main.panel-container    
+        section.teams-container.flex
+            span.title Competitions
+            div.teams.flex
+                each comp in competitions
+                    div.team-box.flex
+                        img(src=`/images/competitions/${comp.logo}`, alt=`${comp.name} logo`)
+                        span #{comp.name}
+                        div.flex
+                            a(href=`/user/adminpanel/update/competitions/${comp._id}`).edit-btn Edit 
+                            a(href=`/competitions/delete/${comp._id}`).delete-btn.delete-item-btn Delete  
+                            a(href="#",data-id=`${comp._id}`).copy-id-btn Copy ID
+    a(href="/user/adminPanel/competitionform").float-add-btn +

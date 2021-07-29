@@ -1,0 +1,131 @@
+extends base
+mixin matchbox(matchdata)
+    div.index-match-box
+        div.match-box-header.flex
+            div.home-team
+                img(src=`images/teams/${matchdata.homeTeam.logo}`, alt="").team-logo
+            div.match-info.flex
+                span.sport-type #{matchdata.stadium.sport} 
+                span.team-names 
+                    span #{matchdata.homeTeam.name}
+                    |
+                    | -
+                    | 
+                    span #{" "+ matchdata.awayTeam.name}
+                span.fixture-name #{matchdata.fixture}
+            div.away-team 
+                img(src=`images/teams/${matchdata.awayTeam.logo}`, alt="").team-logo
+        div.match-box-details.flex
+            div
+                div
+                    - let matchdate = new Date(matchdata.matchDate).toDateString() 
+                    i.bi-calendar-fill= matchdate
+                div 
+                    - let matchTime = matchdata.matchDate.getHours() + ":" +matchdata.matchDate.getMinutes()
+                    i.bi-clock-fill= matchTime
+            div
+                div
+                    i.bi-house-door-fill #{matchdata.stadium.name}
+                div
+                    i.bi-arrow-up-square-fill #{matchdata.stadium.city} #{matchdata.stadium.country} 
+        if matchdata.startBuyDate < new Date()  
+            span.countdown.countdown-end.count-down(data-date=`${matchdata.endBuyDate}`)
+                span#days 
+                | 
+                | Days : 
+                span#hours 
+                |   
+                | Hours : 
+                span#minutes 
+                |  
+                | Minutes : 
+                span#seconds
+                |  Seconds
+        else
+            span.countdown.countdown-end.count-down(data-date=`${matchdata.startBuyDate}`)
+                span#days 
+                | 
+                | Days : 
+                span#hours 
+                |   
+                | Hours : 
+                span#minutes 
+                |  
+                | Minutes : 
+                span#seconds
+                |  Seconds 
+        div.match-box-buttons.flex
+            //- match button
+            - let currentDate = new Date()
+            if matchdata.startBuyDate <= currentDate
+                a(href=`/match/${matchdata.slug}`).btn.reserve-btn Reserve
+            else if matchdata.startBuyDate > currentDate
+                //- a(href="#").btn.remind-btn Remind Me 
+                a(href="") #{matchdata.startBuyDate} 
+                a(href=`/match/${matchdata.slug}`).btn.view-btn View Details  
+
+
+block content
+    section.index-header-section-container.flex
+        section.index-header-section.flex  
+            section.index-header-section-image  
+                img(src="front/images/website/header-bg.jpg")
+            div.index-header-section-content.flex
+                h1 TICKETIFY 
+                h3 Worlds Leading Sports Ticket Selling Platform
+                form.flex#index-search-form(action="/" method="GET")
+                    h5  if your are looking for a specific match, feel free to use the  search box below
+                    input(type="text",name="filter",placeholder="Team name")
+                    input(type="submit",value="Let's Find").white.primary-color
+    main.index-main 
+        section.index-matches   
+            span.matches-container-title Upcoming Matches
+            section.matches-container.flex 
+                each match in matches
+                    +matchbox(match)
+            if 0 < matches.length 
+                section.matches-pagination.flex 
+                    div.flex
+                        //- Next page button
+                        - let next = currentPage + 1 < total/1 + 1?`?page=${currentPage+1}`:'#'
+                        a(href=next).next-prev.next.left
+                            i.bi-arrow-right
+                        //- if the current page wasn't page 1, so we will put page one in pagination buttons as well
+                        if (currentPage!=1)   
+                            div.page
+                                a(href="?page=1") #{1}
+                        //- If the difference between current page and  page one was more than one, put the below div after page 1 button
+                        if (2<currentPage)
+                            div.page  ...
+                        
+                        if (1 < currentPage - 1 )
+                            div.page
+                                a(href=`?page=${currentPage - 1}`) #{currentPage - 1}  
+                        //- highlight the active page button
+                        div.page.active
+                            a(href="#") #{currentPage}
+                        //-  if the current page + 1 wasn't equal to last page, put it in the pagination bar
+                        if (currentPage < total/1 && currentPage + 1 < total/1)
+                            div.page
+                                a(href=`?page=${currentPage + 1}`) #{currentPage + 1} 
+                        //- if the current page + 2 wasn't equal to last page, put it in the pagination bar
+                        if (currentPage < total/1 && currentPage + 2 < total/1)
+                            div.page
+                                a(href=`?page=${currentPage + 2}`) #{currentPage + 2} 
+                        //- If the page after current page wasn't equal the last page, put the below div after it
+                        if (currentPage < total/1 && currentPage + 1 < total/1)
+                            div.page  ...
+                        //- if the diffrence between last page and current page was more than 1, put the last page in pagination bar as well
+                        if (currentPage < total/1 && currentPage + 1 <= total/1)
+                            div.page
+                                a(href=`?page=${total/1}`) #{total/1}
+                        //- Next page btn
+                        - let prev = currentPage-1!= 0?`?page=${currentPage-1}`:'#'
+                        a(href=prev).next-prev.next.right
+                            i.bi-arrow-left  
+            else
+                div.no-matches-container.flex
+                    h2 We're sorry, There is no available match right now. Please check later
+                    p You can see your tickets in your 
+                        a(href="#") Panel 
+                    

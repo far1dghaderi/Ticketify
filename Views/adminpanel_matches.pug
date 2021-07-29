@@ -1,0 +1,34 @@
+extends base_panel 
+block content
+    main.panel-container
+        div.table-container.flex
+            div.header.flex
+                span Matches | 
+                    span #{matches.length} results
+            div.table
+                div.row.header-row.flex
+                    div.column.select-column
+                        |
+                    div.column.name-column Home team
+                    div.column.name-column Away team
+                    div.column.date-column  Match date
+                    div.column.status-column Selling status
+                    div.column.buttons-column
+                        |
+                each match,index in matches
+                    div(class=`row data-row ${index%2==0?"blue":"purple"}-row flex`)
+                        div.column.select-column
+                            //- i.bi-check-sqaure-fill
+                        div.column.name-column #{match.homeTeam.name}
+                        div.column.name-column #{match.awayTeam.name}
+                        - let matchDate = `${match.matchDate.getFullYear()} - ${match.matchDate.getMonth() + 1} - ${match.matchDate.getDate()}  ${match.matchDate.getHours()}:${match.matchDate.getMinutes()}`
+                        div.column.date-column #{matchDate}
+                        - let status = match.endBuyDate < new Date()?"Pending":"Finished"
+                        - let statusClass = status=="pending"?"verified":"not-verified"
+                        div(class=`column status-column ${statusClass}`)  #{status}
+                        //- we also have verified
+                        div.column.buttons-column.flex
+                            a(href=`/user/adminpanel/update/matches/${match._id}` target="_blank").view-btn View 
+                            a(href=`/user/adminpanel/update/matches/${match._id}` target="_blank").edit-btn Edit  
+                            a(href=`/match/delete/${match._id}`).delete-btn Delete
+    a(href="/user/adminPanel/matchForm").float-add-btn +

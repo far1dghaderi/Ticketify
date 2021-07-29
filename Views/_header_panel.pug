@@ -1,0 +1,67 @@
+header
+    nav.nav.primary-color.flex
+        div.logo
+            a(href="/")
+                h3.white Ticketify
+        ul.nav-ul.flex 
+            li
+                a.white.navbar-items(href="/") Home
+            li.navbar-li-sports
+                a.white.navbar-items(href="#") Sports 
+                    span.bi-chevron-compact-down
+                ul
+                    li 
+                        a(href="/?sport=football")  Football
+                    li 
+                        a(href="/?sport=basketball")  Basketball
+                    li 
+                        a(href="/?sport=volleyball")  Volleyball
+            li.navbar-li-search
+                span.white.navbar-items Search 
+        div.user-action.flex
+            //-This part is for when the user is signed ins
+            if user
+                span.acoount-btn-nav.active-user-action-btn Account
+                    span.bi-chevron-compact-down
+                    ul.none
+                        li
+                            a(href="/user/panel") Panel
+                        if user.role==="admin"
+                            li 
+                                a(href="/user/adminpanel") Admin panel
+                        li
+                            a(href="/user/logout") Log out
+
+            //-This part is for when the user isnt sign isn
+            else
+                a.signin-btn.white(href="/user/signin") Signin
+                a.signup-btn.active-user-action-btn(href="/user/signup") Signup 
+                
+        form.flex.none#navbar-search(action="/" method="GET")
+            input(type="text", name="filter", placeholder="What are you looking for?")
+            input(type="submit", value="search")
+    nav.dashboard-nav 
+        ul.flex
+            li
+                if panel=="user"
+                    a(href="/user/panel/dashboard" class=page=="Dashboard"?"active":"") Dashboard 
+                    a(href="/user/panel/account" class=page=="Account"?"active":"") Account 
+                    a(href="/user/panel/tickets" class=page=="Tickets"?"active":"") Tickets 
+                    //- a(href="#" class=page=="Coupons"?"active":"") Coupons 
+                    //- a(href="#" class=page=="Settings"?"active":"") Settings 
+                    //- a(href="/user/panel/contactus" class=page=="Contact us"?"active":"") Contact us 
+
+                else if panel=="admin"
+                    a(href="/user/adminpanel/dashboard" class=page=="Dashboard"?"active":"") Dashboard 
+                    a(href="/user/adminpanel/users" class=page=="Users"?"active":"") Users 
+                    a(href="/user/adminpanel/matches" class=page=="Matches"?"active":"") Matches 
+                    a(href="/user/adminpanel/teams" class=page=="Teams"?"active":"") Teams 
+                    a(href="/user/adminpanel/stadiums" class=page=="Stadiums"?"active":"") Stadiums 
+                    a(href="/user/adminpanel/competitions" class=page=="Competitions"?"active":"") Competitions 
+                    //- a(href="/user/adminpanel/" class=page=="Coupons"?"active":"") Coupons 
+                    //- a(href="/user/adminpanel/" class=page=="Tickets"?"active":"") Tickets 
+                    //- a(href="/user/adminpanel/" class=page=="Messages"?"active":"") Messages 
+
+                
+
+

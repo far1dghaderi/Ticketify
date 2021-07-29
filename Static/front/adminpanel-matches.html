@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <title>Homepage | Ticketify</title>
+  </head>
+  <body class="panel-body">
+    <header>
+      <!-- navbar -->
+      <nav class="nav primary-color flex">
+        <div class="logo">
+          <a href="#"><h3 class="white">Ticketify</h3></a>
+        </div>
+        <ul class="nav-ul flex">
+          <li><a class="white navbar-items" href="#"> Home</a></li>
+          <li><a class="white navbar-items" href="#"> sports</a></li>
+          <li>
+            <a class="white navbar-items" href="#">
+              Search <span class="bi-chevron-compact-down"></span
+            ></a>
+          </li>
+        </ul>
+        <div class="user-action flex">
+          <a href="#" class="signin-btn white">Signin</a>
+          <a href="#" class="signup-btn active-user-action-btn">Signup</a>
+        </div>
+      </nav>
+      <nav class="dashboad-nav">
+        <ul class="flex">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Users</a></li>
+          <li><a href="#" class="active">Matches</a></li>
+          <li><a href="#">Teams</a></li>
+          <li><a href="#">Stadiums</a></li>
+          <li><a href="#">Competitions</a></li>
+          <li><a href="#">Sports</a></li>
+          <li><a href="#">Coupons</a></li>
+          <li><a href="#">Tickets</a></li>
+          <li><a href="#">Messages</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="panel-container">
+      <form
+        action=""
+        name="personal-information"
+        id="personal-information"
+        class="flex"
+      >
+        <span>Filtering matches to show up</span>
+        <div>
+          <input
+            type="text"
+            placeholder="Minimum ticket price"
+            name="minprice"
+          />
+          <input
+            type="text"
+            placeholder="Maximum ticket price"
+            name="maxprice"
+          />
+        </div>
+        <div>
+          <input type="text" placeholder="Minimum match date" name="mindate" />
+          <input type="text" placeholder="Maximum match date" name="maxdate" />
+        </div>
+
+        <select name="sport">
+          <option value="" disabled selected>Sport</option>
+        </select>
+        <select name="sport">
+          <option value="" disabled selected>Sport</option>
+        </select>
+        <div class="location">
+          <select name="country">
+            <option value="" disabled selected>Country</option>
+            <option value="Spain">Spain</option>
+            <option value="Iran">Iran</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+          </select>
+          <select name="Province">
+            <option value="" disabled selected>Province</option>
+            <option value="Catalunia">Catalunia</option>
+            <option value="Kurditsan">Kurditsan</option>
+            <option value="Masachust">Masachust</option>
+            <option value="Sheffield">Sheffield</option>
+          </select>
+          <select name="City">
+            <option value="" disabled selected>City</option>
+            <option value="Barcelona">Barcelona</option>
+            <option value="Sanandaj">Sanandaj</option>
+            <option value="Miami">Miami</option>
+            <option value="London">London</option>
+          </select>
+        </div>
+        <div class="checkboxes flex">
+          <input
+            type="checkbox"
+            value="isFinished"
+            name="isFinished"
+            id="isFinished"
+          />
+          <span>Is finished</span>
+        </div>
+        <input type="submit" value="Apply filter" />
+      </form>
+      <form action="" name="search" id="search" class="flex">
+        <span>Search for matches</span>
+        <input type="text" placeholder="Team name" name="teamname" />
+        <input type="text" placeholder="Stadium name" name="stadium" />
+        <input type="text" placeholder="Competition name" name="fixture" />
+        <div class="flex">
+          <input type="submit" value="Search in the Table below" /><input
+            type="submit"
+            value="Search in the Database"
+          />
+        </div>
+      </form>
+      <div class="table-container flex">
+        <div class="header flex">
+          <span>Matches | <span>1,712 results</span></span>
+          <div class="hints flex">
+            <span
+              >Hint:
+              <span
+                >click on rows to select single or multiple matches</span
+              ></span
+            >
+            <span
+              >Hint:
+              <span> all of the matches all selected by default</span></span
+            >
+          </div>
+        </div>
+        <div class="table">
+          <div class="row header-row flex">
+            <div class="column select-column">&nbsp;</div>
+            <div class="column name-column">Home Team</div>
+            <div class="column name-column">Away Team</div>
+            <div class="column date-column">Match Date</div>
+            <div class="column status-column">Status</div>
+            <div class="column buttons-column">&nbsp;</div>
+          </div>
+          <div class="row data-row blue-row flex">
+            <div class="column select-column selected">
+              <i class="bi-check-square-fill"></i>
+            </div>
+            <div class="column name-column">FC Barceloba</div>
+            <div class="column name-column">Real Madrid CF</div>
+            <div class="column date-column">2021-12-12 22:15</div>
+            <div class="column status-column not-verified">Pending</div>
+            <div class="column buttons-column flex">
+              <a href="#" class="view-btn">View</a
+              ><a href="#" class="edit-btn">Edit</a
+              ><a href="#" class="delete-btn">Delete</a>
+            </div>
+          </div>
+          <div class="row data-row purple-row flex">
+            <div class="column select-column">
+              <i class="bi-check-square-fill"></i>
+            </div>
+            <div class="column name-column">FC Barceloba</div>
+            <div class="column name-column">Real Madrid CF</div>
+            <div class="column date-column">2021-12-12 22:15</div>
+            <div class="column status-column verified">Finished</div>
+            <div class="column buttons-column flex">
+              <a href="#" class="view-btn">View</a
+              ><a href="#" class="edit-btn">Edit</a
+              ><a href="#" class="delete-btn">Delete</a>
+            </div>
+          </div>
+        </div>
+        <div class="action-container">
+          <a href="#" class="delete-selecteds-btn">Delete selecteds</a
+          ><a href="#" class="apply-coupon-to-selecteds">Apply coupon</a>
+        </div>
+        <section class="matches-pagination panel-pagination flex">
+          <div class="flex">
+            <a href="#" class="next-prev next left">
+              <i class="bi-arrow-right"></i>
+            </a>
+            <div class="page active"><a href="#">1</a></div>
+            <div class="page"><a href="#">2</a></div>
+            <div class="page"><a href="#">3</a></div>
+            <div class="page">...</div>
+            <div class="page"><a href="#">46</a></div>
+            <a href="#" class="next-prev next right">
+              <i class="bi-arrow-left"></i>
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

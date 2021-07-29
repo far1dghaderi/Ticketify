@@ -1,0 +1,26 @@
+extends base
+block content
+    main.login-up-container.flex
+        div.container.flex#signup
+            form.flex(action="/user/signup",method="post")#signup-form
+             div.name-container.flex
+                div.flex
+                    span.label First name
+                    span.label Last name 
+                div.flex
+                    input#name(type="text", name="firstname" placeholder="First name")
+                    input#family(type="text", name="lastname" placeholder="Last name")
+                span.label Email
+                input(type="email", name="email" placeholder="Enter your email")
+                span.label Password 
+                input(type="password", name="password" placeholder="Enter your password")
+                span.label Confirm Password
+                input(type="password", name="confirmPassword" placeholder="re-Enter your password")
+                span.alternate By signing up you are agree with our
+                    a#reset(href="#") Terms
+                    |  and  
+                    a#reset(href="#") Privacy and Policy
+                input(type="submit", value="Create Account") 
+                span.alternate   Already have an account?
+                    a#create(href="/user/signin")    Sign in
+

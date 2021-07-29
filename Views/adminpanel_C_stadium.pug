@@ -1,0 +1,79 @@
+extends base_panel
+block content
+    main.panel-container
+        section.details-container
+            span Stadium details 
+            form(action="/stadium",method="POST",enctype="multipart/form-data").flex#stadium-form
+                input(type="text", name="name" placeholder="Stadium name")
+                select(name="sport")    
+                    option(value="" disabled selected) Sport
+                    option(value="football") Football  
+                    option(value="basketball") Basketball  
+                    option(value="volleyball") Volleyball  
+                div.location
+                    select(name="country")
+                        option(value="country" disabled selected) Country
+                        option(value="Spain") Spain
+                    select(name="province")
+                        option(value="province" disabled selected) Province
+                        option(value="Catalunia") Catalunia
+                    select(name="city")
+                        option(value="city" disabled selected) City  
+                        option(value="Barcelona") Barcelona
+                input(type="text", name="address" placeholder="Address")
+                span Stadium image
+                div.flex
+                    img(src="https://via.placeholder.com/400x250?text=Stadium+backgorund+image", alt="").img-bg
+                    input(type="file", src="", alt="",name="bgImage").bg-file-input       
+                span Stands details
+                div
+                    input(type="text", name="standId" placeholder="Stand ID") 
+                    select(name="availabilty") 
+                        option(value="availabilty" disabled selected) Availabilty
+                        option(value="true") true                                    
+                        option(value="false") false   
+                    select(name="location")
+                        option(value="location" disabled selected) Location 
+                        option(value="west") West                                  
+                        option(value="east") East                                  
+                        option(value="north") North                                  
+                        option(value="south") South       
+                    select(name="floor")
+                        option(value="floor" disabled selected) Floor 
+                        option(value="1") 1                             
+                        option(value="2") 2                             
+                        option(value="3") 3                             
+                        option(value="4") 4                             
+                        option(value="5") 5                             
+                        option(value="6") 6                             
+                        option(value="7") 7
+                    input(type="number", name="price" placeholder="price")                             
+                    input(type="number", name="capacity" placeholder="capacity")                             
+                    span#add-stand-btn Add stand 
+                div.stands-container
+                    div.stands-row.stands-row-header.flex
+                        div.columns.flex
+                            div.column-id.header-column.column ID 
+                            div.column-floor.header-column.column floor 
+                            div.column-stand.header-column.column stand
+                            div.column-price.header-column.column Price
+                            div.column-availabilty.header-column.column Availablity 
+                            div.column-capacity.header-column.column Capacity
+                    //- if action=="edit"
+                    //- div.stands-row.stands-row-data.blue-row.flex
+                        //-we have purple as well 
+                        //- div.columns.flex
+                        //-     div.column-id.column
+                        //-         input(type="text", name="" readonly )
+                        //-     div.column-floor.column
+                        //-         input(type="text", name="" )
+                        //-     div.column-stand.column 
+                        //-         input(type="text", name="")
+                        //-     div.column-price.column
+                        //-         input(type="text", name="" readonly)
+                        //-     div.column-availablity.column
+                        //-         input(type="text" readonly)
+                        //-     div.column-capacity.column
+                        //-         input(type="text", name="" readonly)
+                        //-     span.stand-column-btn.delete-stand-btn.bi-trash-fill
+                input(type="submit", value="Create stadium")

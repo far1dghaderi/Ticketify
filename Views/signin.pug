@@ -1,0 +1,15 @@
+extends base
+block content
+    main.login-up-container.flex
+        div.container.flex#signin
+            form.flex(action="/user/signin",method="post")#signin-form
+                span.label Email
+                input(type="email", name="email",placeholder="Enter your email" value=email)
+                span.label Password
+                input(type="password", name="password",placeholder="Enter your password")
+                span.alternate Forgot your password?
+                    a#reset(href="/user/resetpassword") reset it
+                input(type="submit", value="Sign in")
+                span.alternate Don't have an account?
+                    a#create(href="/user/signup")  Register now!
+    script(src="/front/js/resetpassword.js") 
