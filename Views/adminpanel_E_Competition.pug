@@ -1,0 +1,13 @@
+extends base_panel
+block content
+    main.panel-container
+        section.details-container
+            span Competition detils
+            form(action=`/competitions/update/${competition._id}`,method="POST",enctype="multipart/form-data").flex
+                input(type="text", name="name" placeholder="Competition name" value=`${competition.name}`)
+                span Competition logo
+                div.flex    
+                    img(src=`/images/competitions/${competition.logo}`, alt=`${competition.name} logo image`).img-logo
+                    input(type="file" name="file").logo-file-input
+                input(type="submit", value="Create competition")
+    a(href=`/competitions/delete/${competition._id}`).fixed-delete-btn Delete competition 

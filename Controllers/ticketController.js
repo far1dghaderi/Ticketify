@@ -1,183 +1,144 @@
+const stripe = require("stripe")(
+  "sk_test_51IQv7tGKDFcoxrMkzfPQwz1PbA91LQvHW8TZ5JuWllUjMIngy5rKuZWRxqMmSvAS8ssiPQbJicMqZfUrys7zzkdr00JPisCvGH"
+);
 const ticketModel = require("./../Models/ticketModel");
 const matcheModel = require("./../Models/matchModel");
 const stadiumModel = require("./../Models/stadiumModel");
 const userModel = require("./../Models/userModel");
 const matchModel = require("./../Models/matchModel");
 const couponModel = require("../Models/couponModel");
-const { calculateAge } = require("../utilities/appTools");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 
 exports.purchaseTicket = catchAsync(async (req, res, next) => {
   const ticket = new ticketModel({
-    user: req.body.userID,
+    user: req.user._id,
     match: req.body.matchID,
     stand: req.body.standID,
   });
-  if (ticket.user === undefined)
-    return next(new AppError("user id is not valid!", 400));
-  if (ticket.match === undefined)
-    return next(new AppError("match id is not valid!", 400));
+  if (!ticket.match) {
+    return res
+      .status(400)
+      .redirect(
+        `/?error=You need to specify the match that you want to buy it's ticket`
+      );
+  }
+
+  if (!req.user.verifiedEmail) {
+    return res
+      .status(403)
+      .redirect(
+        `/user/panel/account?error=You need to confirm your email to buy a ticket`
+      );
+  }
+
+  if (!req.user.idNumber && !req.user.passportNumber) {
+    return res
+      .status(403)
+      .redirect(
+        `/user/panel/account?error=You need to either have a id number or a passport number`
+      );
+  }
+
+  //getting the match that the user want to buy its ticket
+  const match = await matcheModel.findById(ticket.match);
+  if (!match) {
+    return res.status(400).redirect(`/?error=input match is invalid`);
+  }
   //check if the use has bought this ticket before or not
-  let boughtTickets = await ticketModel.findOne({
+  let hasBoughtBefore = await ticketModel.findOne({
     match: ticket.match,
     user: ticket.user,
   });
-  if (boughtTickets)
-    return next(new AppError("you cant buy a ticket for one match twice", 400));
-  //getting the match that the user want to buy its ticket
-  const match = await matcheModel.findById(ticket.match);
+  if (hasBoughtBefore) {
+    return res
+      .status(400)
+      .redirect(`/?error=you cant buy a ticket for one match twice`);
+  }
   //check if the ticket selling for specific match has been started or not
-  if (new Date(match.buyableDate) > new Date(Date.now()))
-    return next(
-      new AppError("ticket selling for this match has not begin yet!", 400)
-    );
+  if (new Date(match.buyableDate) > new Date(Date.now())) {
+    return res
+      .status(400)
+      .redirect(`/?error=ticket selling for this match has not begin yet!`);
+  }
+
   //check if the ticket selling for specific match has been finished or not
-  if (new Date(match.endBuyDate) < new Date(Date.now()))
-    return next(
-      new AppError("ticket selling for this match has been finished!", 400)
-    );
-  //getting the user information that wants to buy match ticket
-  const user = await userModel.findById(ticket.user);
-  //check if there is any limitation for buying tickets
-  if (match.limitation.gender) {
-    if (match.limitation.gender != user.gender)
-      return next(
-        new AppError(
-          "oops! you cant attend in this match because of your gender",
-          400
-        )
-      );
+  if (new Date(match.endBuyDate) < new Date(Date.now())) {
+    return res
+      .status(400)
+      .redirect(`/?error=ticket selling for this match has been finished!!`);
   }
-  if (match.limitation.age) {
-    if (match.limitation.age > calculateAge(user.birthdate))
-      return next(
-        new AppError(
-          "oops! you cant attend in this match because of your age",
-          400
-        )
-      );
-  }
-  //getting match`s stadium
+  //getting match's stadium
   const stadium = await stadiumModel.findById(match.stadium);
+  const stands = stadium.stands;
   //checking the existance of entered stand ID
-  //* -1 means that the stand wasnt exist
-  if (stadium.getStandCapacity(stadium, ticket.stand) == -1)
-    return next(
-      new AppError("entered stand ID does not exist in the stadium stands", 400)
-    );
+  const stand = stadium.checkStand(stands, ticket.stand);
+  if (!stand) {
+    return res
+      .status(400)
+      .redirect(`/?error=Oops! Entered stand id was incorrect!`);
+  }
   //getting capacity by subtracting sold tickets count for the stand from main stand capacity
   const capacity =
-    stadium.getStandCapacity(stadium, ticket.stand) -
+    stadium.getStandCapacity(stands, ticket.stand).capacity -
     match.tickets.filter((item) => {
       return item.stand === ticket.stand;
     }).length;
-  //check if theres any space left or not
-  if (capacity <= 0)
-    return next(
-      new Error(
-        "oops! theres no remaining seats for this stand, please try other stands"
-      )
-    );
-  //Checking if there is any ticket in the body
-  if (req.body.couponCode) {
-    const coupon = await couponModel.findOne({ code: req.body.couponCode });
-    if (coupon.length < 1)
-      return next(new AppError("coupon code is invalid!", 400));
-    //check if the token has is usable or expired
-    if (coupon.usableAt > new Date()) {
-      return next(new AppError("you cant use this coupon yet!", 400));
-    }
-    if (coupon.expiresAt < new Date())
-      return next(new AppError("coupon code is invalid!", 400));
-    //check if coupon is resgistered for some specific users
-    if (coupon.users) {
-      if (coupon.users.length > 0 && !coupon.checkUsers(coupon, user._id))
-        return next(new AppError("this coupon is not usable for you!", 400));
-    }
-
-    //check if coupon is resgistered for some specific mathces
-    const couponSchema = new couponModel();
-    if (coupon.matches) {
-      if (
-        coupon.matches.length > 0 &&
-        !couponSchema.checkMatches(coupon, match._id)
-      )
-        return next(
-          new AppError("this coupon is not usable for this match!", 400)
-        );
-    }
-
-    //check if coupon is resgistered for some specific teams
-    if (coupon.teams) {
-      if (
-        coupon.teams.length > 0 &&
-        !couponSchema.checkTeams(coupon, match.homeTeam)
-      ) {
-        return next(
-          new AppError("this coupon is not usable for this match!", 400)
-        );
-      } else if (
-        coupon.teams.length > 0 &&
-        !couponSchema.checkTeams(coupon, match.awayTeam)
-      ) {
-        return next(
-          new AppError("this coupon is not usable for this match!", 400)
-        );
-      }
-    }
-    //check dates
-    if (!couponSchema.checkDates(coupon, match)) {
-      //check coupon date and compare them to the match date
-      return next(
-        new AppError("this coupon could not be used on this match", 400)
+  //check if there is any space left or not
+  if (capacity <= 0) {
+    return res
+      .status(400)
+      .redirect(
+        `/?error=Oops! theres no remaining seats for this stand, please choose other stands!`
       );
-    }
-    //check coupon prices
-    if (coupon.price) {
-      if (!couponSchema.checkPrices(coupon, match.price))
-        new AppError("this coupon could not be used on this match", 400);
-    }
-    //check if user used this coupon before and compare it with maximum time than coupon can be used by a single user
-    if (user.coupons != null && user.coupons != undefined) {
-      const usedCoupons = user.coupons.filter((item) => {
-        return item.toString() === coupon._id.toString();
-      });
-      if (coupon.usageTime <= usedCoupons.length)
-        return next(new AppError("you cant use this coupon anymore!", 400));
-      else user.coupons.push(coupon._id);
-    } else {
-      user.coupons.push(coupon._id);
-    }
-    await userModel.findByIdAndUpdate(user._id, user);
-    //Apply coupon to ticket price
-    let finalPrice =
-      match.price - (coupon.discountPercentage / 100) * match.price;
-    if (coupon.maxDiscount) {
-      if (coupon.maxDiscount < match.price - finalPrice) {
-        finalPrice = match.price - coupon.maxDiscount;
-      }
-    }
-    ticket.finalPrice = finalPrice;
-    //TODO
   }
-  //-STOP THE EXECUTION
-
-  //*if the program comes to this part, it means theres nothing wrong and user can buy the ticket
+  // const session = await stripe.checkout.sessions.create({
+  //   payment_method_types: ["card"],
+  //   line_items: [
+  //     {
+  //       price_data: {
+  //         currency: "usd",
+  //         product_data: {
+  //           name: match.homeTeam.name + " - " + match.awayTeam.name,
+  //         },
+  //         unit_amount: stand.price * 100,
+  //       },
+  //       quantity: 1,
+  //     },
+  //   ],
+  //   mode: "payment",
+  //   success_url: "http://127.0.0.1:8000/tickets/s",
+  //   cancel_url: "https://example.com/cancel",
+  // });
+  ticket.price = stand.price;
   ticket.purchaseDate = new Date();
   const addedTicket = await ticketModel.create(ticket);
-  await matchModel.findByIdAndUpdate(match._id, {
-    $push: { tickets: { ticketID: addedTicket._id, stand: addedTicket.stand } },
-  });
-  if (user.tickets) {
-    await userModel.findByIdAndUpdate(ticket.user, {
-      $push: {
-        tickets: addedTicket._id,
-      },
-    });
-  } else {
-    user.tickets = [addedTicket._id];
-    await userModel.findByIdAndUpdate(ticket.user, user);
-  }
+  //*if the program comes to this part, it means theres nothing wrong and user can buy the ticket
 
-  return res.send("ticked has been purchased successfully!");
+  await matchModel.findByIdAndUpdate(match._id, {
+    $push: {
+      tickets: {
+        ticketID: addedTicket._id,
+        stand: addedTicket.stand,
+        userID: req.user.idNumber,
+        userPassportNO: req.user.passportNumber,
+        userMail: req.user.email,
+      },
+    },
+  });
+  const user = await userModel.findById(ticket.user);
+  // if (user.tickets) {
+  await userModel.findByIdAndUpdate(ticket.user, {
+    $push: {
+      tickets: {
+        id: addedTicket._id,
+        price: ticket.price,
+        match: match._id,
+        matchDate: match.matchDate,
+      },
+    },
+  });
+
+  res
+    .status(200)
+    .redirect(`/user/panel/dashboard?success=Purchase was successfull!`);
 });

@@ -1,0 +1,43 @@
+extends base_panel 
+block content
+    main.panel-container
+        div.table-container.flex
+            div.header.flex
+                span Users | 
+                    span #{users.length} results
+                div.hints.flex
+                    //-
+                        span Hint:
+                            span click on rows to select single or multiple users
+                        span Hint: 
+                            span all of the users all selected by default
+            div.table
+                div.row.header-row.flex
+                    div.column.select-column
+                        //- i.bi-check-square-fill
+                    div.column.name-column Name
+                    div.column.date-column  Date of join
+                    div.column.price-column Money spent
+                    div.column.status-column Status
+                    div.column.buttons-column
+                //- we also have purple rowss
+                each user,index in users
+                    div(class=`row data-row ${index%2==0?"blue":"purple"}-row flex`)
+                        div.column.select-column
+                            i.bi-check-sqaure-fill
+                        div.column.name-column #{user.firstname}  #{user.lastname}
+                        - let joindate = `${user.joindate.getFullYear()} - ${user.joindate.getMonth() + 1} - ${user.joindate.getDate()}`
+                        div.column.date-column #{joindate}
+                        -
+                            let sum =0;
+                            if(user.tickets.length!=0)
+                                user.tickets.forEach(ticket=>sum+=ticket.price);
+                        
+                        div.column.price-column #{sum}
+                        //- we also have verified
+                        - let status = user.verifiedEmail?"verified":"not-verified"
+                        div(class=`column status-column ${status}`)= status.replace("-"," ")
+                        div.column.buttons-column.flex
+                            a(href="#").view-btn View 
+                            a(href="#").delete-btn Delete
+

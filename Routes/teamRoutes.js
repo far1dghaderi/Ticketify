@@ -4,21 +4,26 @@ const teamModel = require("./../Models/teamModel");
 const teamController = require("./../Controllers/TeamController");
 const basicCrud = require("./../Controllers/basicCrudController");
 const authController = require("./../Controllers/authController");
+const viewController = require("./../Controllers/viewController");
 
+//This Routes are only accessible for signed in and admin users
+router.use(authController.protect, authController.restrictAccess);
+//Create new team
 router.post(
   "/",
-  authController.protect,
-  authController.restrictAccess,
   teamController.uploadCompetitionLogo,
   teamController.resizeAndSaveCompetitionImages,
   teamController.createTeam
 );
 
-router
-  .route("/:id")
-  .patch(
-    teamController.uploadCompetitionLogo,
-    teamController.resizeAndSaveCompetitionImages,
-    basicCrud.updateOne(teamModel)
-  );
+//update ream
+router.post(
+  "/update/:id",
+  teamController.uploadCompetitionLogo,
+  teamController.resizeAndSaveCompetitionImages,
+  teamController.updateTeam
+);
+
+//deleting a team
+router.get("/delete/:id", teamController.deleteTeam);
 module.exports = router;

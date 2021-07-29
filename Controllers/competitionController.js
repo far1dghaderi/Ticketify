@@ -11,18 +11,31 @@ const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
     cb(null, true);
   } else {
-    cb(new AppError("uploaded file must be an image", 400), false);
+    cb(
+      res
+        .status(401)
+        .redirect(
+          "/user/adminpanel/competitionform?error=Competition logo must be an image"
+        ),
+      false
+    );
   }
 };
 const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
-exports.uploadCompetitionLogo = upload.single("logo");
+exports.uploadCompetitionLogo = upload.single("file");
 //----------
 exports.resizeAndSaveCompImages = catchAsync(async (req, res, next) => {
-  if (!req.file)
-    return next(new AppError("each competitions must have a logo", 400));
+  if (!req.file) {
+    return next();
+    // return res
+    //   .status(401)
+    //   .redirect(
+    //     "/user/adminpanel/competitionform?error=Each competition must have a logo"
+    //   );
+  }
   //generating teams logo name and saving it into the DB
   const competitionLogoFileName = `${Date.now()}-logo-${req.body.name.replace(
     " ",
@@ -40,5 +53,68 @@ exports.resizeAndSaveCompImages = catchAsync(async (req, res, next) => {
 //Creating competitions
 exports.createCompetition = catchAsync(async (req, res, next) => {
   await competitionModel.create(req.body);
-  res.send("competition has been added to DB successfuly!");
+  res.redirect(
+    "/user/adminpanel/competitionform/?success=Competition has been created successfully"
+  );
+});
+
+//get all Competitions
+exports.getCompetitions = catchAsync(async (req, res, next) => {
+  const competitions = await competitionModel.find();
+  res.status(201).render("adminpanel_competitions", {
+    title: "Comps",
+    user: req.body.user,
+    panel: "admin",
+    page: "Competitions",
+    competitions,
+  });
+});
+
+//get one competition
+exports.getCompetitionDetails = catchAsync(async (req, res, next) => {
+  const competition = await competitionModel.findById(req.params.id);
+  //check if the comp id was correct
+  if (!competition) {
+    return res.redirect(
+      "/user/adminpanel/competitions?error=Invalid competition id!"
+    );
+  }
+  res.status(201).render("adminpanel_E_competition", {
+    title: "Edit comps",
+    user: req.body.user,
+    panel: "admin",
+    role: "admin",
+    competition,
+  });
+});
+
+//update competition details
+exports.updateComp = catchAsync(async (req, res, next) => {
+  const competition = await competitionModel.findById(req.params.id);
+  //check if the comp id was correct or not
+  if (!competition) {
+    return res.redirect(
+      "/user/adminpanel/competitions?error=Invalid competition id!"
+    );
+  }
+  competition.name = req.body.name;
+  competition.logo = req.body.logo || competition.logo;
+
+  await competition.save();
+  res.redirect(`/user/adminpanel/update/competitions/${competition._id}`);
+});
+
+exports.deleteComp = catchAsync(async (req, res, next) => {
+  const competition = await competitionModel.findById(req.params.id);
+  //check if the comp id was correct or not
+  if (!competition) {
+    return res.redirect(
+      "/user/adminpanel/competitions?error=Invalid competition id!"
+    );
+  }
+
+  await competitionModel.findByIdAndRemove(competition._id);
+  res.redirect(
+    `/user/adminpanel/competitions?success=${competition.name} has been deleted successfully!`
+  );
 });

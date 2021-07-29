@@ -1,0 +1,82 @@
+extends base_panel 
+block content
+    main.panel-container
+        form(action="#" name="personal-information")#personal-informatio.flex
+            span Filtering users to show up
+            div
+                input(type="number" placeholder="Minimum spent money" name="minspent")
+                input(type="number" placeholder="Maximum spent moeny" name="maxspent") 
+            div
+                input(type="text" placeholder="Minimum join date" name="mindate")
+                input(type="text", name="maxdate" placeholder="Maximum join date")
+            select(name="gender")
+                option(value="" disabled selected) Gender
+                option(value="none") None
+                option(value="male") Male
+                option(value="female") Female
+            div.location
+                select(name="country")
+                    option(value="" disabled selected) Country  
+                select(name="province")
+                    option(value="" disabled selected) Province 
+                select(name="city")
+                    option(value="" disabled selected) City  
+            div.checkboxes.flex
+                input(type="checkbox", name="isVerified" value="isVeified" id="isVeified")
+                span Is verified
+                input(type="checkbox", name="hasPurchase" value="hasPurchase" id="hasPurchase")
+                span Has purchase
+            input(type="submit", value="Apply fitlers")
+        form(action="" name="search" id="search").flex
+            span Search for users 
+            input(type="email", name="email" placeholder="email")
+            div.flex
+                input(type="submit", value="Search in the below")
+                input(type="submit", value="Search in the Database")
+        div.table-container.flex
+            div.header.flex
+                span Hint: 
+                    span  Click on rows select single or multiple users
+                span Hint: 
+                    span  all of the users are selected by default
+            div.table
+                div.row.header-row.flex
+                    div.column.select-column
+                        i.bi-check-square-fill
+                    div.column.subject-column Subject
+                    div.column.sender-column  Sender
+                    div.column.date-column  Date
+                    div.column.buttons-column 
+                //- we have also purple rows
+                div.row.data-row.blue-row.flex
+                    div.column.select-column
+                        i.bi-check-square-fill
+                    div.column.subject-column #{message_subject}
+                    div.column.sender-column #{message_date}
+                    div.column.date-column #{message_date}
+                    div.column.buttons-column.flex
+                        a(href="#").view-btn View 
+                        a(href="#").edit-btn Edit 
+                        a(href="#").delete-btn Delete 
+            div.action-center
+                a(href="#").delete-seleecteds-btn Delete selecteds 
+                a(href="#").apply-coupon-to-selecteds  Apply coupon
+            div.matches-pagination.panel-pagination.flex
+                a(href="#").next-prev.next.flex
+                    i.bi-arrow-right
+                div.page.active 
+                    a(href="#") 1
+                    div.page ...
+                a(href="#").next-prev.next.right
+                    i.bi-arrow-left 
+        section.reply-message-container.flex.none
+            section 
+                span Message from <span class="email"> #{sender_email} </span>  at #{message_date}
+                form(action="")
+                    textarea(name="message" readonly) #{message_text}
+                    textarea(name="response" placeholder="Your response")
+                    input(type="submit", value="Send reply") 
+            span.close-reply.bi-x-circle-fill
+
+
+

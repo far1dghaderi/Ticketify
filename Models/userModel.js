@@ -52,14 +52,11 @@ const userSchema = new mongoose.Schema({
     sparse: true,
     trim: true,
   },
-  verifiedPhoneNumber: {
-    type: Boolean,
-    default: false,
-  },
+
   password: {
     type: String,
-    // minLength: [8, "your password must have at least 8 characters"],
-    // maxLength: [128, "you password could not have more than 128 characters"],
+    minLength: [8, "your password must have at least 8 characters"],
+    maxLength: [128, "you password could not have more than 128 characters"],
     required: [true, "your account must have a password"],
     select: false,
     trim: true,
@@ -126,13 +123,31 @@ const userSchema = new mongoose.Schema({
     minLength: [2, "city name must have more than 2 characters"],
     maxLength: [100, "city name must have less than 100 characters"],
   },
+  joindate: {
+    type: Date,
+    requried: [true, "Each user must have a join date"],
+  },
+  emailConfirmationCode: String,
+  emailConfiramtionCodeExpiryDate: Date,
   //This field contains coupons that user used and times that user used them
   coupons: [{ type: mongoose.Types.ObjectId, ref: "coupons" }],
   //This field contains tickets for mathces that are not finished yet
   tickets: [
     {
-      type: mongoose.Types.ObjectId,
-      ref: "tickets",
+      id: {
+        type: mongoose.Types.ObjectId,
+        ref: "tickets",
+      },
+      price: {
+        type: Number,
+      },
+      match: {
+        type: mongoose.Types.ObjectId,
+        ref: "tickets",
+      },
+      matchDate: {
+        type: Date,
+      },
     },
   ],
 });

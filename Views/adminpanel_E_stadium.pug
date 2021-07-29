@@ -1,0 +1,84 @@
+extends base_panel
+block content
+    main.panel-container
+        section.details-container
+            span Stadium details 
+            form(action=`/stadium/update/${stadium._id}`,method="POST",enctype="multipart/form-data").flex#stadium-form
+                input(type="text", name="name" placeholder="Stadium name" value=`${stadium.name}`)
+                select(name="sport")    
+                    if stadium.sport=="football"
+                        option(value="football" selected) Football  
+                        option(value="basketball") Basketball  
+                        option(value="volleyball") Volleyball 
+                    if stadium.sport=="basketball"
+                        option(value="football" ) Football  
+                        option(value="basketball" selected) Basketball  
+                        option(value="volleyball") Volleyball 
+                    if stadium.sport=="volleyball"
+                        option(value="football" ) Football  
+                        option(value="basketball") Basketball  
+                        option(value="volleyball" selected) Volleyball  
+                div.location
+                    select(name="country")
+                        option(value=`${stadium.country}` selected) #{stadium.country}
+                    select(name="province")
+                        option(value=`${stadium.province}` selected) #{stadium.province}
+                    select(name="city")
+                        option(value=`${stadium.city}` selected) #{stadium.city}
+                input(type="text", name="address" placeholder="Address" value=`${stadium.address}`)
+                span Stadium image
+                div.flex
+                    img(src=`/images/stadiums/${stadium.image}`, alt=`${stadium.name} stadium image`).img-bg
+                    input(type="file", src="", alt="",name="bgImage").bg-file-input       
+                span Stands details
+                div
+                    input(type="text", name="standId" placeholder="Stand ID") 
+                    select(name="availabilty") 
+                        option(value="availabilty" disabled selected) Availabilty
+                        option(value="true") true                                    
+                        option(value="false") false   
+                    select(name="location")
+                        option(value="location" disabled selected) Location 
+                        option(value="west") West                                  
+                        option(value="east") East                                  
+                        option(value="north") North                                  
+                        option(value="south") South       
+                    select(name="floor")
+                        option(value="floor" disabled selected) Floor 
+                        option(value="1") 1                             
+                        option(value="2") 2                             
+                        option(value="3") 3                             
+                        option(value="4") 4                             
+                        option(value="5") 5                             
+                        option(value="6") 6                             
+                        option(value="7") 7
+                    input(type="number", name="price" placeholder="price")                             
+                    input(type="number", name="capacity" placeholder="capacity")                             
+                    span#add-stand-btn Add stand 
+                div.stands-container
+                    div.stands-row.stands-row-header.flex
+                        div.columns.flex
+                            div.column-id.header-column.column ID 
+                            div.column-floor.header-column.column floor 
+                            div.column-stand.header-column.column stand
+                            div.column-price.header-column.column Price
+                            div.column-availabilty.header-column.column Availablity 
+                            div.column-capacity.header-column.column Capacity
+                    each stand,index in stadium.stands
+                        div(class=`stands-row stands-row-data ${index%2==0?"blue":"purple"}-row flex`)
+                            div.columns.flex
+                                div.column-id.column
+                                    input(type="text", name=`stand_${index + 1}_id` value=`${stand.id}`  )
+                                div.column-floor.column
+                                    input(type="text", name=`stand_${index + 1}_floor` value=`${stand.floor}`)
+                                div.column-stand.column 
+                                    input(type="text", name=`stand_${index + 1}_location` value=`${stand.location}`)
+                                div.column-price.column
+                                    input(type="text", name=`stand_${index + 1}_price` value=`${stand.price}` )
+                                div.column-availablity.column
+                                    input(type="text" name=`stand_${index + 1}_availablity` value=`${stand.availablity}`  )
+                                div.column-capacity.column
+                                    input(type="text", name=`stand_${index + 1}_capacity` value=`${stand.capacity}` )
+                                span.stand-column-btn.delete-stand-btn.bi-trash-fill
+                input(type="submit", value="Save changes")
+    a(href=`/stadium/delete/${stadium._id}`).fixed-delete-btn Delete stadium 

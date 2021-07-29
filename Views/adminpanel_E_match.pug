@@ -1,0 +1,33 @@
+extends base_panel
+block content 
+    main.panel-container
+        section.details-container
+            span Match details 
+            form(action=`/match/update/${match._id}`,method="POST",enctype="multipart/form-data").flex
+                div 
+                    input(type="text", name="homeTeam" placeholder="Home team ID" value=`${match.homeTeam.id}`)
+                    input(type="text", name="awayTeam" placeholder="Away team ID" value=`${match.awayTeam.id}`)
+                    a(href="/user/adminpanel/teams" target="_blank").search-for-btn Search for teams 
+                        span.bi-arrow-right  
+                div 
+                    input(type="text", name="stadium" placeholder="Stadium ID" value=`${match.stadium}`)
+                    a(href="/user/adminpanel/stadiums" target="_blank").search-for-btn Search for stadiums 
+                        span.bi-arrow-right 
+
+                div
+                    input(type="datetime-local", name="visibleDate" placeholder="Visible date"  data-date=`${match.visibleDate.toLocaleString()}`) 
+                    input(type="datetime-local", name="startBuyDate" placeholder="Start buy date" data-date=`${match.startBuyDate.toLocaleString()}` ) 
+                    input(type="datetime-local", name="endBuyDate" placeholder="End buy date"  data-date=`${match.endBuyDate.toLocaleString()}`) 
+                    input(type="datetime-local", name="matchDate" placeholder="Match date"  data-date=`${match.matchDate.toLocaleString()}`) 
+                div 
+                    input(type="text", name="competition" placeholder="Competition ID" value=`${match.competition}`)
+                    a(href="/user/adminpanel/competitions" target="_blank").search-for-btn Search for competitions 
+                        span.bi-arrow-right  
+                input(type="text", name="fixture" placeholder="Fixture - EX: week 34" value=`${match.fixture.split("-")[1]}`) 
+                span Match cover
+                div.flex
+                    img(src=`/images/matches/${match.cover}`, alt=`${match.homeTeam.name} - ${match.awayTeam.name} match cover image`).img-bg
+                    input(type="file", src="", alt="",name="cover").bg-file-input      
+                input(type="submit", value="Save changes")
+    a(href=`/match/delete/${match._id}`).fixed-delete-btn Delete match 
+

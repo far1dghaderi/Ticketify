@@ -1,0 +1,117 @@
+extends base
+block content 
+    main
+        section.match-info-container.flex
+
+            div.match-comp.flex
+                img(src=`/images/competitions/${match.competition.logo}`, alt=`${match.fixture}`).comp-logo
+                h3 #{match.fixture}
+            div.match-cover-container
+                img(src=`/images/matches/${match.cover}`, alt=`${match.homeTeam.name} - ${match.awayTeam.name} poster`)
+            div.match-details-container.flex
+                img(src=`/images/teams/${match.homeTeam.logo}`, alt='#{match.homeTeam.name} logo')
+                span #{match.homeTeam.name} - #{match.awayTeam.name}
+                img(src=`/images/teams/${match.awayTeam.logo}`, alt='#{match.awayTeam.name} logo')
+            div.match-content-container.flex
+                div.flex
+                    span.flex
+                        i.bi-calendar-fill 
+                        - let matchdate = match.matchDate.getFullYear() + ' - '+ match.matchDate.getMonth() + ' - ' + match.matchDate.getDate() 
+                        | #{matchdate}
+                div.flex
+                    span.flex
+                        i.bi-clock-fill 
+                        - let matchTime = match.matchDate.toLocaleTimeString(["it-IT"], { hour: "2-digit",  minute: "2-digit", })
+                        | #{matchTime}
+            div.match-stadium-container.flex
+                div.flex
+                    span.name #{match.stadium.name}
+                    span.capacity.title Capacity of
+                        span 
+                            span= ` ${match.stadium.capacity} fans` 
+                    span.location.title Located in: 
+                        span 
+                        span #{match.stadium.city} - #{match.stadium.province} - #{match.stadium.country}
+                    span.address.title Address: 
+                        span 
+                            span #{match.stadium.address}
+                img(src=`/images/stadiums/${match.stadium.image}`, alt="#{match.stadium.name} image")     
+        section.tickets-section-container.flex
+            h1 Tickets
+            div.tickets-section
+                div.header.flex     
+                    span Stadium floors 
+                        span.bi-arrow-right
+                    ul.floors-ul.flex
+                        each floor,index in floors
+                            if (index == 0)
+                                li.active #{floor}
+                            else
+                                li #{floor}
+                each floor,fIndex in floors
+                    - let id = `tickets-container-${floor}`
+                    div.tickets-container.flex(id=id)
+                        span.notes if you're not familiar with stands namings, please view our
+                            |
+                            a(href="#")  stands guide 
+                        span.notes Click on the stand that you want to reserve, then you can purchase it 
+                        div.stand-container.flex
+                            - const locations = Object.keys(stands);
+                            each location in locations
+                                h3 #{location} 
+                                div.flex
+                                    each stand,index in stands[location]
+                                        if (stand.floor==floor)
+                                                if (0<stand.capacity) 
+                                                    div.stand-box.flex
+                                                        div.stand-id-container #{stand.id}
+                                                        div.stand-price-container #{stand.price}
+                                                else if (stand.capacity <=0)
+                                                    div.stand-box.flex.sold-out
+                                                        div.stand-id-container #{stand.id}
+                                                        div.stand-price-container Sold out
+        section.purchase-container.flex
+            if (status=="started")
+                section.purchase-box.flex.none
+                    div.purchase-section.flex
+                        span.selected Selected stand: 
+                            span.purchase-id-container 
+                        span.price  Total price: 
+                            span.purchase-price-container
+                        form(action="/tickets" method="POST") 
+                            input(type="text", name="standID").none#standID
+                            input(type="text", name="matchID" value=`${match._id}`).none
+                            input(type="submit" value="Pay and Reserve").purchase-btn
+
+                    div.alert-section
+                        p  Please note that if you pay for the Ticket, theres no cash back for any reason! so make sure before attemping to pay
+                        span Read more in our 
+                            a(href="#") Terms and Conditions 
+            else if (status=="notStarted") 
+                section.purchase-alert-box.flex
+                    span You can't reserve ticket for this match, Because ticket selling proccess for this match hasn'  t been started yet. it will starts in:
+                    div.count-down(data-date=`${match.startBuyDate}`)
+                        span#days 
+                        | 
+                        | Days : 
+                        span#hours 
+                        |   
+                        | Hours : 
+                        span#minutes 
+                        |  
+                        | Minutes : 
+                        span#seconds
+                        |  Seconds 
+                    //- 
+                        a(href="#")
+                            i.bi-bell-fill Remind me when it started 
+            else if (status=="error")
+                section.purchase-error-box.flex
+                    p Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo fuga, autem minus perspiciatis placeat, nisi rem fugiat molestiae non nihil, libero cumque? Quos, excepturi cumque.
+                    a(href="") Explore other matches
+                        span.bi-arrow-right 
+            else if (status=="hasBought")
+                section.purchase-purchased-box.flex
+                    a(href="") View ticket in panel 
+                        span.bi-arrow-right 
+                

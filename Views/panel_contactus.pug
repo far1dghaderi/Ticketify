@@ -1,0 +1,11 @@
+extends base_panel 
+block content
+    main.panel-container
+        span.title Contact us
+    form(action="" name="contactus").flex#contactus
+        textarea(name="message" placeholder="Your message")#message
+        span.faq Please check our 
+            span F&Q
+            |  before sending your message  
+        span.reply  We will reach you back ASAP
+        input(type="submit", value="Send message")

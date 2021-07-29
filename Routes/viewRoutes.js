@@ -1,7 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const matchController = require("./../Controllers/matchController");
+const viewController = require("../Controllers/viewController");
 
-router.get("/", matchController.getMatches);
+router.use(viewController.showAccountMenu);
+router.route("/").get(viewController.getMatches);
 
+router.get("/user/resetpassword", viewController.showResetPasswordForm);
+router
+  .route("/user/resetpassword/:resetToken")
+  .get(viewController.showChangePasswordForm);
 module.exports = router;

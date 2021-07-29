@@ -1,9 +1,10 @@
 const fs = require("fs");
-//this function will calculate the age based on the birth date
-exports.calculateAge = (birthDate) => {
-  const timeStampDifference = Date.now() - new Date(birthDate).getTime();
-  return Math.abs(new Date(timeStampDifference).getUTCFullYear() - 1970);
-};
+const jwt = require("jsonwebtoken");
+const { catchAsync } = require("./errorHandler");
+const { promisify } = require("util");
 
-//this function will remove files based on theire name and directory
-// exports.removeFile = (fileName, directory) => {};
+//get jwt payload
+exports.getJwtPayload = async (token) => {
+  //decoding token and get id
+  return await promisify(jwt.verify)(token, process.env.JWT_SECRET_CODE);
+};

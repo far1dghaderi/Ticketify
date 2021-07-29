@@ -24,6 +24,7 @@ const handleJWTError = () => {
 const handleJWTExpiredError = () => {
   new AppError("you need to login to perform this action", 401);
 };
+
 //Sending errors
 
 //sending errors in development mode
@@ -52,6 +53,7 @@ const sendErrorProduction = (err, req, res) => {
 };
 //!Global error handler
 module.exports = (err, req, res, next) => {
+  console.log(err);
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
   //send errors in development environment
@@ -63,8 +65,14 @@ module.exports = (err, req, res, next) => {
     if (err.name === "CastError") error = handleCastErrorDB(error);
     if (err.code === 11000) error = handleDuplicateFieldsDB(error);
     if (err.name === "ValidationError") error = handleValidationErrorDB(error);
-    if (error.name === "JsonWebTokenError") error = handleJWTError();
-    if (error.name === "TokenExpiredError") error = handleJWTExpiredError();
+    if (error.name === "JsonWebTokenError") {
+      error = handleJWTError();
+      res.cookie("jwt", "loggedout", { maxAge: 0 });
+    }
+    if (error.name === "TokenExpiredError") {
+      error = handleJWTExpiredError();
+      res.cookie("jwt", "loggedout", { maxAge: 0 });
+    }
     sendErrorProduction(error, req, res);
   }
 };

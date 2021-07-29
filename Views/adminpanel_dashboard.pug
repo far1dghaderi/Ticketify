@@ -1,0 +1,84 @@
+extends base_panel 
+block content 
+    section.container.flex
+        main.flex
+            div.detail-box.flex
+                span.title Active users
+                span.value #{usersCount}
+                a(href="/user/adminpanel/users").view-more View all
+                    span.bi-arrow-right
+            div.detail-box.flex
+                span.title Sold tickets
+                span.value #{ticketsCount}
+                a(href="/user/adminpanel/tickets").view-more View all 
+                    span.bi-arrow-right 
+            div.detail-box.flex 
+                span.title Covered matches 
+                span.value #{matchesCount}
+                a(href="/user/adminpanel/matches").view-more View all 
+                    span.bi-arrow-right
+            div.detail-box.flex
+                span.title Covered leagues 
+                span.value #{compsCount}
+                a(href="/user/adminpanel/competitions").view-more View all 
+                    span.bi-arrow-right 
+        aside.flex
+            span.title.bi-bar-chart-fill.flex.title  
+                |
+                |  Statistics  
+            div.statistics-time-container.flex  
+                //- div.container.flex
+                //-     div.active Today
+                //-     div Week
+                //-     div Month
+                //-     div Year
+            div.dashboard-overview-container
+                div.tickets.flex
+                    span.title Tickets 
+                    - let todaysGrowth =statistics.todaysTicketsGrowth < 0?"negative":"positive"
+                    - 
+                    div(class=`flex ${todaysGrowth}-growth-container`)
+                        span.info  #{statistics.soldTickets} Tickets sold today 
+                        span(class=`details ${todaysGrowh}-growth-color`) #{statistics.todaysTicketsGrowth}%
+                            span from yesterday
+                div.users.flex
+                    span.title Users 
+                    - todaysGrowth =statistics.todaysUsersGrowth < 0?"negative":"positive"
+                    div(class=`flex ${todaysGrowth}-growth-container`)
+                        span.info 
+                            span #{statistics.joinedUsers} Users joined today 
+                        span(class=`details ${todaysGrowh}-growth-color`) #{statistics.todaysUsersGrowth}%
+                            | 
+                            span from yesterday
+            //-                
+                    div.dashboard-top-users.flex
+                        span.title Top users 
+                        div.users.flex
+                            div.top-user-container.flex
+                                div.number 1
+                                div.info.flex
+                                    a(href="#").name Maryam Nikahd 
+                                        span.spent 530$ Spent
+                            div.top-user-container.flex
+                                div.number 2
+                                div.info.flex 
+                                    a(href="#").name Maryam Nikahd 
+                                        span.spent 530$ Spent 
+                            div.top-user-container.flex
+                                div.number 3
+                                div.info.flex
+                                    a(href="#").name Maryam Nikahd 
+                                        span.spent 530$ Spent 
+                            div.top-user-container.flex
+                                div.number 4
+                                div.info.flex
+                                    a(href="#").name Maryam Nikahd 
+                                        span.spent 530$ Spent 
+                            div.top-user-container.flex
+                                div.number 5
+                                div.info.flex
+                                    a(href="#").name Maryam Nikahd 
+                                        span.spent 530$ Spent 
+                    
+
+                        

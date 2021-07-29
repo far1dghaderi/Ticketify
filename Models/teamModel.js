@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const teamSchema = new mongoose.Schema({
-  teamName: {
+  name: {
     type: String,
     required: [true, "A team must have a name"],
     minLength: [2, "team name must have at least 2 characters"],
@@ -9,17 +9,13 @@ const teamSchema = new mongoose.Schema({
     trim: true,
     toLower: true,
   },
-  teamType: {
+  sport: {
     type: String,
     enum: {
       values: ["football", "volleyball", "basketball"],
       message: "a team type must be either: football, basketball or volleyball",
     },
     required: [true, "a team must have a type"],
-  },
-  home: {
-    type: mongoose.Types.ObjectId,
-    ref: "stadiums",
   },
   logo: {
     type: String,

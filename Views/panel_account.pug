@@ -1,0 +1,99 @@
+extends base_panel
+block content
+    main.panel-container
+        form(action="/user/updateAccountInfo" method="POST" name="personal-information" id="personal-information" ).flex
+            span Personal Information
+            div.personal-information-container
+                input(type="text", name="firstname" placeholder="First name" value=`${user.firstname}`) 
+                input(type="text", name="lastname" placeholder="Last name" value=`${user.lastname}`) 
+            select.gender(name="gender")
+                if user.gender=="none"
+                    option(value="none" selected) None
+                    option(value="male" ) Male
+                    option(value="female") Female
+                else if user.gender=="male"
+                    option(value="none" ) None
+                    option(value="male" selected ) Male
+                    option(value="female") Female
+                else if user.gender=="female"
+                    option(value="none" ) None
+                    option(value="male" ) Male
+                    option(value="female" selected) Female
+                else 
+                    option(value="" disabled selected) Gender
+                    option(value="none" ) None
+                    option(value="male" ) Male
+                    option(value="female") Female
+            div
+                input(type="text", name="idNumber" placeholder="ID number" value=`${user.idNumber  || "" }`)
+                input(type="text", name="passportNumber" placeholder="Passport number" value=`${user.passportNumber || ""  }`)
+            div 
+                if user.birthdate
+                    - let birthdate = `${user.birthdate.getFullYear()}-${user.birthdate.getMonth("00")}-${user.birthdate.getDate("00")}` 
+                    - birthdate = birthdate.split("-").map(date=>{ return date.length==1?`0${date}`:date}).join("-")
+                    input(type="date", name="birthdate"  value=`${birthdate}`)
+                else
+                    input(type="text", name="birthdate"  placeholder=`birthdate` onfocus="(this.type='date')")
+
+            div.location
+                select(name="country")
+                    if !user.country
+                        option(value="" disabled selected) Country
+                    else
+                        option(value=`${user.country}` selected) #{user.country} 
+                select(name="Province")
+                    if !user.province
+                        option(value="" disabled selected) Province
+                    else
+                        option(value=`${user.province}` selected) #{user.province}
+                select(name="City")
+                    if !user.city
+                        option(value="" disabled selected) City
+                    else
+                        option(value=`${user.city}` selected) #{user.city}
+            input(type="submit", value="Save changes")
+        form(action="/auth/email" method="POST" id="contact-information" ).flex
+            span Contact Information
+            div
+                input(type="email", name="email" value=`${user.email}`)
+                span(class=`verify-label ${user.verifiedEmail?"verified":"not-verified"}`)  #{user.verifiedEmail?"Verified":"Not Verified"}
+                    if user.verifiedEmail
+                        span.bi-check-circle-fill.verify-icon
+                    if !user.verifiedEmail
+                        span.bi-x-circle-fill.verify-icon
+                    br
+            if !user.verifiedEmail 
+                span.verify-btn#verify-email-btn Verifiy Email 
+                    span.bi-check-circle-fill  
+            input(type="submit", value="Save changes")
+        if !user.verifiedEmail
+            section.verify-section.flex.none
+                div.container.flex.none#send-code-container
+                    span.flex.verify-section-title
+                        i.bi-check-circle-fill.flex 
+                        | Is   
+                        span.email   #{user.email}  
+                        | your email?
+                    span if it's correct, please tap on the button below and we will send you a confirmation code. If it's not, just close this window and change your email address
+                    span.send-code-btn Send code 
+                        span.bi-arrow-right
+                    i.bi-x.close.flex
+                div.container.flex.none#enter-code-container
+                    span.flex.verify-section-title
+                        i.bi-check-circle.flex
+                        | We've just sent a confirmation code to your email
+                    span PLease enter the code that you just recieved below
+                    div    
+                        input#confirm-code-input(type="text", placeholder="Code")
+                        a(href="#")#confirm-code-btn Confirm
+
+                    span.resend didn't recieve the code?
+                        span#resend-code resend it
+                    i.bi-x.close.flex
+
+        form(action="/user/changePassword" method="POST" name="change-password" id="change-password").flex
+            span Password
+            input(type="password", name="oldPassword" placeholder="Old password")
+            input(type="password", name="newPassword" placeholder="New password")
+            input(type="password", name="confirmNewPassword" placeholder="Confirm new password")
+            input(type="submit", value="Change password")

@@ -1,0 +1,32 @@
+extends basr_panel 
+block content
+    main.panel-container
+        section.details-container
+            span User details
+            form(action="").flex
+                div
+                    input(type="text", name="firstname" placeholder="First name")
+                    input(type="text", name="lastname" placeholder="Last name")
+                select(name="userrole")
+                    option(value="user") User 
+                    option(value="admin") Admin 
+                div 
+                    input(type="email", name="email" placeholder="Email" readonly)
+                        //- could be verified or not verified
+                        span.bi-check-circle-fill.verified-email.flex
+                            | 
+                            | This account's email has been verified
+                br
+                div 
+                    input(type="text", name="idnumber" placeholder="ID number")
+                    input(type="text", name="passportNO" placeholder="Passport number")
+                div.location
+                    select(name="country")
+                        option(value="" disabled selected) Country
+                    select(name="province")
+                        option(value="" disabled selected) Province
+                    select(name="city")
+                        option(value="" disabled selected) City 
+                input(type="submit", value="Save changes")
+                a(href="#" ) Delete 
+                
