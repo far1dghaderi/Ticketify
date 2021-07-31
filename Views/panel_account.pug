@@ -1,7 +1,7 @@
 extends base_panel
 block content
     main.panel-container
-        form(action="/user/updateAccountInfo" method="POST" name="personal-information" id="personal-information" ).flex
+        form(action="/auth/updateAccountInfo" method="POST" name="personal-information" id="personal-information" ).flex
             span Personal Information
             div.personal-information-container
                 input(type="text", name="firstname" placeholder="First name" value=`${user.firstname}`) 
@@ -65,7 +65,7 @@ block content
             if !user.verifiedEmail 
                 span.verify-btn#verify-email-btn Verifiy Email 
                     span.bi-check-circle-fill  
-            input(type="submit", value="Save changes")
+            input(type="submit", value="Change email")
         if !user.verifiedEmail
             section.verify-section.flex.none
                 div.container.flex.none#send-code-container
@@ -91,7 +91,7 @@ block content
                         span#resend-code resend it
                     i.bi-x.close.flex
 
-        form(action="/user/changePassword" method="POST" name="change-password" id="change-password").flex
+        form(action="/auth/changePassword" method="POST" name="change-password" id="change-password").flex
             span Password
             input(type="password", name="oldPassword" placeholder="Old password")
             input(type="password", name="newPassword" placeholder="New password")

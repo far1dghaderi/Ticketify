@@ -1,11 +1,11 @@
 header
-     nav.nav.primary-color.flex
+    nav.nav.primary-color.flex
         div.logo
             a(href="/")
                 h3.white Ticketify
-        div.nav-mobile-
-            span.nav-menu-btn.bi-list
-            span.nav-search-btn.bi-search
+        //- div.nav-mobile-buttons.flex
+        //-     span.nav-search-btn.bi-search
+        //-     span.nav-menu-btn.bi-list
         ul.nav-ul.flex 
             li
                 a.white.navbar-items(href="/") Home
@@ -33,7 +33,7 @@ header
                             li 
                                 a(href="/user/adminpanel") Admin panel
                         li
-                            a(href="/user/logout") Log out
+                            a(href="/auth/logout") Log out
 
             //-This part is for when the user isnt sign isn
             else
@@ -43,5 +43,38 @@ header
         form.flex.none#navbar-search(action="/" method="GET")
             input(type="text", name="filter", placeholder="What are you looking for?")
             input(type="submit", value="search")
+    //- section.mobile-menu 
+    //-     ul 
+    //-         li 
+    //-             a.white(href="/") Home
+    //-         li  
+    //-             a.white(href="#") Sports
+    //-                 span.bi-chevron-compact-down
+    //-             ul
+    //-                 li 
+    //-                     a(href="/?sport=Football")  Football
+    //-                 li 
+    //-                     a(href="/?sport=Basketball")  Basketball
+    //-                 li 
+    //-                     a(href="/?sport=Volleyball")  Volleyball
+    //-         li 
+    //-             a(href="$") Account 
+    //-                 span.bi-chevron-compact-down
+    //-             if user
+    //-                 ul.none
+    //-                     li
+    //-                         a(href="/user/panel") Panel
+    //-                     if user.role==="admin"
+    //-                         li 
+    //-                             a(href="/user/adminpanel") Admin panel
+    //-                     li
+    //-                         a(href="/user/logout") Log out
+    //-             else
+    //-                 ul.none
+    //-                     a(href="/user/signin") Signin
+    //-                     a(href="/user/signup") Signup
+
+
+
 
 

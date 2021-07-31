@@ -9,25 +9,15 @@ const competitionContoller = require("../Controllers/competitionController");
 const stadiumController = require("../Controllers/stadiumController");
 
 router.use(viewController.showAccountMenu);
-//Login && Signup operations
+//show ogin && Signup pages
 //#region
-router.post("/signup", authController.signup);
 router.get("/signup", viewController.showSignupForm);
-router.post("/signin", authController.login);
 router.get("/signin", viewController.showSigninForm);
-router.get("/logout", authController.signout);
+
 //#endregion
 
-//reseting passwornd region
-//#region
-router.post("/resetpassword/", authController.forgotPassword);
-router.post("/resetpassword/:resetToken", authController.resetPassword);
-//#endregion
 router.use(authController.protect);
-//#region Updating user account details
-router.post("/updateAccountInfo", userController.updateUser);
-router.post("/changePassword", authController.changePassword);
-//#endregion
+
 //#region user Panel routes
 router.get("/panel", viewController.showUserDashboard);
 router.get("/panel/dashboard", viewController.showUserDashboard);
@@ -38,7 +28,6 @@ router.get("/panel/tickets", userController.getUserTickets);
 
 //#region admin panel routes
 router.use(authController.restrictAccess);
-
 router.get("/adminpanel", viewController.showAdminDashboard);
 router.get("/adminpanel/users", userController.getUsers);
 router.get("/adminpanel/matches", matchController.getMatches);

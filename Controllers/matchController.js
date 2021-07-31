@@ -9,9 +9,9 @@ const matchModel = require("./../Models/matchModel");
 const teamModel = require("./../Models/teamModel");
 const stadiumModel = require("./../Models/stadiumModel");
 const compModel = require("./../Models/competitionModel");
-const couponModel = require("./../Models/couponModel");
 const userModel = require("./../Models/userModel");
 const { findByIdAndUpdate } = require("./../Models/userModel");
+const removeFile = require("./../utilities/appTools");
 
 //configuring multer for uploading images
 const multerStorage = multer.memoryStorage();
@@ -65,13 +65,13 @@ exports.createMatch = catchAsync(async (req, res, next) => {
   match.homeTeam.id = req.body.homeTeam;
   match.awayTeam.id = req.body.awayTeam;
 
-  //check if the home and away teams are not same
+  //check if the home and away teams are same
   if (String(req.body.homeTeam) == String(req.body.awayTeam)) {
     return res.redirect(
       "/user/adminpanel/matchForm?error=match teams could not be the same"
     );
   }
-  //check if teams sport type is same with each other and then add required values to home and away team field in schema
+  //check if teams sport type is same and then add required values to home and away team field in schema
   const homeTeam = await teamModel.findById(req.body.homeTeam);
   const awayTeam = await teamModel.findById(req.body.awayTeam);
   if (homeTeam.sport != awayTeam.sport) {
@@ -98,7 +98,7 @@ exports.createMatch = catchAsync(async (req, res, next) => {
   const comp = await compModel.findById(match.competition);
 
   match.fixture = comp.name + " - " + req.body.fixture;
-  //set slug for the match
+  //set a slug for the match
   let matchSlug = `${homeTeam.name}-${awayTeam.name}-${
     comp.name
   }-${match.matchDate.toDateString()}-${new Date().getUTCMilliseconds()}`
@@ -125,7 +125,7 @@ exports.getMatches = catchAsync(async (req, res, next) => {
 });
 //update a match
 exports.updateMatch = catchAsync(async (req, res, next) => {
-  //getting the match with the ID that the user pass via URL
+  //getting the match with the ID that the user passed via URL
   const match = await matchModel.findById(req.params.id);
   //check if the passed ID was correct or not
   if (!match) {
@@ -164,11 +164,11 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
         );
     }
   }
-  //- stadium ID is not updatable after the process of match ticket selling has begin, because it can cause unwanted errors
+  //- stadium ID is not updatable after the process of match ticket selling has begin.
 
   //check if the user wants to change the stadium
   if (req.body.stadium != match.stadium) {
-    //User can only change the stadium before of beginning ticket selling for the match
+    //User can only change the stadium before of ticket selling for the match has begin
     if (match.startBuyDate <= new Date()) {
       return res
         .status(403)
@@ -352,7 +352,8 @@ exports.deleteMatch = catchAsync(async (req, res, next) => {
   // if it does, it will be hidden
   // if it dosen't, it will be fully removed from the DB
   if (match.tickets.length < 1 || !match.ticekts) {
-    await matchModel.findByIdAndRemove(match._id);
+    await removeFile(`matches/${match.cover}`);
+    await await matchModel.findByIdAndRemove(match._id);
     return res.redirect(
       `/user/adminpanel/matches?success=match has been removed successfully!`
     );

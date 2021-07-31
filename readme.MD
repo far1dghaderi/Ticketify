@@ -1,33 +1,55 @@
 # Ticketify website
 
-Ticketify is a ticket selling platform that provides tickets for different sport matches
+Ticketify is a ticket selling platform that sells tickets for this three sports:
 
-**Languages and frameworks used in Ticketify:**
-
-- Node js
-- Express js
-- Javascript
+- Football
+- Volleyball
+- Basketball
 
 ---
 
-**render engine:**
+## Used technologies and tools
 
-- PUG
+- Backend: **Nodejs - ExpressJS**
+- Frontend **Vanilla js - PUG**
+- Email service: **Mailtrap**
+  Create an account in https://mailtrap.io and simply copy needed inforamtion in **config.env** file
 
----
+- Template engine: **PUG**
 
-**Databases used:**
-
-- MongoDB
-
----
-
-**Payment website:**
-
-- Stripe
+- Database: **MongoDB**
 
 ---
 
-**Email testing tool:**
+### It needs your help
 
-- Mailtrap
+Since that i'm not a UI/UX designer I think it's design is a disaster, not a disaster actually :) but it's not that good and it really need some improvments.
+
+- [ ] Some changes in design
+
+Because of my lack of time I just skip some features like:
+
+- In a real senario, admins must see the tickets details such as User's name, ID , etc to authenticate it, but because it was just a repetitive code and design I just skipped it.
+  &nbsp;
+- [ ] Ticket details page
+      &nbsp;
+
+- It's not responsive
+  &nbsp;
+- [ ] Do some CSS
+      &nbsp;
+
+- for same reason, You can't see all of users details in admin panel, It's just a summary.
+  &nbsp;
+
+- [ ] Users Details
+      &nbsp;
+
+- It would be nice if we can set coupons for users
+  &nbsp;
+- [ ] Users Details
+      &nbsp;
+
+---
+
+I'll be so glad to see your reviews about my code guys :) That was the main reason that I created Ticketify as my first Nodejs website.

@@ -70,8 +70,6 @@ const stadiumSchema = new mongoose.Schema(
           min: [0, "stand price could not be lower than 0"],
           max: [1000, "stand price could not be more than 1000 USD"],
         },
-        //this field specifies the entrances for each stand
-        //NOTE: entered values in this field could not be diffrent with stadiums entrances
         //this stand specifies if the stand is available or not
         availablity: {
           type: Boolean,

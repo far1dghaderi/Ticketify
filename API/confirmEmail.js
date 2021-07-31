@@ -20,6 +20,7 @@ exports.sendConfirmationCode = catchAsync(async (req, res, next) => {
   user.emailConfiramtionCodeExpiryDate = new Date(
     new Date().getTime() + 30 * 60000
   );
+
   await email.sendEmailConfirmationCode(user.emailConfirmationCode, user.email);
 
   await user.save();
@@ -67,7 +68,7 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
   user.verifiedEmail = true;
   await user.save();
 
-  return res.json({
+  return res.status(200).json({
     status: "success",
     message: "Your email has been successfully confirmed.",
   });

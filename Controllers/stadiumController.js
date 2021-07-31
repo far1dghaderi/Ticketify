@@ -4,6 +4,7 @@ const userModel = require("../Models/userModel");
 const stadiumModel = require("./../Models/stadiumModel");
 const matchModel = require("./../Models/matchModel");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
+const { removeFile } = require("./../utilities/appTools");
 
 //configuring multer for uploading images
 const multerStorage = multer.memoryStorage();
@@ -89,6 +90,7 @@ exports.updateStadium = catchAsync(async (req, res, next) => {
   const matches = await matchModel.find({
     $and: [{ stadium: req.params.id }, { startBuyDate: { $gt: new Date() } }],
   });
+
   //
   await stadiumModel.findByIdAndUpdate(req.params.id, stadium);
   res.redirect(
@@ -108,8 +110,6 @@ exports.getStadiumDetails = catchAsync(async (req, res, next) => {
 
   res.render("adminpanel_E_stadium", {
     title: "Edit stadium",
-    page: "Stadiums",
-    panel: "admin",
     user: req.user,
     stadium,
     error: req.query.error,
@@ -147,6 +147,7 @@ exports.deleteStadium = catchAsync(async (req, res, next) => {
       "/user/adminpanel/stadiums?error=You can't delete a stadium while it's associated with an active match"
     );
   }
+  await removeFile(`stadiums/${stadium.image}`);
   await stadiumModel.findByIdAndDelete(stadium._id);
 
   res.redirect(

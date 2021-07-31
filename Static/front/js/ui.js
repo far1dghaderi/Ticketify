@@ -5,7 +5,6 @@ inputNumbers.forEach((input) => {
     e.preventDefault();
   });
 });
-
 //#region Navbar
 //Sticky navbar
 const mainNavbar = document.querySelector(".nav");
@@ -339,27 +338,15 @@ if (idContainer2) {
     }
   });
 }
-//- Reset password form
-//TODO this part of code must be execute when the user hits the submit button for getting reset link without refreshing the page
-//TODO and just do the proccess with Axios module
-
 //- verify email
 //#region Send confirmation code
 const verifyEmailContainer = document.querySelector(".verify-section");
 const verifyEmailBtn = document.querySelector("#verify-email-btn");
 const resendCode = document.querySelector("#resend-code");
 const sendCode = () => {
-  return new Promise((resolve, reject) => {
-    axios({
-      url: `/auth/email/sendcode`,
-      method: "POST",
-    })
-      .then((data) => {
-        resolve(data);
-      })
-      .catch((err) => {
-        reject(err);
-      });
+  return axios({
+    url: `/auth/email/sendcode`,
+    method: "POST",
   });
 };
 //show the vertification window when the user hits the verify button
@@ -409,15 +396,9 @@ if (verifyEmailBtn) {
   //#endregion
 
   //#region verifyEmail
-  //this function will send an post request to the server for verifying the email
+  //this function will send a post request to the server for verifying the email
   const verifyEmail = (code) => {
-    return new Promise((resolve, reject) => {
-      axios({ url: "/auth/email/verify", method: "POST", data: { code } })
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((err) => reject(err));
-    });
+    return axios({ url: "/auth/email/verify", method: "POST", data: { code } });
   };
   const confirmCodeInput = document.querySelector("#confirm-code-input");
   const confirmCodeBtn = document.querySelector("#confirm-code-btn");

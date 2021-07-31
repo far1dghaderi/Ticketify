@@ -2,7 +2,7 @@ extends base
 block content
     main.login-up-container.flex
         div.container.flex#signin
-            form.flex(action="/user/signin",method="post")#signin-form
+            form.flex(action="/auth/signin",method="post")#signin-form
                 span.label Email
                 input(type="email", name="email",placeholder="Enter your email" value=email)
                 span.label Password

@@ -5,9 +5,11 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const sanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
+const hpp = require("hpp");
 const compression = require("compression");
 const cors = require("cors");
 const pug = require("pug");
+
 //adding application moduels
 const globalErrorHandler = require("./Controllers/errorController");
 const { getJwtPayload } = require("./utilities/appTools");
@@ -20,12 +22,12 @@ const stadiumRoutes = require("./Routes/stadiumRoutes");
 const teamRoutes = require("./Routes/teamRoutes");
 const compRoutes = require("./Routes/competitionRoutes");
 const matchRoutes = require("./Routes/matchRoutes");
-const couponRoutes = require("./Routes/couponRoutes");
 const ticketRoutes = require("./Routes/ticketRoutes");
 const viewRoutes = require("./Routes/viewRoutes");
 const authRoutes = require("./Routes/authRoutes");
 
 const { AppError, catchAsync } = require("./utilities/errorHandler");
+const { hpkp } = require("helmet");
 //adding static files folder to app middleware
 app.use(express.static(`${__dirname}/static`));
 //adding readable datas from body to middleware
@@ -42,6 +44,8 @@ app.options("*", cors());
 //prevent data sanitization against XSS
 app.use(xss());
 
+//preventing parameter pollution
+app.use(hpp());
 app.use(compression());
 
 //adding routes to middleware
@@ -52,7 +56,6 @@ app.use("/stadium", stadiumRoutes);
 app.use("/teams", teamRoutes);
 app.use("/match", matchRoutes);
 app.use("/competitions", compRoutes);
-app.use("/coupons", couponRoutes);
 app.use("/tickets", ticketRoutes);
 app.all(
   "*",
@@ -64,7 +67,7 @@ app.all(
     } else user = undefined;
     res.render("404", {
       title: "Not found",
-      user: req.body.user,
+      user: req.user,
       success: req.query.success,
       error: req.query.error,
       alert: req.query.alert,

@@ -6,7 +6,7 @@ const userModel = require("./../Models/userModel");
 const EmailSender = require("./../utilities/email");
 const { getJwtPayload } = require("../utilities/appTools");
 
-//this function will sign a jwt token
+// sign a jwt token
 const signJWT = (userID, userRole) => {
   return jwt.sign({ id: userID, role: userRole }, process.env.JWT_SECRET_CODE, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -26,13 +26,12 @@ const createAndSaveJwtToken = (user, statuscode, responseMsg, req, res) => {
   });
   return res.status(statuscode).redirect(`/?success=${responseMsg}`);
 };
-//handling user signup request
 //sign up a user
 exports.signup = catchAsync(async (req, res, next) => {
-  //check if the user signed in before
+  //check if the user had already signed in
   if (req.cookies.jwt)
     return res.redirect("/?error=You have been already logged in");
-  //createing user
+  //createing a new user model
   let user = new userModel({
     firstname: req.body.firstname,
     lastname: req.body.lastname,
@@ -42,11 +41,13 @@ exports.signup = catchAsync(async (req, res, next) => {
     joindate: new Date(),
   });
   if (user.password != user.confirmPassword)
-    return res.redirect("/user/signup?error=You have been already logged in");
+    return res.redirect("/user/signup?error=Passwords are not the same");
 
   user.password = await user.hashPassword(req.body.password);
   user = await userModel.create(user);
-  //generate JWT token and save it into the cookies and send response to the client
+  const email = new EmailSender();
+  email.sendWelcome(user);
+  //generate JWT token and save it into the cookies and send as response to the client
   const responseMsg =
     "your account has been created successfully! you are now logged in";
   createAndSaveJwtToken(user, 201, responseMsg, req, res);
@@ -159,7 +160,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       title: "Reset Password",
     });
   }
-  //get the user with the email in body
+  //get the user with the email in request body
   const user = await userModel.findOne({ email: req.body.email });
   if (!user) {
     return res.status(404).render("reset_password", {
@@ -172,9 +173,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   //generating reset url
-  const resetURL = `we sent an reset email to ${
-    user.email
-  } \n got to this address to reset your password: ${req.protocol}://${req.get(
+  const resetURL = `${req.protocol}://${req.get(
     "host"
   )}/user/resetPassword/${resetToken}`;
   //send back the reset token to the user
@@ -238,11 +237,14 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save({});
-  return res.redirect(201, "/user/signin", {
-    success:
-      "your password has been reset successfully! you can now login with your new password",
-    title: "Reset Password",
-  });
+  /*return res.status(200).render("signin", {
+    title: "Sign in",
+    success: "Your password has been successfully reseted. You can now login",
+  });*/
+  return res.redirect(
+    200,
+    "/user/signin?success=Your password has been successfully reseted. You can now login"
+  );
 });
 //change the users email
 exports.changeEmail = catchAsync(async (req, res, next) => {

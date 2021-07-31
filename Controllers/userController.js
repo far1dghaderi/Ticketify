@@ -5,7 +5,7 @@ const ticketModel = require("../Models/ticketModel");
 const userModel = require("../Models/userModel");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 
-//this field will update user information except security fields like pwd, confirmNumber and ...
+//this field will update user information except security fields like pwd, confirmNumber and also contact information ...
 exports.updateUser = catchAsync(async (req, res, next) => {
   const userObj = {};
   //applying new values to the user model

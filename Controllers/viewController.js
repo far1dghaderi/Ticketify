@@ -64,9 +64,10 @@ exports.getMatches = catchAsync(async (req, res, next) => {
 exports.showSigninForm = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt)
     return res.redirect("/?error=You have been already logged in");
-  res.render("signin", {
+  return res.render("signin", {
     title: "Sign in",
     error: req.query.error,
+    success: req.query.success,
   });
 });
 
@@ -74,7 +75,7 @@ exports.showSigninForm = catchAsync(async (req, res, next) => {
 exports.showSignupForm = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt)
     return res.redirect("/?error=You have been already logged in");
-  res.status(201).render("signup", {
+  return res.status(201).render("signup", {
     title: "Sign up",
     error: req.query.error,
   });
@@ -116,7 +117,10 @@ exports.showChangePasswordForm = catchAsync(async (req, res, next) => {
       "/user/resetpassword?error=your password reset token is invalid! generate new one"
     );
   }
-  res.status(201).render("change_password", { title: "Reset Password" });
+  res.status(201).render("change_password", {
+    title: "Reset Password",
+    token: req.params.resetToken,
+  });
 });
 //#endregion
 
@@ -234,17 +238,22 @@ exports.showAdminDashboard = catchAsync(async (req, res, next) => {
     ],
   });
   //put all those statistics into one object
-  console.log();
+
+  //this two vars are decalred for preveneting divide a number to zero
+  const yesterdaysSoldTickets2 =
+    yesterdaysSoldTickets == 0 ? 1 : yesterdaysSoldTickets;
+  const yesterdaysJoinedUsers2 =
+    yesterdaysJoinedUsers == 0 ? 1 : yesterdaysJoinedUsers;
   const statistics = {
     soldTickets: todaysSoldTickets,
     joinedUsers: todaysJoinedUsers,
     //get the percentage of todays ticket seeling growth
     todaysTicketsGrowth:
-      ((todaysSoldTickets - yesterdaysSoldTickets) / yesterdaysSoldTickets) *
+      ((todaysSoldTickets - yesterdaysSoldTickets) / yesterdaysSoldTickets2) *
       100,
     //get the percentage of todays joined users growth
     todaysUsersGrowth:
-      ((todaysJoinedUsers - yesterdaysJoinedUsers) / yesterdaysJoinedUsers) *
+      ((todaysJoinedUsers - yesterdaysJoinedUsers) / yesterdaysJoinedUsers2) *
       100,
   };
   return res.render("adminpanel_dashboard", {

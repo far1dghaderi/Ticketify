@@ -9,7 +9,7 @@ block content
                         img(src=`/images/competitions/${comp.logo}`, alt=`${comp.name} logo`)
                         span #{comp.name}
                         div.flex
-                            a(href=`/user/adminpanel/update/competitions/${comp._id}`).edit-btn Edit 
+                            a(href=`/user/adminpanel/update/competitions/${comp._id}` target="_blank").edit-btn Edit 
                             a(href=`/competitions/delete/${comp._id}`).delete-btn.delete-item-btn Delete  
                             a(href="#",data-id=`${comp._id}`).copy-id-btn Copy ID
     a(href="/user/adminPanel/competitionform").float-add-btn +

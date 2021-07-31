@@ -44,14 +44,14 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  phoneNumber: {
-    type: String,
-    minLength: [10, "phone number must have 10 digits"],
-    maxLength: [10, "phone number must have 10 digits"],
-    unique: [true, "this phone number has been already used"],
-    sparse: true,
-    trim: true,
-  },
+  // phoneNumber: {
+  //   type: String,
+  //   minLength: [10, "phone number must have 10 digits"],
+  //   maxLength: [10, "phone number must have 10 digits"],
+  //   unique: [true, "this phone number has been already used"],
+  //   sparse: true,
+  //   trim: true,
+  // },
 
   password: {
     type: String,

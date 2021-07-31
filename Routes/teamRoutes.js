@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const teamModel = require("./../Models/teamModel");
 const teamController = require("./../Controllers/TeamController");
-const basicCrud = require("./../Controllers/basicCrudController");
 const authController = require("./../Controllers/authController");
 const viewController = require("./../Controllers/viewController");
 

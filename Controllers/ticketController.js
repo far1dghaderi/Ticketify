@@ -1,12 +1,9 @@
-const stripe = require("stripe")(
-  "sk_test_51IQv7tGKDFcoxrMkzfPQwz1PbA91LQvHW8TZ5JuWllUjMIngy5rKuZWRxqMmSvAS8ssiPQbJicMqZfUrys7zzkdr00JPisCvGH"
-);
+//const stripe = require("stripe")();
 const ticketModel = require("./../Models/ticketModel");
 const matcheModel = require("./../Models/matchModel");
 const stadiumModel = require("./../Models/stadiumModel");
 const userModel = require("./../Models/userModel");
 const matchModel = require("./../Models/matchModel");
-const couponModel = require("../Models/couponModel");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 
 exports.purchaseTicket = catchAsync(async (req, res, next) => {

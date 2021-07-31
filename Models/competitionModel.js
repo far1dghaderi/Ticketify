@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const competitionSchema = new mongoose.Schema({
-  //this field represent the country that competition belongs to
   name: {
     type: String,
     required: [true, "each competition must have  name"],

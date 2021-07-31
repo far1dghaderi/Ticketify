@@ -9,7 +9,7 @@ block content
                         img(src=`/images/teams/${team.logo}`, alt=`${team.name} logo`)
                         span #{team.name}
                         div.flex
-                            a(href=`/user/adminpanel/update/teams/${team._id}`).edit-btn Edit 
+                            a(href=`/user/adminpanel/update/teams/${team._id}` target="_blank").edit-btn Edit 
                             a(href=`/teams/delete/${team._id}`).delete-btn.delete-item-btn Delete
                             a(href="#",data-id=`${team._id}`).copy-id-btn Copy ID
     a(href="/user/adminPanel/teamForm").float-add-btn +

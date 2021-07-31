@@ -23,12 +23,11 @@ block content
                         div.column.name-column #{match.awayTeam.name}
                         - let matchDate = `${match.matchDate.getFullYear()} - ${match.matchDate.getMonth() + 1} - ${match.matchDate.getDate()}  ${match.matchDate.getHours()}:${match.matchDate.getMinutes()}`
                         div.column.date-column #{matchDate}
-                        - let status = match.endBuyDate < new Date()?"Pending":"Finished"
-                        - let statusClass = status=="pending"?"verified":"not-verified"
+                        - let status = match.endBuyDate < new Date()?"Finished":"Pending"
+                        - let statusClass = status=="Pending"?"verified":"not-verified"
                         div(class=`column status-column ${statusClass}`)  #{status}
                         //- we also have verified
                         div.column.buttons-column.flex
-                            a(href=`/user/adminpanel/update/matches/${match._id}` target="_blank").view-btn View 
                             a(href=`/user/adminpanel/update/matches/${match._id}` target="_blank").edit-btn Edit  
                             a(href=`/match/delete/${match._id}`).delete-btn Delete
     a(href="/user/adminPanel/matchForm").float-add-btn +

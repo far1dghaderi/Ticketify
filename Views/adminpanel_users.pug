@@ -34,10 +34,8 @@ block content
                                 user.tickets.forEach(ticket=>sum+=ticket.price);
                         
                         div.column.price-column #{sum}
-                        //- we also have verified
                         - let status = user.verifiedEmail?"verified":"not-verified"
                         div(class=`column status-column ${status}`)= status.replace("-"," ")
                         div.column.buttons-column.flex
-                            a(href="#").view-btn View 
-                            a(href="#").delete-btn Delete
+                            a(href="#" target="_blank").view-btn View 
 

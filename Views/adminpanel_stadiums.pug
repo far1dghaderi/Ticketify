@@ -30,8 +30,7 @@ block content
                         div.column.price-column #{stadium.capacity}
                         div.column.status-column #{stadium.country} - #{stadium.city}
                         div.column.buttons-column.flex
-                            a(href=`/user/adminpanel/update/stadiums/${stadium._id}`).view-btn View 
-                            a(href=`/user/adminpanel/update/stadiums/${stadium._id}`).edit-btn Edit  
+                            a(href=`/user/adminpanel/update/stadiums/${stadium._id}` target="_blank").edit-btn Edit  
                             a(href=`/stadium/delete/${stadium._id}`).delete-btn.delete-item-btn Delete
                             a(href="#",data-id=`${stadium._id}`).copy-id-btn ID 
     a(href="/user/adminPanel/stadiumForm").float-add-btn +

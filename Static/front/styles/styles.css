@@ -436,7 +436,7 @@ header .nav #navbar-search input[type="submit"]:hover {
   overflow: hidden;
 }
 .index-match-box .match-box-header {
-  padding: 20px 2%;
+  padding: 20px 2% 10px 2%;
   background-color: #fff;
   width: 100%;
   justify-content: space-around;
@@ -451,7 +451,7 @@ header .nav #navbar-search input[type="submit"]:hover {
 }
 .index-match-box .match-info .sport-type {
   margin-bottom: 10px;
-  font-size: 15px;
+  font-size: 14px;
   padding: 5px;
   background-color: #ffdf41;
   color: #031857;
@@ -461,6 +461,7 @@ header .nav #navbar-search input[type="submit"]:hover {
 .index-match-box .match-info .team-names {
   font-weight: 500;
   padding-bottom: 5px;
+  font-size: 15px;
 }
 .index-match-box .match-info .team-names span {
   display: inline-block;
@@ -477,9 +478,15 @@ header .nav #navbar-search input[type="submit"]:hover {
 .match-box-details > div {
   width: 100%;
 }
+.match-box-details > div > div {
+  padding-left: 15px;
+}
+.match-box-details > div > div > div {
+  margin-bottom: 10px;
+}
 
 .match-box-details div div i {
-  font-size: 18px;
+  font-size: 15px;
   margin-bottom: 15px;
 }
 .match-box-details div div span {
@@ -488,10 +495,19 @@ header .nav #navbar-search input[type="submit"]:hover {
   font-weight: 500;
   margin-bottom: 15px;
 }
+.count-down-title {
+  padding-left: 20px;
+  padding-top: 10px;
+  display: block;
+  font-weight: 500;
+  font-size: 15px;
+}
 .countdown {
   padding-left: 10%;
-  font-size: 15px;
+  font-size: 13px;
+  display: block;
   font-weight: bold;
+  margin-top: 10px;
 }
 .countdown span {
   color: #000;
@@ -510,9 +526,11 @@ header .nav #navbar-search input[type="submit"]:hover {
   padding: 30px 20px;
 }
 .match-box-buttons .btn {
-  padding: 10px 30px;
+  padding: 8px 20px;
   transition: all 0.3s;
   border-radius: 5px;
+  font-weight: 500;
+  font-size: 16px;
 }
 .match-box-buttons .reserve-btn {
   background-color: #85ff7a;
@@ -2359,8 +2377,19 @@ main .match-cover-container img {
   header .nav {
     justify-content: space-between;
   }
-  header .nav .nav-menu-btn {
-    margin: 0 10px;
+
+  header .nav .nav-mobile-buttons {
+    padding: 0 10px;
+  }
+  header .nav .nav-mobile-buttons span {
+    padding-left: 8px;
+  }
+  header .nav .nav-mobile-buttons .nav-menu-btn {
+    color: white;
+    font-size: 20px;
+  }
+  header .nav .nav-mobile-buttons .nav-search-btn {
+    color: white;
   }
 
   .nav-ul,

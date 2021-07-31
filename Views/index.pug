@@ -18,17 +18,24 @@ mixin matchbox(matchdata)
         div.match-box-details.flex
             div
                 div
-                    - let matchdate = new Date(matchdata.matchDate).toDateString() 
-                    i.bi-calendar-fill= matchdate
-                div 
-                    - let matchTime = matchdata.matchDate.getHours() + ":" +matchdata.matchDate.getMinutes()
-                    i.bi-clock-fill= matchTime
+                    div
+                        - let matchdate = new Date(matchdata.matchDate).toDateString() 
+                        i.bi-calendar-fill
+                        span= matchdate
+                    div 
+                        - let matchTime = matchdata.matchDate.getHours() + ":" +matchdata.matchDate.getMinutes()
+                        i.bi-clock-fill
+                        span= matchTime
             div
                 div
-                    i.bi-house-door-fill #{matchdata.stadium.name}
-                div
-                    i.bi-arrow-up-square-fill #{matchdata.stadium.city} #{matchdata.stadium.country} 
+                    div
+                        i.bi-house-door-fill    
+                        span #{matchdata.stadium.name}
+                    div
+                        i.bi-arrow-up-square-fill
+                        span #{matchdata.stadium.city} #{matchdata.stadium.country} 
         if matchdata.startBuyDate < new Date()  
+            span.count-down-title Ends in:
             span.countdown.countdown-end.count-down(data-date=`${matchdata.endBuyDate}`)
                 span#days 
                 | 
@@ -42,7 +49,8 @@ mixin matchbox(matchdata)
                 span#seconds
                 |  Seconds
         else
-            span.countdown.countdown-end.count-down(data-date=`${matchdata.startBuyDate}`)
+            span.count-down-title Starts in:
+            span.countdown.countdown-start.count-down(data-date=`${matchdata.startBuyDate}`)
                 span#days 
                 | 
                 | Days : 
@@ -60,8 +68,6 @@ mixin matchbox(matchdata)
             if matchdata.startBuyDate <= currentDate
                 a(href=`/match/${matchdata.slug}`).btn.reserve-btn Reserve
             else if matchdata.startBuyDate > currentDate
-                //- a(href="#").btn.remind-btn Remind Me 
-                a(href="") #{matchdata.startBuyDate} 
                 a(href=`/match/${matchdata.slug}`).btn.view-btn View Details  
 
 

@@ -107,7 +107,7 @@ if (resetPasswordForm) {
 //- change password validators
 const changePasswordForm = document.querySelector("#change-password-form");
 if (changePasswordForm) {
-  changePasswordForm.addEventListener("click", (e) => {
+  changePasswordForm.addEventListener("submit", (e) => {
     //reseting errors for re-validation them
 
     checkInputValue(changePasswordForm.password, false);

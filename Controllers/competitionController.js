@@ -2,9 +2,7 @@ const sharp = require("sharp");
 const multer = require("multer");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 const competitionModel = require("./../Models/competitionModel");
-const cp = require("./couponController");
-const couponModel = require("../Controllers/couponController");
-
+const { removeFile } = require("./../utilities/appTools");
 //configuring multer for uploading images
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
@@ -82,7 +80,6 @@ exports.getCompetitionDetails = catchAsync(async (req, res, next) => {
   res.status(201).render("adminpanel_E_competition", {
     title: "Edit comps",
     user: req.body.user,
-    panel: "admin",
     role: "admin",
     competition,
   });
@@ -112,7 +109,7 @@ exports.deleteComp = catchAsync(async (req, res, next) => {
       "/user/adminpanel/competitions?error=Invalid competition id!"
     );
   }
-
+  await removeFile(`competitions/${competition.logo}`);
   await competitionModel.findByIdAndRemove(competition._id);
   res.redirect(
     `/user/adminpanel/competitions?success=${competition.name} has been deleted successfully!`

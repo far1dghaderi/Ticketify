@@ -62,6 +62,8 @@ exports.getTeams = catchAsync(async (req, res, next) => {
     panel: "admin",
     page: "Teams",
     teams,
+    error: req.query.error,
+    success: req.query.success,
   });
 });
 //cteate a new team
@@ -112,7 +114,8 @@ exports.deleteTeam = catchAsync(async (req, res, next) => {
       .status(404)
       .redirect("/user/adminpanel/teams?error=ID was invalid!");
   }
-
+  await removeFile(`teams/${team.logo}`);
+  await removeFile(`teams/${team.bgImage}`);
   await teamModel.findByIdAndDelete(team._id);
   return res
     .status(200)
