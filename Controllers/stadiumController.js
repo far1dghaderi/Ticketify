@@ -54,7 +54,7 @@ exports.createStadium = catchAsync(async (req, res, next) => {
   //generating stands and adding them to the model
 
   //check if there is any stands with same ID
-  //todo
+  //TODO
   stadium.stands = stadium.createStands(req.body);
 
   stadiumModel.create(stadium);

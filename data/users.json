@@ -1,0 +1,77 @@
+[{
+  "_id": {
+    "$oid": "6102f8a1ebf0d45744fddde4"
+  },
+  "role": "admin",
+  "verifiedEmail": false,
+  "coupons": [],
+  "firstname": "admin",
+  "lastname": "admin",
+  "email": "admin@admin.com",
+  "passwordChangedAt": {
+    "$date": "2021-07-29T18:51:13.853Z"
+  },
+  "joindate": {
+    "$date": "2021-07-29T18:51:13.853Z"
+  },
+  "tickets": [],
+  "password": "$2b$14$t9.DRyZPczcf7eQ17k8X9.FRImAo2dvRnhqf0KkBlS.wbO9Wiph3i",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6102f8d2ebf0d45744fddde5"
+  },
+  "role": "user",
+  "verifiedEmail": false,
+  "coupons": [],
+  "firstname": "test",
+  "lastname": "test",
+  "email": "test@test.com",
+  "passwordChangedAt": {
+    "$date": "2021-07-29T18:52:02.834Z"
+  },
+  "joindate": {
+    "$date": "2021-07-29T18:52:02.834Z"
+  },
+  "tickets": [],
+  "password": "$2b$14$0ln/sqJTzLcpSaSVj2u8r.vnqZ9VDqRlGWRarVZe3G7WKHT3uruPK",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6102f91aebf0d45744fddde6"
+  },
+  "role": "user",
+  "verifiedEmail": false,
+  "coupons": [],
+  "firstname": "test",
+  "lastname": "test",
+  "email": "test2@test.com",
+  "passwordChangedAt": {
+    "$date": "2021-07-29T18:53:14.154Z"
+  },
+  "joindate": {
+    "$date": "2021-07-29T18:53:14.154Z"
+  },
+  "tickets": [],
+  "password": "$2b$14$H9TC./04X/SS7n612zDvSe4lmuPezlS7IOMzP.VIMIPVQkwqTs/Xm",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6102f942ebf0d45744fddde7"
+  },
+  "role": "user",
+  "verifiedEmail": true,
+  "coupons": [],
+  "firstname": "test",
+  "lastname": "test",
+  "email": "test3@test.com",
+  "passwordChangedAt": {
+    "$date": "2021-07-31T17:08:14.560Z"
+  },
+  "joindate": {
+    "$date": "2021-07-29T18:53:54.269Z"
+  },
+  "tickets": [],
+  "password": "$2b$14$4evytRsowCYwTACXlBRRAO1N99C/rkmtEOpPla2Y1sXGZBpkpcSWC",
+  "__v": 0
+}]

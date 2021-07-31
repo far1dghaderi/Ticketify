@@ -1,0 +1,95 @@
+[{
+  "_id": {
+    "$oid": "6102fcb2ebf0d45744fddded"
+  },
+  "name": "Camp Nou",
+  "sport": "football",
+  "country": "Spain",
+  "province": "Catalunia",
+  "city": "Barcelona",
+  "address": "este en calle de jorje farid",
+  "image": "1627585714685-background-Camp-Nou.png",
+  "stands": [
+    {
+      "availablity": true,
+      "_id": {
+        "$oid": "6102fcb2ebf0d45744fdddee"
+      },
+      "id": "JORJE",
+      "location": "west",
+      "floor": "1",
+      "capacity": 10000,
+      "price": 65
+    },
+    {
+      "availablity": true,
+      "_id": {
+        "$oid": "6102fcb2ebf0d45744fdddef"
+      },
+      "id": "KOIE",
+      "location": "west",
+      "floor": "1",
+      "capacity": 5000,
+      "price": 65
+    },
+    {
+      "availablity": true,
+      "_id": {
+        "$oid": "6102fcb2ebf0d45744fdddf0"
+      },
+      "id": "ESE",
+      "location": "west",
+      "floor": "2",
+      "capacity": 5000,
+      "price": 65
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6102fd08ebf0d45744fdddf1"
+  },
+  "name": "Wanda Metropolitano",
+  "sport": "football",
+  "country": "Spain",
+  "province": "Catalunia",
+  "city": "Barcelona",
+  "address": "Somewhere in madrid",
+  "image": "1627585800081-background-Wanda-Metropolitano.png",
+  "stands": [
+    {
+      "availablity": true,
+      "_id": {
+        "$oid": "6102fd08ebf0d45744fdddf2"
+      },
+      "id": "KIO",
+      "location": "west",
+      "floor": "2",
+      "capacity": 21222,
+      "price": 120
+    },
+    {
+      "availablity": true,
+      "_id": {
+        "$oid": "6102fd08ebf0d45744fdddf3"
+      },
+      "id": "PSD",
+      "location": "west",
+      "floor": "1",
+      "capacity": 21222,
+      "price": 120
+    },
+    {
+      "availablity": true,
+      "_id": {
+        "$oid": "6102fd08ebf0d45744fdddf4"
+      },
+      "id": "OPS",
+      "location": "east",
+      "floor": "1",
+      "capacity": 15000,
+      "price": 120
+    }
+  ],
+  "__v": 0
+}]

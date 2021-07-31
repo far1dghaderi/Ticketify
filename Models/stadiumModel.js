@@ -169,29 +169,13 @@ stadiumSchema.virtual("capacity").get(function () {
   });
   return capacity;
 });
-//this method will check stands for same Stand id, if there was any, it will return true
-stadiumSchema.methods.checkStandsIdConflict = function (standsArray) {
-  let isConflict = false;
-  let standIDs = [];
-  standsArray.forEach((stand) => {
-    standIDs.push(stand.split("-")[0]);
-  });
-
-  standIDs.forEach((standID, index) => {
-    if (!isConflict) {
-      isConflict = standIDs.includes(standID, index + 1);
-    }
-  });
-  return isConflict;
-};
-
 //get stand price
 stadiumSchema.methods.checkStand = (stands, standID) => {
   return stands.find((stand) => {
     return stand.id == standID;
   });
 };
-//this method will check if the stadium exist or not
+//this method will check if the stand exist or not
 stadiumSchema.methods.getStandCapacity = (stands, standID) => {
   //Get the stand from the stadium stands
   let stand = stands.find((stand) => {

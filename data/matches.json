@@ -1,0 +1,87 @@
+[{
+  "_id": {
+    "$oid": "610531378a2a525f304ddeb2"
+  },
+  "homeTeam": {
+    "id": {
+      "$oid": "6102fbb8ebf0d45744fddde8"
+    },
+    "name": "FC Barcelona",
+    "logo": "1627585464740-logo-FC-Barcelona.png"
+  },
+  "awayTeam": {
+    "id": {
+      "$oid": "6102fbe6ebf0d45744fdddea"
+    },
+    "name": "Real Madrid CF",
+    "logo": "1627585510735-logo-Real-Madrid CF.png"
+  },
+  "isDisabled": false,
+  "stadium": {
+    "$oid": "6102fcb2ebf0d45744fddded"
+  },
+  "competition": {
+    "$oid": "6102fc4aebf0d45744fdddec"
+  },
+  "matchDate": {
+    "$date": "2021-11-30T12:17:00Z"
+  },
+  "visibleDate": {
+    "$date": "2021-07-31T11:13:00Z"
+  },
+  "startBuyDate": {
+    "$date": "2021-07-31T11:17:00Z"
+  },
+  "endBuyDate": {
+    "$date": "2021-11-30T12:17:00Z"
+  },
+  "cover": "1627730231561-match-cover-6102fb-6102fb.jpeg",
+  "tickets": [],
+  "fixture": "La liga Santander - Week 34",
+  "slug": "FC-Barcelona-Real-Madrid-CF-La-liga-Santander-Tue-Nov-30-2021-649",
+  "sport": "football",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "610531c78a2a525f304ddeb3"
+  },
+  "homeTeam": {
+    "id": {
+      "$oid": "6102fbd2ebf0d45744fddde9"
+    },
+    "name": "Ateltico de Madrid",
+    "logo": "1627585490077-logo-Ateltico-de Madrid.png"
+  },
+  "awayTeam": {
+    "id": {
+      "$oid": "6102fbfbebf0d45744fdddeb"
+    },
+    "name": "Sevilla FC",
+    "logo": "1627585531652-logo-Sevilla-FC.png"
+  },
+  "isDisabled": false,
+  "stadium": {
+    "$oid": "6102fd08ebf0d45744fdddf1"
+  },
+  "competition": {
+    "$oid": "6102fc4aebf0d45744fdddec"
+  },
+  "matchDate": {
+    "$date": "2021-12-31T12:19:00Z"
+  },
+  "visibleDate": {
+    "$date": "2021-07-31T11:18:00Z"
+  },
+  "startBuyDate": {
+    "$date": "2021-11-30T12:18:00Z"
+  },
+  "endBuyDate": {
+    "$date": "2021-12-31T12:18:00Z"
+  },
+  "cover": "1627730375405-match-cover-6102fb-6102fb.jpeg",
+  "tickets": [],
+  "fixture": "La liga Santander -  Matchday 23",
+  "slug": "Ateltico-de-Madrid-Sevilla-FC-La-liga-Santander-Fri-Dec-31-2021-514",
+  "sport": "football",
+  "__v": 0
+}]

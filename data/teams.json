@@ -1,0 +1,37 @@
+[{
+  "_id": {
+    "$oid": "6102fbb8ebf0d45744fddde8"
+  },
+  "name": "FC Barcelona",
+  "sport": "football",
+  "bgImage": "1627585464654-background-FC-Barcelona.jpeg",
+  "logo": "1627585464740-logo-FC-Barcelona.png",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6102fbd2ebf0d45744fddde9"
+  },
+  "name": "Ateltico de Madrid",
+  "sport": "football",
+  "bgImage": "1627585490012-background-Ateltico-de Madrid.jpeg",
+  "logo": "1627585490077-logo-Ateltico-de Madrid.png",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6102fbe6ebf0d45744fdddea"
+  },
+  "name": "Real Madrid CF",
+  "sport": "football",
+  "bgImage": "1627585510668-background-Real-Madrid CF.jpeg",
+  "logo": "1627585510735-logo-Real-Madrid CF.png",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6102fbfbebf0d45744fdddeb"
+  },
+  "name": "Sevilla FC",
+  "sport": "football",
+  "bgImage": "1627585531579-background-Sevilla-FC.jpeg",
+  "logo": "1627585531652-logo-Sevilla-FC.png",
+  "__v": 0
+}]

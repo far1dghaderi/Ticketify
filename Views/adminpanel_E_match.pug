@@ -23,6 +23,13 @@ block content
                     input(type="text", name="competition" placeholder="Competition ID" value=`${match.competition}`)
                     a(href="/user/adminpanel/competitions" target="_blank").search-for-btn Search for competitions 
                         span.bi-arrow-right  
+                select(name="isDisabled")
+                    if match.isDisabled
+                        option(value="true" selected) Disabled 
+                        option(value="false") Active 
+                    else
+                        option(value="true" ) Disabled 
+                        option(value="false" selected) Active 
                 input(type="text", name="fixture" placeholder="Fixture - EX: week 34" value=`${match.fixture.split("-")[1]}`) 
                 span Match cover
                 div.flex

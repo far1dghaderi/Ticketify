@@ -12,6 +12,7 @@ exports.purchaseTicket = catchAsync(async (req, res, next) => {
     match: req.body.matchID,
     stand: req.body.standID,
   });
+
   if (!ticket.match) {
     return res
       .status(400)
@@ -40,6 +41,9 @@ exports.purchaseTicket = catchAsync(async (req, res, next) => {
   const match = await matcheModel.findById(ticket.match);
   if (!match) {
     return res.status(400).redirect(`/?error=input match is invalid`);
+  }
+  if (match.isDisabled) {
+    return res.status(400).redirect(`/?error=This match is not available`);
   }
   //check if the use has bought this ticket before or not
   let hasBoughtBefore = await ticketModel.findOne({

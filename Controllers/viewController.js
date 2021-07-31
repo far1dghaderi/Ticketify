@@ -24,6 +24,7 @@ exports.getMatches = catchAsync(async (req, res, next) => {
     $and: [
       { visibleDate: { $lt: new Date() } },
       { endBuyDate: { $gt: new Date() } },
+      { isDisabled: false },
     ],
   });
   if (req.query.sport) {

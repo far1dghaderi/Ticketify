@@ -23,6 +23,10 @@ block content
                     input(type="text", name="competition" placeholder="Competition ID")
                     a(href="/user/adminpanel/competitions" target="_blank").search-for-btn Search for competitions 
                         span.bi-arrow-right 
+                select(name="isDisabled")
+                    option(value="" disabled selected) Match status
+                    option(value="true") Disabled 
+                    option(value="false") Active 
                 input(type="text", name="fixture" placeholder="Fixture - EX: week 34") 
                 span Match cover
                 div.flex

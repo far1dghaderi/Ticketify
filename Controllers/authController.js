@@ -71,7 +71,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   //searching for user with email
   const user = await userModel
-    .findOne({ email: req.body.email })
+    .findOne({ email: req.body.email.toLowerCase() })
     .select("+password");
   if (user == null) {
     return res.render("signin", {
@@ -161,7 +161,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
     });
   }
   //get the user with the email in request body
-  const user = await userModel.findOne({ email: req.body.email });
+  const user = await userModel.findOne({ email: req.body.email.toLowerCase() });
   if (!user) {
     return res.status(404).render("reset_password", {
       error: "there is no user with this email!",
@@ -256,7 +256,7 @@ exports.changeEmail = catchAsync(async (req, res, next) => {
   }
   const user = await userModel.findById(req.user._id);
   if (req.body.email) {
-    user.email = req.body.email.toLowerCase();
+    user.email = req.body.email;
     user.verifiedEmail = false;
   } else {
     return res

@@ -59,6 +59,7 @@ exports.createMatch = catchAsync(async (req, res, next) => {
     visibleDate: new Date(req.body.visibleDate),
     startBuyDate: new Date(req.body.startBuyDate),
     endBuyDate: new Date(req.body.endBuyDate),
+    isDisabled: req.body.isDisabled,
     cover: req.body.cover,
     tickets: [],
   });
@@ -183,7 +184,7 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
         .status(403)
         .redirect("/user/adminpanel/matches?error=stadium id was invalid!");
     }
-
+    match.isDisabled = req.body.isDisabled;
     match.stadium = req.body.stadium;
   }
 
