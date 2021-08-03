@@ -24,9 +24,9 @@ Ticketify is a ticket selling platform that sells tickets for this three sports:
 ### Get started:
 
 1. Import files in data folder to get started
-1. For loggin in as an admin, use **admin@admin.com** and **adminadmin**
-1. For loggin in as a user you can use **test1|2|3@test.com** and **testtest**
-1. For buying tickets you need to verify your email and add PassportNO or ID to you account
+1. For logging in as an admin, use **admin@admin.com** and **adminadmin**
+1. For logging in as a user you can use **test1|2|3@test.com** and **testtest**
+1. For buying tickets you need to verify your email and add PassportNO or ID to your account
 1. You can Add/remove/edit stuff in panel admin
 
 #### It needs your help
