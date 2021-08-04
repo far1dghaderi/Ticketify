@@ -1,9 +1,3 @@
 node_modules
 config.env
-.jshintrc
-./static/images/competitions/*
-./static/images/matches/*
-./static/images/teams/*
-!./static/images/competitions/.gitkeep
-!./static/images/matches/.gitkeep
-!./static/images/teams/.gitkeep
+.vscode

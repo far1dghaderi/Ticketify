@@ -21,13 +21,13 @@ const upload = multer({
   fileFilter: multerFilter,
 });
 exports.uploadStadiumImg = upload.single("bgImage");
-//----------
+
 exports.resizeAndSaveStadiumImg = catchAsync(async (req, res, next) => {
   if (!req.file) {
     return next();
   }
 
-  //generating teams logo name and saving it into the DB
+  //generating teams logo name for saving it into the DB
   const stadiumImgName = `${Date.now()}-background-${req.body.name.replace(
     " ",
     "-"
@@ -39,9 +39,8 @@ exports.resizeAndSaveStadiumImg = catchAsync(async (req, res, next) => {
 
   next();
 });
-//create a new stadium
+
 exports.createStadium = catchAsync(async (req, res, next) => {
-  //passing values to stadium model
   let stadium = new stadiumModel({
     name: req.body.name,
     sport: req.body.sport,
@@ -52,10 +51,9 @@ exports.createStadium = catchAsync(async (req, res, next) => {
     image: req.body.image,
   });
   //generating stands and adding them to the model
-
+  stadium.stands = stadium.createStands(req.body);
   //check if there is any stands with same ID
   //TODO
-  stadium.stands = stadium.createStands(req.body);
 
   stadiumModel.create(stadium);
 
@@ -66,18 +64,16 @@ exports.createStadium = catchAsync(async (req, res, next) => {
     );
 });
 
-//updating a stadium
 exports.updateStadium = catchAsync(async (req, res, next) => {
-  //get the stadium that user wants to update and check if it was exists
   let stadium = new stadiumModel();
   stadium = await stadiumModel.findById(req.params.id);
-  //check if the stadium id was correct
+
   if (!stadium) {
     return res.redirect(
       "/user/adminpanel/stadiums?error=Stadium id was invalid!"
     );
   }
-  //set values to the stadium model
+
   stadium.name = req.body.name;
   stadium.sport = req.body.sport;
   stadium.country = req.body.country;
@@ -87,21 +83,19 @@ exports.updateStadium = catchAsync(async (req, res, next) => {
   stadium.stands = stadium.createStands(req.body);
 
   //get the matches that are associated with the stadium and check if theire ticket selling has begins
-  const matches = await matchModel.find({
-    $and: [{ stadium: req.params.id }, { startBuyDate: { $gt: new Date() } }],
-  });
+  //it's better that we preve t updates on this stadiums, but for no: NEVER MIND;
+  // const matches = await matchModel.find({
+  //   $and: [{ stadium: req.params.id }, { startBuyDate: { $gt: new Date() } }],
+  // });
 
-  //
   await stadiumModel.findByIdAndUpdate(req.params.id, stadium);
   res.redirect(
     `/user/adminpanel/update/stadiums/${req.params.id}?success=Stadium has been updated successfully`
   );
 });
 
-//get a stadium
 exports.getStadiumDetails = catchAsync(async (req, res, next) => {
   const stadium = await stadiumModel.findById(req.params.id);
-  //check if the stadium id was correct
   if (!stadium) {
     return res.redirect(
       "/user/adminpanel/stadiums?error=Stadium id was invalid!"
@@ -116,7 +110,6 @@ exports.getStadiumDetails = catchAsync(async (req, res, next) => {
     success: req.query.success,
   });
 });
-//get all stadiums
 exports.getStadiums = catchAsync(async (req, res, next) => {
   const stadiums = await stadiumModel.find();
   res.status(201).render("adminpanel_stadiums", {
@@ -130,7 +123,6 @@ exports.getStadiums = catchAsync(async (req, res, next) => {
 
 exports.deleteStadium = catchAsync(async (req, res, next) => {
   const stadium = await stadiumModel.findById(req.params.id);
-  //check if the stadium id was correct
   if (!stadium) {
     return res.redirect(
       "/user/adminpanel/stadiums?error=Stadium id was invalid!"

@@ -9,8 +9,8 @@ const competitionContoller = require("../Controllers/competitionController");
 const stadiumController = require("../Controllers/stadiumController");
 
 router.use(viewController.showAccountMenu);
-//show ogin && Signup pages
-//#region
+
+//#region show ogin && Signup pages
 router.get("/signup", viewController.showSignupForm);
 router.get("/signin", viewController.showSigninForm);
 

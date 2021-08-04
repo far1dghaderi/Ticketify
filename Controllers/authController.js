@@ -6,7 +6,6 @@ const userModel = require("./../Models/userModel");
 const EmailSender = require("./../utilities/email");
 const { getJwtPayload } = require("../utilities/appTools");
 
-// sign a jwt token
 const signJWT = (userID, userRole) => {
   return jwt.sign({ id: userID, role: userRole }, process.env.JWT_SECRET_CODE, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -14,9 +13,7 @@ const signJWT = (userID, userRole) => {
 };
 //create a jwt token and save it into the cookie
 const createAndSaveJwtToken = (user, statuscode, responseMsg, req, res) => {
-  //generating JWT token
   const token = signJWT(user._id, user.role);
-  //setting up cookie
   res.cookie("jwt", token, {
     expires: new Date().setMonth(
       new Date().getDate() + process.env.COOKIE_EXPIRES_IN
@@ -26,12 +23,11 @@ const createAndSaveJwtToken = (user, statuscode, responseMsg, req, res) => {
   });
   return res.status(statuscode).redirect(`/?success=${responseMsg}`);
 };
-//sign up a user
 exports.signup = catchAsync(async (req, res, next) => {
   //check if the user had already signed in
   if (req.cookies.jwt)
     return res.redirect("/?error=You have been already logged in");
-  //createing a new user model
+
   let user = new userModel({
     firstname: req.body.firstname,
     lastname: req.body.lastname,
@@ -52,24 +48,20 @@ exports.signup = catchAsync(async (req, res, next) => {
     "your account has been created successfully! you are now logged in";
   createAndSaveJwtToken(user, 201, responseMsg, req, res);
 });
-//handling user login request
 exports.login = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt)
     return res.redirect("/?error=You have been already logged in!");
-  //check if the user passes the email with the body
   if (!req.body.email) {
     return res.render("signin", {
       error: "You need to enter your email for logging in to your account",
     });
   }
-  //check if user passes the password with the body
   if (!req.body.password) {
     return res.render("signin", {
       error: "You need to enter your password for logging in to your account",
     });
   }
 
-  //searching for user with email
   const user = await userModel
     .findOne({ email: req.body.email.toLowerCase() })
     .select("+password");
@@ -89,7 +81,6 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 });
 
-//logging out the user
 exports.signout = catchAsync(async (req, res, next) => {
   if (!req.cookies.jwt) {
     return res
@@ -100,10 +91,9 @@ exports.signout = catchAsync(async (req, res, next) => {
   res.cookie("jwt", "loggedout", { maxAge: 0 });
   res.status(200).redirect("/?success=You have been logged out successfully");
 });
-//update password
+
 exports.changePassword = catchAsync(async (req, res, next) => {
   const user = await userModel.findById(req.user._id).select("password");
-  //checking if the user pass all required values
   if (!req.body.oldPassword) {
     return res.redirect(
       "/panel/account/?error=your have to pass your old password in order to update your password"
@@ -114,12 +104,10 @@ exports.changePassword = catchAsync(async (req, res, next) => {
       "/panel/account/?error=your have to pass your new password in order to update your password"
     );
   }
-  //comparing password and confirm password
   if (req.body.newPassword != req.body.confirmNewPassword) {
     return res.redirect("/panel/account/?error=passwords are not same!");
   }
 
-  //comparing the old password with users password to make user acutal user wants to change it
   const pwdCompare = await req.user.comparePassowrd(
     req.body.oldPassword,
     user.password
@@ -130,13 +118,11 @@ exports.changePassword = catchAsync(async (req, res, next) => {
     );
   }
 
-  //comparing new password and old password | they cant be same
   if (await req.user.comparePassowrd(req.body.newPassword, user.password)) {
     return res.redirect(
       "/panel/account/?error=your new password could not be the same with your old one!"
     );
   }
-  //hashing password
   const hashedPassword = await req.user.hashPassword(req.body.newPassword);
   await userModel.findByIdAndUpdate(req.user._id, {
     password: hashedPassword,
@@ -146,7 +132,6 @@ exports.changePassword = catchAsync(async (req, res, next) => {
   const responseMsg = "your password has been changed successfully!";
   createAndSaveJwtToken(req.user, 200, responseMsg, req, res);
 });
-//forgot password - sending request to reset password
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt) {
     return res.status(401).render("reset_password", {
@@ -160,7 +145,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       title: "Reset Password",
     });
   }
-  //get the user with the email in request body
   const user = await userModel.findOne({ email: req.body.email.toLowerCase() });
   if (!user) {
     return res.status(404).render("reset_password", {
@@ -180,14 +164,12 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   const email = new EmailSender();
   await email.sendResetToken(resetURL);
-  //sending url back to the client
   res.status(201).render("reset_password", {
     success: "Reset link has been sent to your email successfully!",
     title: "Reset Password",
   });
 });
 
-//reset user password
 exports.resetPassword = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt) {
     return res.status(401).render("reset_password", {
@@ -199,19 +181,16 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.resetToken)
     .digest("hex");
-  //search for the user with this token
   const user = await userModel.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-  //check if the user was exist
   if (!user) {
     return res.status(401).render("reset_password", {
       error: "your password reset token is invalid!!",
       title: "Reset Password",
     });
   }
-  //check for the passwords in the body
   if (!req.body.password || !req.body.confirmPassword) {
     return res.status(401).render("reset_password", {
       error: "please enter your new password in order to reset your password!",
@@ -224,31 +203,24 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
       title: "Reset Password",
     });
   }
-  //checking password length
   if (req.body.password.length < 8 || req.body.password.length > 128) {
     return res.status(401).render("reset_password", {
       error: "password length must be lower than 128 and bigger than 7",
       title: "Reset Password",
     });
   }
-  //changing user field values and save new password
   user.password = await user.hashPassword(req.body.password);
   user.passwordChangedAt = new Date();
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save({});
-  /*return res.status(200).render("signin", {
-    title: "Sign in",
-    success: "Your password has been successfully reseted. You can now login",
-  });*/
   return res.redirect(
     200,
     "/user/signin?success=Your password has been successfully reseted. You can now login"
   );
 });
-//change the users email
+
 exports.changeEmail = catchAsync(async (req, res, next) => {
-  //if the input email was equal to user's current email, we will send this message
   if (req.body.email == req.user.email) {
     res
       .status(400)
@@ -275,7 +247,6 @@ exports.changeEmail = catchAsync(async (req, res, next) => {
 });
 //protect urls from users that are not logged in
 exports.protect = catchAsync(async (req, res, next) => {
-  //getting the token from cookies and check if it was there
   let token = req.cookies.jwt;
   if (!token) {
     return res
@@ -288,7 +259,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     token,
     process.env.JWT_SECRET_CODE
   );
-  //getting user with the id in jwt payload
   const user = await userModel.findById(decodedToken.id).select("-password");
 
   if (!user) {
@@ -297,7 +267,6 @@ exports.protect = catchAsync(async (req, res, next) => {
       .redirect("/user/signin?error=You need to login to perform this action");
   }
 
-  //check if the user changed its password after generating token or not
   if (user.changedPasswordAfter(decodedToken.iat)) {
     return res
       .status(401)
@@ -307,7 +276,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   next();
 });
 
-//restrict access to routes that are for admins
 exports.restrictAccess = catchAsync(async (req, res, next) => {
   const user = await getJwtPayload(req.cookies.jwt);
   if (user.role != "admin") {

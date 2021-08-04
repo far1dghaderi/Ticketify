@@ -5,9 +5,8 @@ const teamController = require("./../Controllers/TeamController");
 const authController = require("./../Controllers/authController");
 const viewController = require("./../Controllers/viewController");
 
-//This Routes are only accessible for signed in and admin users
 router.use(authController.protect, authController.restrictAccess);
-//Create new team
+
 router.post(
   "/",
   teamController.uploadCompetitionLogo,
@@ -15,7 +14,6 @@ router.post(
   teamController.createTeam
 );
 
-//update ream
 router.post(
   "/update/:id",
   teamController.uploadCompetitionLogo,
@@ -23,6 +21,5 @@ router.post(
   teamController.updateTeam
 );
 
-//deleting a team
 router.get("/delete/:id", teamController.deleteTeam);
 module.exports = router;

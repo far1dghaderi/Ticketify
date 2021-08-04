@@ -12,7 +12,7 @@ router.post(
   stadiumController.resizeAndSaveStadiumImg,
   stadiumController.createStadium
 );
-//update a stadium
+
 router
   .route("/update/:id")
   .post(
@@ -20,6 +20,6 @@ router
     stadiumController.resizeAndSaveStadiumImg,
     stadiumController.updateStadium
   );
-//delete a stadium
+
 router.get("/delete/:id", stadiumController.deleteStadium);
 module.exports = router;

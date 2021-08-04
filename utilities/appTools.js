@@ -5,7 +5,7 @@ const { promisify } = require("util");
 
 //get jwt payload
 exports.getJwtPayload = async (token) => {
-  //decoding token and get id
+  //decoding token and get users id
   return await promisify(jwt.verify)(token, process.env.JWT_SECRET_CODE);
 };
 

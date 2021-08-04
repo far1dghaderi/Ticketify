@@ -13,7 +13,6 @@ router.post(
   compController.createCompetition
 );
 
-//update a competiton
 router
   .route("/update/:id")
   .post(
@@ -22,7 +21,6 @@ router
     compController.updateComp
   );
 
-//update a competiton
 router.get("/delete/:id", compController.deleteComp);
 
 module.exports = router;

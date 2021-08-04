@@ -5,10 +5,9 @@ const ticketModel = require("../Models/ticketModel");
 const userModel = require("../Models/userModel");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 
-//this field will update user information except security fields like pwd, confirmNumber and also contact information ...
+//this function will update user information except security fields like pwd, confirmNumber and also contact information ...
 exports.updateUser = catchAsync(async (req, res, next) => {
   const userObj = {};
-  //applying new values to the user model
   userObj.firstname = req.body.firstname;
   userObj.lastname = req.body.lastname;
   userObj.idNumber = req.body.idNumber == "" ? undefined : req.body.idNumber;
@@ -33,7 +32,6 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     );
 });
 
-//get all users
 exports.getUsers = catchAsync(async (req, res, next) => {
   const users = await userModel
     .find()
@@ -49,7 +47,6 @@ exports.getUsers = catchAsync(async (req, res, next) => {
   });
 });
 
-//get All tickets that belongs to a user
 exports.getUserTickets = catchAsync(async (req, res, next) => {
   let tickets = [];
   //get match details with the ID that is placed with tickets

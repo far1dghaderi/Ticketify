@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const stadiumSchema = new mongoose.Schema(
   {
-    //This field specifies stadium type
     sport: {
       type: String,
       enum: {
@@ -24,10 +23,9 @@ const stadiumSchema = new mongoose.Schema(
       required: [true, "a stadium must have a name"],
     },
     stands: [
-      //This part will specify diffrent parts of stadium
+      //This part will specify floors and stands of the stadium
       //Each stadium has at least 1 floor
       {
-        //this field specifies a id for each stand
         id: {
           type: String,
           required: [true, "each stand must has a id"],
@@ -35,7 +33,6 @@ const stadiumSchema = new mongoose.Schema(
           trim: true,
           toUpper: true,
         },
-        //this field specifies the location that stand placed in
         location: {
           type: String,
           required: [true, "each stand must has a stand location"],
@@ -45,7 +42,6 @@ const stadiumSchema = new mongoose.Schema(
               "each stand must be either in west, east, south or north side of a stadium",
           },
         },
-        //this field specifies the floor that stand located in
         floor: {
           type: String,
           enum: {
@@ -55,14 +51,12 @@ const stadiumSchema = new mongoose.Schema(
           },
           required: [true, "each stand must has a floor"],
         },
-        //this field specifies the capacity of each stand
         capacity: {
           type: Number,
           required: [true, "each stand must has a certain capacity"],
           max: [40000, "a stand capacity could not be more than 40000 "],
           min: [1, "a stand must has at least capacity for 1 person"],
         },
-        //this field specifes price of each stand
         //note: entry prices are recognzied as USD
         price: {
           type: Number,
@@ -70,16 +64,13 @@ const stadiumSchema = new mongoose.Schema(
           min: [0, "stand price could not be lower than 0"],
           max: [1000, "stand price could not be more than 1000 USD"],
         },
-        //this stand specifies if the stand is available or not
         availablity: {
           type: Boolean,
           default: true,
         },
-        //
       },
     ],
 
-    //Country, province and city that the stadium placed in
     country: {
       type: String,
       minLength: [2, "country name must have more than 2 characters"],
@@ -107,9 +98,7 @@ const stadiumSchema = new mongoose.Schema(
   },
   { getters: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
-//this method will generate stands
 stadiumSchema.methods.createStands = function (requestBody) {
-  //get stands from the body
   let standKeys = Object.keys(requestBody).filter((key) => {
     return key.split("_")[0] == "stand";
   });
@@ -155,7 +144,7 @@ stadiumSchema.methods.createStands = function (requestBody) {
         }
       }
     });
-    //push stand to stands array
+
     stands.push({ ...standObj });
   });
 
@@ -169,15 +158,15 @@ stadiumSchema.virtual("capacity").get(function () {
   });
   return capacity;
 });
-//get stand price
+
 stadiumSchema.methods.checkStand = (stands, standID) => {
   return stands.find((stand) => {
     return stand.id == standID;
   });
 };
 //this method will check if the stand exist or not
+//TOFIX
 stadiumSchema.methods.getStandCapacity = (stands, standID) => {
-  //Get the stand from the stadium stands
   let stand = stands.find((stand) => {
     if (stand.availablity) {
       return stand.id === standID;

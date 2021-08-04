@@ -17,7 +17,6 @@ exports.showAccountMenu = catchAsync(async (req, res, next) => {
   next();
 });
 
-//?index page
 exports.getMatches = catchAsync(async (req, res, next) => {
   //Quering DB for matches that are Visible and theire buyable date is gt than current date
   let query = matchModel.find({
@@ -39,14 +38,12 @@ exports.getMatches = catchAsync(async (req, res, next) => {
     select: "name country city stands capacity sport ",
   });
   const matches = await query;
-  //count all documents
   let count = await matchModel.countDocuments({
     $and: [
       { visibleDate: { $lt: new Date() } },
       { endBuyDate: { $gt: new Date() } },
     ],
   });
-  //GET LOWEST PRICE
   res.status(200).render("index", {
     matches,
     title: "Home page",
@@ -61,7 +58,6 @@ exports.getMatches = catchAsync(async (req, res, next) => {
 });
 
 //#region Auth view controllers
-//?show signin form
 exports.showSigninForm = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt)
     return res.redirect("/?error=You have been already logged in");
@@ -72,7 +68,6 @@ exports.showSigninForm = catchAsync(async (req, res, next) => {
   });
 });
 
-//?show signup form
 exports.showSignupForm = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt)
     return res.redirect("/?error=You have been already logged in");
@@ -81,7 +76,7 @@ exports.showSignupForm = catchAsync(async (req, res, next) => {
     error: req.query.error,
   });
 });
-//?show reset password form
+
 exports.showResetPasswordForm = catchAsync(async (req, res, next) => {
   if (req.cookies.jwt) {
     return res.redirect(
@@ -94,7 +89,6 @@ exports.showResetPasswordForm = catchAsync(async (req, res, next) => {
   });
 });
 
-//?show change password form for reseting the password
 exports.showChangePasswordForm = catchAsync(async (req, res, next) => {
   //check if the user is logged in
   if (req.cookies.jwt) {
@@ -107,12 +101,12 @@ exports.showChangePasswordForm = catchAsync(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.resetToken)
     .digest("hex");
-  //search for the user with this token
+
   const user = await userModel.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
   });
-  //check if the user with that reset token was exist
+
   if (!user) {
     res.redirect(
       "/user/resetpassword?error=your password reset token is invalid! generate new one"
@@ -127,7 +121,6 @@ exports.showChangePasswordForm = catchAsync(async (req, res, next) => {
 
 //user panel view controllers
 //#region  user panel
-//? user panel dashboard controller
 exports.showUserDashboard = catchAsync(async (req, res, next) => {
   //get the number of tickets that user boughts and sum of theire prices
   const count = req.user.tickets.length;
@@ -135,7 +128,7 @@ exports.showUserDashboard = catchAsync(async (req, res, next) => {
   req.user.tickets.forEach((ticket) => {
     spent += ticket.price;
   });
-  //sort the tickets array of the user by its dates
+  //sort the tickets array of the user by theire dates
   let tickets = req.user.tickets.sort((ticket1, ticket2) => {
     return ticket2.matchDate - ticket1.matchDate;
   });
@@ -146,14 +139,12 @@ exports.showUserDashboard = catchAsync(async (req, res, next) => {
   });
 
   let match;
-  //get the ticket that has the closest match date
   if (tickets[0]) {
     match = await matchModel.findById(tickets[0].match).populate({
       path: "stadium",
       select: "name country city address ",
     });
   }
-  //get all tickets from the current user
 
   res.render("panel_dashboard", {
     title: "Dashboard",
@@ -183,9 +174,7 @@ exports.showUserDetails = catchAsync(async (req, res, next) => {
 
 //#region Admin panel view controllers
 
-//? admin panel dashboard controller
 exports.showAdminDashboard = catchAsync(async (req, res, next) => {
-  //  count different items in the website for showing them in the admin dashboard
   let usersCount = await userModel.count();
   let matchesCount = await matchModel.count();
   let ticketsCount = await ticketModel.count();
@@ -269,8 +258,6 @@ exports.showAdminDashboard = catchAsync(async (req, res, next) => {
     statistics,
   });
 });
-
-//? admin panel show create comp form
 
 exports.showCompetitionForm = catchAsync(async (req, res, next) => {
   return res.render("adminpanel_C_competition", {

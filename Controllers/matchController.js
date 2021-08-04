@@ -3,7 +3,6 @@ const sharp = require("sharp");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
-// const QueryFeatures = require("./../utilities/queryFeatures");
 const authController = require("./authController");
 const matchModel = require("./../Models/matchModel");
 const teamModel = require("./../Models/teamModel");
@@ -49,9 +48,7 @@ exports.resizeAndSaveCompImages = catchAsync(async (req, res, next) => {
   }
 });
 
-//Creating a match
 exports.createMatch = catchAsync(async (req, res, next) => {
-  //creating an instance of match model and consturcuring its keys
   let match = new matchModel({
     stadium: req.body.stadium,
     competition: req.body.competition,
@@ -66,13 +63,11 @@ exports.createMatch = catchAsync(async (req, res, next) => {
   match.homeTeam.id = req.body.homeTeam;
   match.awayTeam.id = req.body.awayTeam;
 
-  //check if the home and away teams are same
   if (String(req.body.homeTeam) == String(req.body.awayTeam)) {
     return res.redirect(
       "/user/adminpanel/matchForm?error=match teams could not be the same"
     );
   }
-  //check if teams sport type is same and then add required values to home and away team field in schema
   const homeTeam = await teamModel.findById(req.body.homeTeam);
   const awayTeam = await teamModel.findById(req.body.awayTeam);
   if (homeTeam.sport != awayTeam.sport) {
@@ -81,13 +76,11 @@ exports.createMatch = catchAsync(async (req, res, next) => {
     );
   }
 
-  //set other home and away team values in  match schema
   match.homeTeam.name = homeTeam.name;
   match.homeTeam.logo = homeTeam.logo;
   match.awayTeam.name = awayTeam.name;
   match.awayTeam.logo = awayTeam.logo;
 
-  //check if the stadium sport type is same with the Teams sport type
   const stadium = await stadiumModel.findById(req.body.stadium);
 
   if (stadium.sport != homeTeam.sport) {
@@ -95,11 +88,9 @@ exports.createMatch = catchAsync(async (req, res, next) => {
       "/user/adminpanel/matchForm?error=Teams sport type must be the same with the Stadium's sport"
     );
   }
-  //check if the competition sport type is same with match sport type
   const comp = await compModel.findById(match.competition);
 
   match.fixture = comp.name + " - " + req.body.fixture;
-  //set a slug for the match
   let matchSlug = `${homeTeam.name}-${awayTeam.name}-${
     comp.name
   }-${match.matchDate.toDateString()}-${new Date().getUTCMilliseconds()}`
@@ -113,7 +104,6 @@ exports.createMatch = catchAsync(async (req, res, next) => {
   );
 });
 
-//Get all matches
 exports.getMatches = catchAsync(async (req, res, next) => {
   const matches = await matchModel.find();
   res.status(201).render("adminpanel_matches", {
@@ -124,11 +114,10 @@ exports.getMatches = catchAsync(async (req, res, next) => {
     matches,
   });
 });
-//update a match
+
 exports.updateMatch = catchAsync(async (req, res, next) => {
-  //getting the match with the ID that the user passed via URL
   const match = await matchModel.findById(req.params.id);
-  //check if the passed ID was correct or not
+
   if (!match) {
     return res
       .status(403)
@@ -156,7 +145,6 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
           `/user/adminpanel/update/matches/${req.params.id}?error=Away team id was invalid!`
         );
     }
-    //compare teams sport type
     if (homeTeam.sport != awayTeam.sport) {
       return res
         .status(403)
@@ -167,9 +155,8 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
   }
   //- stadium ID is not updatable after the process of match ticket selling has begin.
 
-  //check if the user wants to change the stadium
   if (req.body.stadium != match.stadium) {
-    //User can only change the stadium before of ticket selling for the match has begin
+    //User can only change the stadium before that ticket selling for the match has begin
     if (match.startBuyDate <= new Date()) {
       return res
         .status(403)
@@ -178,7 +165,7 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
         );
     }
     const stadium = await stadiumModel.findById(req.body.stadium);
-    //check if the stadium id was correct!
+
     if (!stadium) {
       return res
         .status(403)
@@ -199,29 +186,25 @@ exports.updateMatch = catchAsync(async (req, res, next) => {
     match.fixture.split("-")[0] = comp.name;
   }
 
-  //check if user changes the fixture
   if (match.fixture.split("-")[1].trim() != req.body.fixture) {
     match.fixture =
       match.fixture.split("-")[0].trim() + " - " + req.body.fixture.trim();
   }
-  //set new dates if they were exist in the body or use the previous dates
 
   match.startBuyDate = req.body.startBuyDate || match.startBuyDate;
   match.matchDate = req.body.matchDate || match.matchDate;
   match.visibleDate = req.body.visibleDate || match.visibleDate;
   match.endBuyDate = req.body.endBuyDate || match.endBuyDate;
 
-  //check if the user changes the cover
   if (req.body.cover) {
     match.cover = req.body.cover;
   }
-  const s = await match.save();
+  await match.save();
   return res.redirect(
     `/user/adminpanel/update/matches/${match._id}?success=match has been updated successfully!`
   );
 });
 
-//?get One match
 exports.getMatch = catchAsync(async (req, res, next) => {
   const match = await matchModel
     .findOne({ slug: req.params.id })
@@ -230,7 +213,7 @@ exports.getMatch = catchAsync(async (req, res, next) => {
       select: "name country city province stands capacity address image ",
     })
     .populate({ path: "competition", select: "logo" });
-  //check if the match exists
+
   if (!match) {
     return res.status(404).redirect("/?there is no match with this id!");
   }
@@ -249,16 +232,13 @@ exports.getMatch = catchAsync(async (req, res, next) => {
         "/?error='There is no time left for buying ticket for this match"
       );
   }
-  //get number of floors
   let floors = [];
   match.stadium.stands.forEach((stand) => {
     if (!floors.includes(stand.floor)) floors.push(stand.floor);
   });
   floors = floors.sort();
-  //get stands for each floor
   let stands = { west: [], east: [], north: [], south: [] }; //* { id: "f", location: "s", price: "125", floor: "1" }
 
-  //dividing stands by theire stand location
   match.stadium.stands.forEach((stand) => {
     if (stand.availablity) {
       let currentStand = {
@@ -312,11 +292,8 @@ exports.getMatch = catchAsync(async (req, res, next) => {
   Object.keys(stands).forEach((key) => {
     if (stands[key].length == 0) delete stands[key];
   });
-  //if match ticket selling hasn't been started
   if (match.startBuyDate > new Date()) status = "notStarted";
-  //if the matchs ticket selling has been started
   else if (match.startBuyDate < new Date()) status = "started";
-  // return res.send(floors);
   res.status(201).render("match", {
     title: "match",
     match,
@@ -327,7 +304,6 @@ exports.getMatch = catchAsync(async (req, res, next) => {
   });
 });
 
-//get match Details for editing
 exports.getMatchDetails = catchAsync(async (req, res, next) => {
   const match = await matchModel.findById(req.params.id);
   res.render("adminpanel_E_match", {
@@ -340,7 +316,6 @@ exports.getMatchDetails = catchAsync(async (req, res, next) => {
   });
 });
 
-//delete match
 //* if the match has at least one sold ticket, instead of deleting it will be hide for preventing any loss of data
 
 exports.deleteMatch = catchAsync(async (req, res, next) => {

@@ -32,14 +32,13 @@ exports.sendConfirmationCode = catchAsync(async (req, res, next) => {
 
 exports.verifyEmail = catchAsync(async (req, res, next) => {
   const user = await userModel.findById(req.user._id);
-  //if the email was activated before, we will break the operation
+
   if (user.verifiedEmail) {
     return res.status(403).json({
       status: "fail",
       message: "This account's email has been activated before",
     });
   }
-  //if user dosen't have an activation code, we will ask for doing that
   if (!user.emailConfirmationCode) {
     return res.status(403).json({
       status: "fail",
@@ -47,7 +46,7 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
         "You don't have an activation code, please register it for activation your account",
     });
   }
-  //if the time of confirmation code has been expired, we will send an error back to the client
+
   if (user.emailConfiramtionCodeExpiryDate < new Date()) {
     return res.status(403).json({
       status: "fail",

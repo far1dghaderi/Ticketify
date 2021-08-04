@@ -8,14 +8,13 @@ router.use(viewController.showAccountMenu);
 router.route("/:id").get(matchController.getMatch);
 router.use(authController.protect, authController.restrictAccess);
 
-//creating matches
 router.post(
   "/",
   matchController.uploadMatchLogo,
   matchController.resizeAndSaveCompImages,
   matchController.createMatch
 );
-//updating matches
+
 router
   .route("/update/:id")
   .post(
@@ -23,6 +22,6 @@ router
     matchController.resizeAndSaveCompImages,
     matchController.updateMatch
   );
-//delete matches
+
 router.route("/delete/:id").get(matchController.deleteMatch);
 module.exports = router;

@@ -37,7 +37,7 @@ exports.purchaseTicket = catchAsync(async (req, res, next) => {
       );
   }
 
-  //getting the match that the user want to buy its ticket
+  //getting the match that the user wants to buy its ticket
   const match = await matcheModel.findById(ticket.match);
   if (!match) {
     return res.status(400).redirect(`/?error=input match is invalid`);
@@ -68,7 +68,6 @@ exports.purchaseTicket = catchAsync(async (req, res, next) => {
       .status(400)
       .redirect(`/?error=ticket selling for this match has been finished!!`);
   }
-  //getting match's stadium
   const stadium = await stadiumModel.findById(match.stadium);
   const stands = stadium.stands;
   //checking the existance of entered stand ID
@@ -127,7 +126,6 @@ exports.purchaseTicket = catchAsync(async (req, res, next) => {
     },
   });
   const user = await userModel.findById(ticket.user);
-  // if (user.tickets) {
   await userModel.findByIdAndUpdate(ticket.user, {
     $push: {
       tickets: {

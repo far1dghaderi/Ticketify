@@ -21,11 +21,11 @@ exports.uploadCompetitionLogo = upload.fields([
   { name: "logo", maxCount: 1 },
   { name: "bgImage", maxCount: 1 },
 ]);
-//----------
+
 exports.resizeAndSaveCompetitionImages = catchAsync(async (req, res, next) => {
   if (!req.files.logo && !req.files.bgImage) return next();
   if (req.files.bgImage) {
-    //generating teams BG image and saving it into the DB
+    //generating teams BG image for saving it into the DB
     const teamBgFileName = `${Date.now()}-background-${req.body.name.replace(
       " ",
       "-"
@@ -40,7 +40,7 @@ exports.resizeAndSaveCompetitionImages = catchAsync(async (req, res, next) => {
     req.body.bgImage = teamBgFileName;
   }
   if (req.files.logo) {
-    //generating teams logo name and saving it into the DB
+    //generating teams logo name for saving it into the DB
     const teamLogoFileName = `${Date.now()}-logo-${req.body.name.replace(
       " ",
       "-"
@@ -53,7 +53,7 @@ exports.resizeAndSaveCompetitionImages = catchAsync(async (req, res, next) => {
   }
   next();
 });
-//get all teams
+
 exports.getTeams = catchAsync(async (req, res, next) => {
   const teams = await teamModel.find();
   res.status(201).render("adminpanel_teams", {
@@ -66,7 +66,7 @@ exports.getTeams = catchAsync(async (req, res, next) => {
     success: req.query.success,
   });
 });
-//cteate a new team
+
 exports.createTeam = catchAsync(async (req, res, next) => {
   await teamModel.create(req.body);
   return res.redirect(
@@ -74,7 +74,6 @@ exports.createTeam = catchAsync(async (req, res, next) => {
   );
 });
 
-//get team by id
 exports.getTeamDetails = catchAsync(async (req, res, next) => {
   const team = await teamModel.findById(req.params.id);
   if (!team)
@@ -90,7 +89,6 @@ exports.getTeamDetails = catchAsync(async (req, res, next) => {
   });
 });
 
-//update team
 exports.updateTeam = catchAsync(async (req, res, next) => {
   const team = await teamModel.findById(req.params.id);
   if (!team)
@@ -105,10 +103,9 @@ exports.updateTeam = catchAsync(async (req, res, next) => {
   return res.redirect(`/user/adminpanel/update/teams/${team._id}`);
 });
 
-//delete team
 exports.deleteTeam = catchAsync(async (req, res, next) => {
   const team = await teamModel.findById(req.params.id);
-  //check if the id was correct
+
   if (!team) {
     return res
       .status(404)

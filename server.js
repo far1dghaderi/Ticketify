@@ -5,17 +5,16 @@ const dotenv = require("dotenv");
 dotenv.config({ path: "./config.env" });
 //Connecting to Data base
 const connectionString = process.env.DATABASE_CONNECTION_STRING;
-mongoose
-  .connect(connectionString, {
+const startApp = async () => {
+  await mongoose.connect(connectionString, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-  })
-  .then(() => {
-    console.log("app has been connected to database successfully!");
   });
+  app.listen(process.env.PORT, () => {
+    console.log("Application has been started successfully...");
+  });
+};
 
-const server = app.listen(process.env.PORT, () => {
-  console.log("server is listening...");
-});
+startApp();

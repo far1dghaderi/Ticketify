@@ -1,4 +1,3 @@
-//adding modules
 const express = require("express");
 const helmet = require("helmet");
 const app = express();
@@ -10,13 +9,12 @@ const compression = require("compression");
 const cors = require("cors");
 const pug = require("pug");
 
-//adding application moduels
 const globalErrorHandler = require("./Controllers/errorController");
 const { getJwtPayload } = require("./utilities/appTools");
-//set render engine
+
 app.set("view engine", "pug");
 app.set("views", "./Views");
-//adding route files
+
 const userRoutes = require("./Routes/userRoutes");
 const stadiumRoutes = require("./Routes/stadiumRoutes");
 const teamRoutes = require("./Routes/teamRoutes");
@@ -30,21 +28,14 @@ const { AppError, catchAsync } = require("./utilities/errorHandler");
 const { hpkp } = require("helmet");
 //adding static files folder to app middleware
 app.use(express.static(`${__dirname}/static`));
-//adding readable datas from body to middleware
+
 app.use(express.json({ limit: "15kb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-// app.use(express.urlencoded());-
-
-//prevent data sanitization against NoSQL query injection
 app.use(sanitize());
-
 app.use(cors());
 app.options("*", cors());
-//prevent data sanitization against XSS
 app.use(xss());
-
-//preventing parameter pollution
 app.use(hpp());
 app.use(compression());
 
@@ -60,7 +51,6 @@ app.use("/tickets", ticketRoutes);
 app.all(
   "*",
   catchAsync(async (req, res, next) => {
-    //check if the user has been logged in
     let user;
     if (req.cookies.jwt) {
       user = await getJwtPayload(req.cookies.jwt);

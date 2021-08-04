@@ -129,8 +129,7 @@ const userSchema = new mongoose.Schema({
   },
   emailConfirmationCode: String,
   emailConfiramtionCodeExpiryDate: Date,
-  //This field contains coupons that user used and times that user used them
-  coupons: [{ type: mongoose.Types.ObjectId, ref: "coupons" }],
+
   //This field contains tickets for mathces that are not finished yet
   tickets: [
     {
@@ -152,13 +151,13 @@ const userSchema = new mongoose.Schema({
   ],
 });
 //encrypting the user`s password
-userSchema.pre("save", async function (next) {
-  //this fucntion will only runs if the password is modified
-  if (!this.isModified("password")) return next();
+// userSchema.pre("save", async function (next) {
+//   //this fucntion will only runs if the password is modified
+//   if (!this.isModified("password")) return next();
 
-  this.confirmPassword = undefined;
-  next();
-});
+//   this.confirmPassword = undefined;
+//   next();
+// });
 
 // userSchema.pre("updateOne", async function (next) {
 //   const docToUpdate = await this.model.updateOne(this.getQuery());
@@ -171,19 +170,18 @@ userSchema.index(
   { idNumber: 0 },
   { passportNumber: 0 }
 );
-//hashing password
+
 userSchema.methods.hashPassword = async (password) => {
-  //validating password length before hashing it
   return await bcrypt.hash(password, 14);
 };
-//compare passwords
+
 userSchema.methods.comparePassowrd = async function (
   candidatePassword,
   hashedPassword
 ) {
   return await bcrypt.compare(candidatePassword, hashedPassword);
 };
-//change password after generating jwt token
+
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   const changedTimestamp = parseInt(
     this.passwordChangedAt.getTime() / 1000,
@@ -192,7 +190,6 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   return JWTTimestamp < changedTimestamp;
 };
 
-//create reset password token
 userSchema.methods.creatPasswordResetToken = async function () {
   const resetToken = await crypto.randomBytes(32).toString("hex");
   //encrypting reset token

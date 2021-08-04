@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const matchSchema = new mongoose.Schema({
-  //specifies match home and away teams
   homeTeam: {
     name: { type: String, required: [true, "Each team must have a name!"] },
     logo: { type: String, required: [true, "Each team must have a logo!"] },
@@ -87,7 +86,7 @@ const matchSchema = new mongoose.Schema({
   isDisabled: {
     type: Boolean,
     default: false,
-  }, //This field specifies stadium type
+  },
   sport: {
     type: String,
     enum: {
@@ -117,7 +116,6 @@ const matchSchema = new mongoose.Schema({
   ],
 });
 matchSchema.index({ slug: 0 });
-//check if stadium type is same with teams sport type
 const matchModel = mongoose.model("matches", matchSchema);
 
 module.exports = matchModel;
