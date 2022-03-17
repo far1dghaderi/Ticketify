@@ -6,7 +6,7 @@ dotenv.config({ path: "./config.env" });
 //Connecting to Data base
 const connectionString = process.env.DATABASE_CONNECTION_STRING;
 const startApp = async () => {
-  await mongoose.connect(connectionString, {
+  await mongoose.connect(process.env.DATABASE_CONNECTION_STRING, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useCreateIndex: true,
