@@ -27,7 +27,7 @@ const authRoutes = require("./Routes/authRoutes");
 const { AppError, catchAsync } = require("./utilities/errorHandler");
 const { hpkp } = require("helmet");
 
-app.use(express.static(`${__dirname}/static`));
+app.use(express.static(`${__dirname}/Static`));
 
 app.use(express.json({ limit: "15kb" }));
 app.use(express.urlencoded({ extended: true }));
