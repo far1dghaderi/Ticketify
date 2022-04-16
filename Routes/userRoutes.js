@@ -1,10 +1,14 @@
 const express = require("express");
+const path = require("path");
 const router = express.Router();
 const authController = require("./../Controllers/authController");
 const userController = require("./../Controllers/userController");
 const viewController = require("./../Controllers/viewController");
 const matchController = require("./../Controllers/matchController");
-const teamController = require("./../Controllers/teamController");
+const teamController = require(path.join(
+  __dirname,
+  "/../Controllers/teamController"
+));
 const competitionContoller = require("./../Controllers/competitionController");
 const stadiumController = require("./../Controllers/stadiumController");
 
