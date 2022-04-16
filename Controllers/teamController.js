@@ -1,8 +1,8 @@
 const multer = require("multer");
 const sharp = require("sharp");
-const teamModel = require("./../Models/teamModel");
-const { catchAsync } = require("./../utilities/errorHandler");
-const { removeFile } = require("./../utilities/appTools");
+const teamModel = require("../Models/teamModel");
+const { catchAsync } = require("../utilities/errorHandler");
+const { removeFile } = require("../utilities/appTools");
 
 //configuring multer for uploading images
 const multerStorage = multer.memoryStorage();
