@@ -3,7 +3,7 @@ const multer = require("multer");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 const competitionModel = require("./../Models/competitionModel");
 const { removeFile } = require("./../utilities/appTools");
-//configuring multer for uploading images
+
 const multerStorage = multer.memoryStorage();
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
@@ -48,7 +48,6 @@ exports.resizeAndSaveCompImages = catchAsync(async (req, res, next) => {
   next();
 });
 
-//Creating competitions
 exports.createCompetition = catchAsync(async (req, res, next) => {
   await competitionModel.create(req.body);
   res.redirect(
@@ -56,7 +55,6 @@ exports.createCompetition = catchAsync(async (req, res, next) => {
   );
 });
 
-//get all Competitions
 exports.getCompetitions = catchAsync(async (req, res, next) => {
   const competitions = await competitionModel.find();
   res.status(201).render("adminpanel_competitions", {
@@ -68,10 +66,8 @@ exports.getCompetitions = catchAsync(async (req, res, next) => {
   });
 });
 
-//get one competition
 exports.getCompetitionDetails = catchAsync(async (req, res, next) => {
   const competition = await competitionModel.findById(req.params.id);
-  //check if the comp id was correct
   if (!competition) {
     return res.redirect(
       "/user/adminpanel/competitions?error=Invalid competition id!"
@@ -84,11 +80,9 @@ exports.getCompetitionDetails = catchAsync(async (req, res, next) => {
     competition,
   });
 });
-
-//update competition details
 exports.updateComp = catchAsync(async (req, res, next) => {
   const competition = await competitionModel.findById(req.params.id);
-  //check if the comp id was correct or not
+
   if (!competition) {
     return res.redirect(
       "/user/adminpanel/competitions?error=Invalid competition id!"
@@ -103,7 +97,7 @@ exports.updateComp = catchAsync(async (req, res, next) => {
 
 exports.deleteComp = catchAsync(async (req, res, next) => {
   const competition = await competitionModel.findById(req.params.id);
-  //check if the comp id was correct or not
+
   if (!competition) {
     return res.redirect(
       "/user/adminpanel/competitions?error=Invalid competition id!"

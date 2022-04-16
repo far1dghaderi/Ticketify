@@ -26,7 +26,7 @@ const authRoutes = require("./Routes/authRoutes");
 
 const { AppError, catchAsync } = require("./utilities/errorHandler");
 const { hpkp } = require("helmet");
-//adding static files folder to app middleware
+
 app.use(express.static(`${__dirname}/static`));
 
 app.use(express.json({ limit: "15kb" }));
@@ -39,7 +39,6 @@ app.use(xss());
 app.use(hpp());
 app.use(compression());
 
-//adding routes to middleware
 app.use("/", viewRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
@@ -65,6 +64,5 @@ app.all(
   })
 );
 
-//handling application errors with global error handler
 app.use(globalErrorHandler);
 module.exports = app;
