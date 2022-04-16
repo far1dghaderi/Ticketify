@@ -19,7 +19,7 @@ const createAndSaveJwtToken = (user, statuscode, responseMsg, req, res) => {
       new Date().getDate() + process.env.COOKIE_EXPIRES_IN
     ),
     httpOnly: true,
-    secure: req.secure,
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
   return res.status(statuscode).redirect(`/?success=${responseMsg}`);
 };
