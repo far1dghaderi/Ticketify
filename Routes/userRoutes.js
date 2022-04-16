@@ -4,9 +4,9 @@ const authController = require("./../Controllers/authController");
 const userController = require("./../Controllers/userController");
 const viewController = require("./../Controllers/viewController");
 const matchController = require("./../Controllers/matchController");
-const teamController = require("../Controllers/teamController");
-const competitionContoller = require("../Controllers/competitionController");
-const stadiumController = require("../Controllers/stadiumController");
+const teamController = require("./../Controllers/teamController");
+const competitionContoller = require("./../Controllers/competitionController");
+const stadiumController = require("./../Controllers/stadiumController");
 
 router.use(viewController.showAccountMenu);
 

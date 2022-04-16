@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 const userModel = require("./../Models/userModel");
 const EmailSender = require("./../utilities/email");
-const { getJwtPayload } = require("../utilities/appTools");
+const { getJwtPayload } = require("./../utilities/appTools");
 
 const signJWT = (userID, userRole) => {
   return jwt.sign({ id: userID, role: userRole }, process.env.JWT_SECRET_CODE, {

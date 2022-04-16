@@ -1,6 +1,6 @@
 const multer = require("multer");
 const sharp = require("sharp");
-const userModel = require("../Models/userModel");
+const userModel = require("./../Models/userModel");
 const stadiumModel = require("./../Models/stadiumModel");
 const matchModel = require("./../Models/matchModel");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");

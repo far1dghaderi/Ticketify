@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const { catchAsync, AppError } = require("../utilities/errorHandler");
+const { catchAsync, AppError } = require("./../utilities/errorHandler");
 const { reset } = require("chalk");
 const chalk = require("chalk");
 const userSchema = new mongoose.Schema({

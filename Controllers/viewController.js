@@ -1,11 +1,11 @@
 const crypto = require("crypto");
-const userModel = require("../Models/userModel");
+const userModel = require("./../Models/userModel");
 const matchModel = require("./../Models/matchModel");
 const ticketModel = require("./../Models/ticketModel");
 const compModel = require("./../Models/competitionModel");
 const QueryFeatures = require("./../utilities/queryFeatures");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
-const { getJwtPayload } = require("../utilities/appTools");
+const { getJwtPayload } = require("./../utilities/appTools");
 
 //? show account operatin menu in navbar for logged in users
 exports.showAccountMenu = catchAsync(async (req, res, next) => {

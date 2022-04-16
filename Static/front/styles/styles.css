@@ -1051,7 +1051,7 @@ main .match-cover-container img {
   width: 100%;
   height: calc(100vh - 50px);
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("../images/website/login-up-bg.jpg");
+    url("./../images/website/login-up-bg.jpg");
   background-size: cover;
   margin: 0;
   justify-content: center;

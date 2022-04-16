@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const viewController = require("../Controllers/viewController");
+const viewController = require("./../Controllers/viewController");
 
 router.use(viewController.showAccountMenu);
 router.route("/").get(viewController.getMatches);

@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
-const matchModel = require("../Models/matchModel");
-const ticketModel = require("../Models/ticketModel");
-const userModel = require("../Models/userModel");
+const matchModel = require("./../Models/matchModel");
+const ticketModel = require("./../Models/ticketModel");
+const userModel = require("./../Models/userModel");
 const { catchAsync, AppError } = require("./../utilities/errorHandler");
 
 //this function will update user information except security fields like pwd, confirmNumber and also contact information ...

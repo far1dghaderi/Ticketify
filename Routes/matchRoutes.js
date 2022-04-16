@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const matchController = require("./../Controllers/matchController");
 const authController = require("./../Controllers/authController");
-const viewController = require("../Controllers/viewController");
+const viewController = require("./../Controllers/viewController");
 
 router.use(viewController.showAccountMenu);
 router.route("/:id").get(matchController.getMatch);
