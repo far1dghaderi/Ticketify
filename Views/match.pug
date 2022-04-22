@@ -51,10 +51,10 @@ block content
                 each floor,fIndex in floors
                     - let id = `tickets-container-${floor}`
                     div.tickets-container.flex(id=id)
-                        span.notes if you're not familiar with stands namings, please view our
+                        span.notes if you're not familiar with stand namings, please view our
                             |
                             a(href="#")  stands guide 
-                        span.notes Click on the stand that you want to reserve, then you can purchase it 
+                        span.notes Click on the stand that you want to reserve, then you can reserve it easily
                         div.stand-container.flex
                             - const locations = Object.keys(stands);
                             each location in locations
@@ -84,12 +84,12 @@ block content
                             input(type="submit" value="Pay and Reserve").purchase-btn
 
                     div.alert-section
-                        p  Please note that if you pay for the Ticket, theres no cash back for any reason! so make sure before attemping to pay
+                        p  Please note that if you pay for the Ticket, there is no cash back for any reason! please make sure before attemping to pay
                         span Read more in our 
                             a(href="#") Terms and Conditions 
             else if (status=="notStarted") 
                 section.purchase-alert-box.flex
-                    span You can't reserve ticket for this match, Because ticket selling proccess for this match hasn'  t been started yet. it will starts in:
+                    span You can't reserve a ticket for this match, Because the ticket selling process for this match hasn't started yet. it will start in:
                     div.count-down(data-date=`${match.startBuyDate}`)
                         span#days 
                         | 
