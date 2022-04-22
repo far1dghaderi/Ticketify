@@ -48,7 +48,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     "your account has been created successfully! you are now logged in";
   createAndSaveJwtToken(user, 201, responseMsg, req, res);
 });
-exports.login = catchAsync(async (req, res, next) => {
+exports.login = async (req, res, next) => {
   if (req.cookies.jwt)
     return res.redirect("/?error=You have been already logged in!");
   if (!req.body.email) {
@@ -79,7 +79,7 @@ exports.login = catchAsync(async (req, res, next) => {
       error: "Inccorect credentials, please try again",
     });
   }
-});
+};
 
 exports.signout = catchAsync(async (req, res, next) => {
   if (!req.cookies.jwt) {

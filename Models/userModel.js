@@ -83,7 +83,7 @@ const userSchema = new mongoose.Schema({
     unique: [true, "this ID number has been already used"],
     sparse: true,
   },
-  //when users dosen`t have a id number, they can enter a passport number
+  //when users dosen`t have an id number, they can enter a passport number
   passportNumber: {
     type: String,
     minLength: [10, "Passport Number could not be lower than 7 digits"],
@@ -107,7 +107,7 @@ const userSchema = new mongoose.Schema({
       message: "your not born yet, how the hell you want to go to a stadium?",
     },
   },
-  //Country, province and city that the user is born in
+  //Country, province and city that the user was born in
   country: {
     type: String,
     minLength: [2, "country name must have more than 2 characters"],
