@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema({
   },
   verifiedEmail: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   // phoneNumber: {
   //   type: String,
