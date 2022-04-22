@@ -31,7 +31,7 @@ Ticketify is a ticket selling platform that sells tickets for this three sports:
 1. You can't Add/Change/Remove images on heroku deployment, it needs credit card for enabling that feature
 
 ### Run locally
-1. 1. Import files in data folder to get started
+1. Import files in data folder to get started
 1. For logging in as an admin, use **admin@admin.com** and **adminadmin**
 1. For logging in as a user you can use **test1|2|3@test.com** and **testtest**
 
